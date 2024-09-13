@@ -1,8 +1,3 @@
-# Automatically build the project and run any configured tests for every push
-# and submitted pull request. This can help catch issues that only occur on
-# certain platforms or Java versions, and provides a first line of defence
-# against bad commits.
-
 name: build
 on: [pull_request, push]
 
@@ -10,10 +5,7 @@ jobs:
   build:
     strategy:
       matrix:
-        # Use these Java versions
-        java: [
-          21,    # Current Java LTS
-        ]
+        java: [21]
     runs-on: ubuntu-22.04
     steps:
       - name: checkout repository
@@ -25,13 +17,19 @@ jobs:
         with:
           java-version: ${{ matrix.java }}
           distribution: 'microsoft'
+      - name: install dos2unix
+        run: sudo apt-get update && sudo apt-get install -y dos2unix
+      - name: convert line endings
+        run: dos2unix ./gradlew
       - name: make gradle wrapper executable
-        run: chmod +x ./package
+        run: chmod +x ./gradlew
       - name: build
-        run: ./package
+        run: ./gradlew build
       - name: capture build artifacts
-        if: ${{ matrix.java == '21' }} # Only upload artifacts built from latest java
+        if: ${{ matrix.java == '21' }}
         uses: actions/upload-artifact@v4
         with:
           name: Artifacts
-          path: build/libs/
+          path: |
+            fabric/build/libs/
+            forge/build/libs/
