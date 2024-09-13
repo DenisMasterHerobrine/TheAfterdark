@@ -1,0 +1,13 @@
+{
+  "type": "the_afterdark:afterdark",
+  "generator": {
+    "type": "minecraft:flat",
+    "settings": {
+      "biome": "the_afterdark:blank_biome",
+      "lakes": false,
+      "features": false,
+      "layers": [],
+      "structure_overrides": []
+    }
+  }
+}

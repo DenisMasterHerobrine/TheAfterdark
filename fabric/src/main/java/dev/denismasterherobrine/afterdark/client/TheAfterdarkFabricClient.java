@@ -1,4 +1,4 @@
-package dev.denismasterherobrine.fabric.client;
+package dev.denismasterherobrine.afterdark.client;
 
 import net.fabricmc.api.ClientModInitializer;
 

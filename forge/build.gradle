@@ -13,6 +13,24 @@ architectury {
     forge()
 }
 
+def generatedResources = file("src/generated")
+
+sourceSets {
+    main {
+        resources.srcDir generatedResources
+    }
+}
+
+loom {
+    runs {
+        data {
+            data()
+            programArgs "--all", "--mod", "the_afterdark"
+            programArgs "--output", generatedResources.absolutePath
+        }
+    }
+}
+
 configurations {
     common {
         canBeResolved = true

@@ -1,4 +1,4 @@
-package dev.denismasterherobrine.forge;
+package dev.denismasterherobrine.afterdark;
 
 import net.minecraftforge.fml.common.Mod;
 

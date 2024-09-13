@@ -3,23 +3,27 @@
   "id": "the_afterdark",
   "version": "${version}",
   "name": "The Afterdark",
-  "description": "This is an example description! Tell everyone what your mod is about!",
+  "description": "A dimension Minecraft mod related to the afterlife, the dark, and the unknown.",
   "authors": [
-    "Me!"
+    "DenisMasterHerobrine",
+    "VeiTr"
   ],
   "contact": {
     "homepage": "https://fabricmc.net/",
     "sources": "https://github.com/FabricMC/fabric-example-mod"
   },
-  "license": "CC0-1.0",
+  "license": "LGPLv3",
   "icon": "assets/the_afterdark/icon.png",
   "environment": "*",
   "entrypoints": {
     "main": [
-      "com.example.fabric.ExampleModFabric"
+      "dev.denismasterherobrine.afterdark.TheAfterdarkFabric"
+    ],
+    "fabric-datagen": [
+      "dev.denismasterherobrine.afterdark.registry.DataGeneratorRegistry"
     ],
     "client": [
-      "com.example.fabric.client.ExampleModFabricClient"
+      "dev.denismasterherobrine.afterdark.client.TheAfterdarkFabricClient"
     ]
   },
   "mixins": [
@@ -30,8 +34,5 @@
     "minecraft": "~1.20.1",
     "java": ">=17",
     "fabric-api": "*"
-  },
-  "suggests": {
-    "another-mod": "*"
   }
 }

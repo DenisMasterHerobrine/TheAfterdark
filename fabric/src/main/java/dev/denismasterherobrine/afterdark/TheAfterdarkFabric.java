@@ -1,4 +1,4 @@
-package dev.denismasterherobrine.fabric;
+package dev.denismasterherobrine.afterdark;
 
 import net.fabricmc.api.ModInitializer;
 
@@ -13,5 +13,6 @@ public final class TheAfterdarkFabric implements ModInitializer {
 
         // Run our common setup.
         TheAfterdark.init();
+
     }
 }
