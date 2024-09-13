@@ -1,5 +1,0 @@
-#!/bin/sh
-
-chmod +x gradlew
-./gradlew preprocessResources || 0
-./gradlew build
