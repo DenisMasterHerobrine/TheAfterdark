@@ -1,15 +1,15 @@
 modLoader = "javafml"
 loaderVersion = "[47,)"
 #issueTrackerURL = ""
-license = "Insert License Here"
+license = "LGPLv3"
 
 [[mods]]
 modId = "the_afterdark"
 version = "${version}"
 displayName = "The Afterdark"
-authors = "Me!"
+authors = "DenisMasterHerobrine, VeiTr"
 description = '''
-This is an example description! Tell everyone what your mod is about!
+A dimension Minecraft mod related to the afterlife, the dark, and the unknown.
 '''
 #logoFile = ""
 
