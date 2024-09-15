@@ -35,7 +35,7 @@ public class AfterdarkRegistry {
 
     public static void bootstrapDimensionType(Registerable<DimensionType> context) {
         context.register(AFTERDARK_DIMENSION, new DimensionType(
-                OptionalLong.of(12000), // fixedTime
+                OptionalLong.of(21000), // fixedTime
                 false, // hasSkylight
                 false, // hasCeiling
                 false, // ultraWarm
@@ -49,7 +49,7 @@ public class AfterdarkRegistry {
                 BlockTags.INFINIBURN_OVERWORLD, // infiniburn
                 DimensionTypes.OVERWORLD_ID, // effectsLocation
                 0.0f, // ambientLight
-                new DimensionType.MonsterSettings(false, false, UniformIntProvider.create(0, 7), 0)
+                new DimensionType.MonsterSettings(false, false, UniformIntProvider.create(0, 7), 0) // monsterSettings
         ));
     }
 

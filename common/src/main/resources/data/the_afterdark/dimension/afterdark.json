@@ -7,15 +7,39 @@
       "type": "minecraft:multi_noise",
       "biomes": [
         {
-          "biome": "minecraft:dark_forest",
+          "biome": "minecraft:dripstone_caves",
           "parameters": {
-            "temperature": [ -0.125, 0 ],
-            "humidity": [ -1, 1 ],
-            "erosion": 0,
-            "continentalness": [ 0.251, 0.391 ],
-            "weirdness": 0,
-            "depth": 0,
-            "offset": 0
+            "temperature": 0.11,
+            "humidity": 0.03,
+            "continentalness": 0.02,
+            "erosion": 0.77,
+            "weirdness": 0.72,
+            "depth": 0.47,
+            "offset": 0.22
+          }
+        },
+        {
+          "biome": "minecraft:deep_dark",
+          "parameters": {
+            "temperature": 0.37,
+            "humidity": 0.74,
+            "continentalness": 0.03,
+            "erosion": 0.14,
+            "weirdness": 0.4,
+            "depth": 0.12,
+            "offset": 0.01
+          }
+        },
+        {
+          "biome": "minecraft:lush_caves",
+          "parameters": {
+            "temperature": 0.01,
+            "humidity": 0.4,
+            "continentalness": 0.07,
+            "erosion": 0.46,
+            "weirdness": 0.11,
+            "depth": -0.47,
+            "offset": 0.77
           }
         }
       ]

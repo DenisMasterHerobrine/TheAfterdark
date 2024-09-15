@@ -3,7 +3,7 @@
   "bed_works": false,
   "coordinate_scale": 1.0,
   "effects": "minecraft:overworld",
-  "fixed_time": 12000,
+  "fixed_time": 21000,
   "has_ceiling": false,
   "has_raids": false,
   "has_skylight": false,
