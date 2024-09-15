@@ -45,7 +45,7 @@ public class AfterdarkRegistry {
                 true, // respawnAnchorWorks
                 -128, // minY
                 384, // height
-                384, // logicalHeight
+                320, // logicalHeight
                 BlockTags.INFINIBURN_OVERWORLD, // infiniburn
                 DimensionTypes.OVERWORLD_ID, // effectsLocation
                 0.0f, // ambientLight

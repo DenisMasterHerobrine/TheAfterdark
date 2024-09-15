@@ -9,61 +9,10 @@
         {
           "biome": "minecraft:dark_forest",
           "parameters": {
-            "temperature": [
-              -0.125,
-              0
-            ],
-            "humidity": [
-              -1,
-              1
-            ],
+            "temperature": [ -0.125, 0 ],
+            "humidity": [ -1, 1 ],
             "erosion": 0,
-            "continentalness": [
-              0.251,
-              0.391
-            ],
-            "weirdness": 0,
-            "depth": 0,
-            "offset": 0
-          }
-        },
-        {
-          "biome": "minecraft:birch_forest",
-          "parameters": {
-            "temperature": [
-              -0.125,
-              0
-            ],
-            "humidity": [
-              -1,
-              1
-            ],
-            "erosion": 0,
-            "continentalness": [
-              0.251,
-              0.391
-            ],
-            "weirdness": 0,
-            "depth": 0,
-            "offset": 0
-          }
-        },
-        {
-          "biome": "minecraft:forest",
-          "parameters": {
-            "temperature": [
-              -0.125,
-              0
-            ],
-            "humidity": [
-              -1,
-              1
-            ],
-            "erosion": 0,
-            "continentalness": [
-              0.251,
-              0.391
-            ],
+            "continentalness": [ 0.251, 0.391 ],
             "weirdness": 0,
             "depth": 0,
             "offset": 0
