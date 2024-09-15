@@ -1,13 +1,75 @@
 {
   "type": "the_afterdark:afterdark",
   "generator": {
-    "type": "minecraft:flat",
-    "settings": {
-      "biome": "the_afterdark:blank_biome",
-      "lakes": false,
-      "features": false,
-      "layers": [],
-      "structure_overrides": []
+    "type": "minecraft:noise",
+    "settings": "the_afterdark:afterdark_settings",
+    "biome_source": {
+      "type": "minecraft:multi_noise",
+      "biomes": [
+        {
+          "biome": "minecraft:dark_forest",
+          "parameters": {
+            "temperature": [
+              -0.125,
+              0
+            ],
+            "humidity": [
+              -1,
+              1
+            ],
+            "erosion": 0,
+            "continentalness": [
+              0.251,
+              0.391
+            ],
+            "weirdness": 0,
+            "depth": 0,
+            "offset": 0
+          }
+        },
+        {
+          "biome": "minecraft:birch_forest",
+          "parameters": {
+            "temperature": [
+              -0.125,
+              0
+            ],
+            "humidity": [
+              -1,
+              1
+            ],
+            "erosion": 0,
+            "continentalness": [
+              0.251,
+              0.391
+            ],
+            "weirdness": 0,
+            "depth": 0,
+            "offset": 0
+          }
+        },
+        {
+          "biome": "minecraft:forest",
+          "parameters": {
+            "temperature": [
+              -0.125,
+              0
+            ],
+            "humidity": [
+              -1,
+              1
+            ],
+            "erosion": 0,
+            "continentalness": [
+              0.251,
+              0.391
+            ],
+            "weirdness": 0,
+            "depth": 0,
+            "offset": 0
+          }
+        }
+      ]
     }
   }
 }

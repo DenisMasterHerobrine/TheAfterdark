@@ -43,13 +43,13 @@ public class AfterdarkRegistry {
                 1.0, // coordinateScale
                 false, // bedWorks
                 true, // respawnAnchorWorks
-                -64, // minY
-                128, // height
-                128, // logicalHeight
+                -128, // minY
+                384, // height
+                384, // logicalHeight
                 BlockTags.INFINIBURN_OVERWORLD, // infiniburn
                 DimensionTypes.OVERWORLD_ID, // effectsLocation
                 0.0f, // ambientLight
-                new DimensionType.MonsterSettings(false, false, UniformIntProvider.create(0, 0), 0)
+                new DimensionType.MonsterSettings(false, false, UniformIntProvider.create(0, 7), 0)
         ));
     }
 

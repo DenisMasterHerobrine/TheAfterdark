@@ -20,7 +20,7 @@
       "dev.denismasterherobrine.afterdark.TheAfterdarkFabric"
     ],
     "fabric-datagen": [
-      "dev.denismasterherobrine.afterdark.registry.DataGeneratorRegistry"
+      "dev.denismasterherobrine.afterdark.registry_fabric.DataGeneratorRegistry"
     ],
     "client": [
       "dev.denismasterherobrine.afterdark.client.TheAfterdarkFabricClient"
