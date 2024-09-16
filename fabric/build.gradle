@@ -6,7 +6,6 @@ architectury {
     platformSetupLoomIde()
     fabric()
 }
-
 configurations {
     common {
         canBeResolved = true
@@ -28,6 +27,10 @@ fabricApi {
     configureDataGeneration()
 }
 
+repositories {
+    maven { url "https://maven.minecraftforge.net/" }
+}
+
 dependencies {
     modImplementation "net.fabricmc:fabric-loader:$rootProject.fabric_loader_version"
 
@@ -36,6 +39,8 @@ dependencies {
 
     common(project(path: ':common', configuration: 'namedElements')) { transitive false }
     shadowBundle project(path: ':common', configuration: 'transformProductionFabric')
+
+    modImplementation "com.github.glitchfiend:TerraBlender-fabric:$rootProject.minecraft_version-$rootProject.terrablender_version"
 }
 
 processResources {
