@@ -1,4 +1,4 @@
-package dev.denismasterherobrine;
+package dev.denismasterherobrine.afterdark;
 
 public final class TheAfterdark {
     public static final String MOD_ID = "the_afterdark";

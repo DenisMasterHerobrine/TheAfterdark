@@ -1,6 +1,6 @@
 package dev.denismasterherobrine.afterdark.registry;
 
-import dev.denismasterherobrine.TheAfterdark;
+import dev.denismasterherobrine.afterdark.TheAfterdark;
 import dev.denismasterherobrine.afterdark.blocks.TeleportBlock;
 import dev.denismasterherobrine.afterdark.items.TeleportCatalystItem;
 import net.minecraft.block.Block;

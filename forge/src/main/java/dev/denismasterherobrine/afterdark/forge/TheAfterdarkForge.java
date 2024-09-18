@@ -1,9 +1,9 @@
-package dev.denismasterherobrine.afterdark;
+package dev.denismasterherobrine.afterdark.forge;
 
-import dev.denismasterherobrine.afterdark.registry_forge.AfterdarkForgeRegistry;
+import dev.denismasterherobrine.afterdark.TheAfterdark;
+import dev.denismasterherobrine.afterdark.forge.registry.AfterdarkForgeRegistry;
 import net.minecraftforge.fml.common.Mod;
 
-import dev.denismasterherobrine.TheAfterdark;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 

@@ -1,6 +1,6 @@
-package dev.denismasterherobrine.afterdark.registry_forge;
+package dev.denismasterherobrine.afterdark.forge.registry;
 
-import dev.denismasterherobrine.TheAfterdark;
+import dev.denismasterherobrine.afterdark.TheAfterdark;
 import dev.denismasterherobrine.afterdark.registry.AfterdarkRegistry;
 import net.minecraft.data.DataOutput;
 import net.minecraft.registry.RegistryBuilder;
