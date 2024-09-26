@@ -1,6 +1,6 @@
 package dev.denismasterherobrine.afterdark.registry_fabric;
 
-import dev.denismasterherobrine.TheAfterdark;
+import dev.denismasterherobrine.afterdark.TheAfterdark;
 import dev.denismasterherobrine.afterdark.registry.AfterdarkRegistry;
 import net.fabricmc.fabric.api.loot.v2.LootTableEvents;
 import net.minecraft.loot.LootPool;

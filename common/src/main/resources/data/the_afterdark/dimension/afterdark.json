@@ -7,21 +7,81 @@
       "type": "minecraft:multi_noise",
       "biomes": [
         {
-          "biome": "minecraft:dripstone_caves",
+          "biome": "the_afterdark:creepy_snowfields",
           "parameters": {
-            "temperature": 0.11,
-            "humidity": 0.03,
-            "continentalness": 0.02,
-            "erosion": 0.77,
-            "weirdness": 0.72,
+            "temperature": 0.0993,
+            "humidity": 0.15,
+            "continentalness": 0.07,
+            "erosion": 0.716,
+            "weirdness": 0.49,
+            "depth": -0.35,
+            "offset": 0.41
+          }
+        },
+        {
+          "biome": "the_afterdark:dying_drylands",
+          "parameters": {
+            "temperature": 0.093,
+            "humidity": 0.15,
+            "continentalness": 0.07,
+            "erosion": 0.8,
+            "weirdness": 0.49,
+            "depth": 0.1,
+            "offset": 0.41
+          }
+        },
+        {
+          "biome": "the_afterdark:calcite_fields",
+          "parameters": {
+            "temperature": -0.34,
+            "humidity": 0.14,
+            "continentalness": 0.37,
+            "erosion": 0.8,
+            "weirdness": 0.49,
+            "depth": 0.43,
+            "offset": 0
+          }
+        },
+        {
+          "biome": "the_afterdark:prismarine_peaks",
+          "parameters": {
+            "temperature": 0.12,
+            "humidity": 0.17,
+            "continentalness": 0.33,
+            "erosion": 0.12,
+            "weirdness": 0.42,
+            "depth": 0.19,
+            "offset": 0
+          }
+        },
+        {
+          "biome": "the_afterdark:prismarine_ponds",
+          "parameters": {
+            "temperature": 0.35,
+            "humidity": 0.04,
+            "continentalness": 0.12,
+            "erosion": 0.33,
+            "weirdness": 0.54,
+            "depth": 0.16,
+            "offset": 0.11
+          }
+        },
+        {
+          "biome": "the_afterdark:dripstone_deltas",
+          "parameters": {
+            "temperature": 0.307,
+            "humidity": 0.13,
+            "continentalness": 0.13,
+            "erosion": 0.11,
+            "weirdness": 0.41,
             "depth": 0.47,
             "offset": 0.22
           }
         },
         {
-          "biome": "minecraft:deep_dark",
+          "biome": "the_afterdark:deep_afterdark",
           "parameters": {
-            "temperature": 0.37,
+            "temperature": 0.33,
             "humidity": 0.74,
             "continentalness": 0.03,
             "erosion": 0.14,
@@ -31,9 +91,9 @@
           }
         },
         {
-          "biome": "minecraft:lush_caves",
+          "biome": "the_afterdark:lush_gardens",
           "parameters": {
-            "temperature": 0.01,
+            "temperature": 0.02,
             "humidity": 0.4,
             "continentalness": 0.07,
             "erosion": 0.46,

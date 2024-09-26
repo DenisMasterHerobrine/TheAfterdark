@@ -15,8 +15,7 @@ public class TeleportCatalystItem extends Item {
 
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
-        if (!world.isClient) {
-        }
+        if (!world.isClient) {}
         return new TypedActionResult<>(ActionResult.SUCCESS, player.getStackInHand(hand));
     }
 }

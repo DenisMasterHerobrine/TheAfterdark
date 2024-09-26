@@ -1,0 +1,17 @@
+{
+  "type": "the_afterdark:pond",
+  "config": {
+    "to_place": {
+      "type": "minecraft:simple_state_provider",
+      "state": {
+        "Name": "minecraft:calcite"
+      }
+    },
+    "slab_to_place": {
+      "type": "minecraft:simple_state_provider",
+      "state": {
+        "Name": "minecraft:diorite_slab"
+      }
+    }
+  }
+}
