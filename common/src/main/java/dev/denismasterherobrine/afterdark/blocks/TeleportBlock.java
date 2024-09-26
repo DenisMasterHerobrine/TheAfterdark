@@ -6,19 +6,45 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
+import net.minecraft.util.function.BooleanBiFunction;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.shape.VoxelShape;
+import net.minecraft.util.shape.VoxelShapes;
+import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
 public class TeleportBlock extends BlockWithEntity implements BlockEntityProvider {
     public TeleportBlock() {
-        super(Block.Settings.copy(net.minecraft.block.Blocks.STONE).solid());
+        super(Block.Settings.copy(Blocks.DEEPSLATE));
     }
 
     @Override
     public BlockRenderType getRenderType(BlockState state) {
         return BlockRenderType.MODEL;
+    }
+
+    public VoxelShape makeShape(){
+        VoxelShape shape = VoxelShapes.empty();
+        shape = VoxelShapes.combine(shape, VoxelShapes.cuboid(0, 0, 0, 1, 0.25, 1), BooleanBiFunction.OR);
+        shape = VoxelShapes.combine(shape, VoxelShapes.cuboid(0.25, 0.25, 0.25, 0.375, 0.375, 0.375), BooleanBiFunction.OR);
+        shape = VoxelShapes.combine(shape, VoxelShapes.cuboid(0.25, 0.25, 0.625, 0.375, 0.375, 0.75), BooleanBiFunction.OR);
+        shape = VoxelShapes.combine(shape, VoxelShapes.cuboid(0.625, 0.25, 0.625, 0.75, 0.375, 0.75), BooleanBiFunction.OR);
+        shape = VoxelShapes.combine(shape, VoxelShapes.cuboid(0.625, 0.25, 0.25, 0.75, 0.375, 0.375), BooleanBiFunction.OR);
+        shape = VoxelShapes.combine(shape, VoxelShapes.cuboid(0.625, 0.625, 0.25, 0.75, 0.75, 0.375), BooleanBiFunction.OR);
+        shape = VoxelShapes.combine(shape, VoxelShapes.cuboid(0, 0.75, 0, 1, 1, 1), BooleanBiFunction.OR);
+        shape = VoxelShapes.combine(shape, VoxelShapes.cuboid(0.25, 0.625, 0.25, 0.375, 0.75, 0.375), BooleanBiFunction.OR);
+        shape = VoxelShapes.combine(shape, VoxelShapes.cuboid(0.25, 0.625, 0.625, 0.375, 0.75, 0.75), BooleanBiFunction.OR);
+        shape = VoxelShapes.combine(shape, VoxelShapes.cuboid(0.625, 0.625, 0.625, 0.75, 0.75, 0.75), BooleanBiFunction.OR);
+
+        return shape;
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public VoxelShape getOutlineShape(BlockState state, BlockView view, BlockPos pos, ShapeContext context) {
+        return makeShape();
     }
 
     @Nullable

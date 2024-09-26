@@ -1,5 +1,6 @@
 {
 	"texture_size": [64, 64],
+	"render_type": "minecraft:translucent",
 	"textures": {
 		"0": "the_afterdark:item/catalyst_inactive",
 		"particle": "the_afterdark:item/catalyst_inactive"

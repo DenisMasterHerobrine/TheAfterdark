@@ -1,5 +1,6 @@
 {
 	"texture_size": [64, 64],
+	"render_type": "minecraft:translucent",
 	"textures": {
 		"0": "the_afterdark:block/teleportblock",
 		"particle": "the_afterdark:block/teleportblock"
