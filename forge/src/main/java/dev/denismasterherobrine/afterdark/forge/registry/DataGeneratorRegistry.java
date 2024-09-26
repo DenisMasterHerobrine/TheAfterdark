@@ -1,4 +1,4 @@
-package dev.denismasterherobrine.afterdark.registry_forge;
+package dev.denismasterherobrine.afterdark.forge.registry;
 
 import dev.denismasterherobrine.afterdark.TheAfterdark;
 import net.minecraft.data.DataGenerator;
@@ -11,6 +11,7 @@ import net.minecraftforge.fml.common.Mod;
 
 import java.util.concurrent.CompletableFuture;
 
+@SuppressWarnings("unused")
 @Mod.EventBusSubscriber(modid = TheAfterdark.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class DataGeneratorRegistry {
     @SubscribeEvent
