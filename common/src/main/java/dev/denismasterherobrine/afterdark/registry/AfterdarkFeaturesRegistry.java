@@ -1,5 +1,6 @@
 package dev.denismasterherobrine.afterdark.registry;
 
+import dev.architectury.injectables.annotations.PlatformOnly;
 import dev.denismasterherobrine.afterdark.TheAfterdark;
 import dev.denismasterherobrine.afterdark.features.*;
 import dev.denismasterherobrine.afterdark.features.configuration.*;
@@ -36,6 +37,8 @@ public class AfterdarkFeaturesRegistry {
     public static final Feature<LargeDripstoneFeatureConfig> LARGE_ICE_PILLAR = new LargeIcePillarFeature(LargeDripstoneFeatureConfig.CODEC);
     public static final Feature<LargeDripstoneFeatureConfig> LARGE_BLUE_ICE_PILLAR = new LargeBlueIcePillarFeature(LargeDripstoneFeatureConfig.CODEC);
 
+    // This only works on Fabric. TODO: add Forge registries for features
+    @PlatformOnly(value = PlatformOnly.FABRIC)
     public static void register() {
         Registry.register(Registries.FEATURE, new Identifier(TheAfterdark.MOD_ID, "large_basalt_pillar"), LARGE_BASALT_PILLAR);
         Registry.register(Registries.FEATURE, new Identifier(TheAfterdark.MOD_ID, "additive_ground_blob"), ADDITIVE_GROUND_BLOB);
