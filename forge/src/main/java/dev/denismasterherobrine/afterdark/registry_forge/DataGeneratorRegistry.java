@@ -1,6 +1,6 @@
 package dev.denismasterherobrine.afterdark.registry_forge;
 
-import dev.denismasterherobrine.TheAfterdark;
+import dev.denismasterherobrine.afterdark.TheAfterdark;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.DataOutput;
 import net.minecraft.registry.RegistryWrapper;

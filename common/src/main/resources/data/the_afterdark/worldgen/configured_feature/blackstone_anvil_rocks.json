@@ -1,0 +1,52 @@
+{
+  "type": "the_afterdark:anvil_rock",
+  "config": {
+    "material": {
+      "fallback": {
+        "type": "minecraft:weighted_state_provider",
+        "entries": [
+          {
+            "weight": 149,
+            "data": {
+              "Name": "minecraft:blackstone"
+            }
+          },
+          {
+            "weight": 50,
+            "data": {
+              "Name": "minecraft:polished_blackstone"
+            }
+          },
+          {
+            "weight": 1,
+            "data": {
+              "Name": "minecraft:air"
+            }
+          }
+        ]
+      },
+      "rules": []
+    },
+    "radius": {
+      "type": "minecraft:uniform",
+      "value": {
+        "min_inclusive": 1,
+        "max_inclusive": 2
+      }
+    },
+    "height": {
+      "type": "minecraft:uniform",
+      "value": {
+        "min_inclusive": 4,
+        "max_inclusive": 25
+      }
+    },
+    "stretch": {
+      "type": "minecraft:uniform",
+      "value": {
+        "min_inclusive": 0,
+        "max_inclusive": 2
+      }
+    }
+  }
+}

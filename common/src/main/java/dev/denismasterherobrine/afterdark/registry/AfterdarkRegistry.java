@@ -1,6 +1,6 @@
 package dev.denismasterherobrine.afterdark.registry;
 
-import dev.denismasterherobrine.TheAfterdark;
+import dev.denismasterherobrine.afterdark.TheAfterdark;
 import dev.denismasterherobrine.afterdark.blocks.TeleportBlock;
 import dev.denismasterherobrine.afterdark.items.TeleportCatalystItem;
 import net.minecraft.block.Block;
@@ -8,9 +8,7 @@ import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
-import net.minecraft.registry.Registerable;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryKeys;
+import net.minecraft.registry.*;
 import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
