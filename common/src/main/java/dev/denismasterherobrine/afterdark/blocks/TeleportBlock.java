@@ -25,7 +25,7 @@ public class TeleportBlock extends BlockWithEntity implements BlockEntityProvide
         return BlockRenderType.MODEL;
     }
 
-    public VoxelShape makeShape(){
+    public VoxelShape makeShape() {
         VoxelShape shape = VoxelShapes.empty();
         shape = VoxelShapes.combine(shape, VoxelShapes.cuboid(0, 0, 0, 1, 0.25, 1), BooleanBiFunction.OR);
         shape = VoxelShapes.combine(shape, VoxelShapes.cuboid(0.25, 0.25, 0.25, 0.375, 0.375, 0.375), BooleanBiFunction.OR);
@@ -106,7 +106,28 @@ public class TeleportBlock extends BlockWithEntity implements BlockEntityProvide
                     }
                 }
             }
+            for (int y = world.getBottomY(); y <= world.getTopY() - pos.getY(); y++) {
+                BlockPos checkPos = pos.add(0, y, 0);
+                if (isTeleportSafe(world, checkPos, player)) {
+                    return checkPos;
+                }
+            }
+            for (int y = world.getBottomY(); y <= world.getTopY() - pos.getY(); y++) {
+                for (int x = -1; x <= 1; x++) {
+                    for (int z = -1; z <= 1; z++) {
+                        if (x == 0 && z == 0) {
+                            continue;
+                        }
+                        BlockPos checkPos = pos.add(x, y, z);
+                        if (isTeleportSafe(world, checkPos, player)) {
+                            return checkPos;
+                        }
+                    }
+                }
+            }
+
+
+            return pos;
         }
-        return pos;
     }
 }
