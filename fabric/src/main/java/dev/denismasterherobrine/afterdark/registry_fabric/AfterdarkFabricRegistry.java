@@ -1,6 +1,7 @@
 package dev.denismasterherobrine.afterdark.registry_fabric;
 
 import dev.denismasterherobrine.afterdark.TheAfterdark;
+import dev.denismasterherobrine.afterdark.features.structures.TeleportAltarFeature;
 import dev.denismasterherobrine.afterdark.loot.lootTables.FabricLootModifier;
 import dev.denismasterherobrine.afterdark.registry.AfterdarkRegistry;
 import net.minecraft.registry.Registries;
@@ -16,8 +17,13 @@ public class AfterdarkFabricRegistry {
         Registry.register(Registries.ITEM_GROUP, Identifier.of(TheAfterdark.MOD_ID, "afterdark"), AfterdarkRegistry.AFTERDARK);
     }
 
+    public static void registerStructureFeatures() {
+        AfterdarkRegistry.TELEPORT_ALTAR = Registry.register(Registries.STRUCTURE_TYPE, new Identifier(TheAfterdark.MOD_ID, "teleport_altar"), () -> TeleportAltarFeature.CODEC);
+    }
+
     public static void register() {
         registerItems();
         FabricLootModifier.registerLootModifier();
+        registerStructureFeatures();
     }
 }

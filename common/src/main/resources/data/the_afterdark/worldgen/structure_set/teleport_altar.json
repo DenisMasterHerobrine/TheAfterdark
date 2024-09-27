@@ -1,0 +1,14 @@
+{
+   "structures": [
+    {
+      "structure": "the_afterdark:teleport_altar",
+      "weight": 1
+    }
+  ],
+  "placement": {
+    "salt": 12733412,
+    "spacing": 20,
+    "separation": 6,
+    "type": "minecraft:random_spread"
+  }
+}

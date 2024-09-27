@@ -1,18 +1,23 @@
 package dev.denismasterherobrine.afterdark.forge.registry;
 
+import com.mojang.serialization.Codec;
 import dev.denismasterherobrine.afterdark.TheAfterdark;
 import dev.denismasterherobrine.afterdark.features.*;
 import dev.denismasterherobrine.afterdark.features.configuration.*;
+import dev.denismasterherobrine.afterdark.features.structures.TeleportAltarFeature;
 import dev.denismasterherobrine.afterdark.registry.AfterdarkRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.registry.Registries;
+import net.minecraft.util.Identifier;
 import net.minecraft.world.gen.ProbabilityConfig;
 import net.minecraft.world.gen.feature.DefaultFeatureConfig;
 import net.minecraft.world.gen.feature.DiskFeatureConfig;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.LargeDripstoneFeatureConfig;
+import net.minecraft.world.gen.structure.Structure;
+import net.minecraft.world.gen.structure.StructureType;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.DeferredRegister;
@@ -58,10 +63,19 @@ public class AfterdarkForgeRegistry {
     public static final RegistryObject<Feature<LargeDripstoneFeatureConfig>> LARGE_ICE_PILLAR = FEATURES.register("large_ice_pillar", () -> new LargeIcePillarFeature(LargeDripstoneFeatureConfig.CODEC));
     public static final RegistryObject<Feature<LargeDripstoneFeatureConfig>> LARGE_BLUE_ICE_PILLAR = FEATURES.register("large_blue_ice_pillar", () -> new LargeBlueIcePillarFeature(LargeDripstoneFeatureConfig.CODEC));
 
+    public static final DeferredRegister<StructureType<?>> DEFERRED_REGISTRY_STRUCTURE = DeferredRegister.create((Identifier) Registries.STRUCTURE_TYPE, TheAfterdark.MOD_ID);
+
+    public static final RegistryObject<StructureType<TeleportAltarFeature>> TELEPORT_ALTAR = DEFERRED_REGISTRY_STRUCTURE.register("teleport_altar", () -> AfterdarkRegistry.TELEPORT_ALTAR);
+
+    private static <T extends Structure> StructureType<T> explicitStructureTypeTyping(Codec<T> structureCodec) {
+        return () -> structureCodec;
+    }
+
     public static void register(IEventBus eventBus) {
         BLOCKS.register(eventBus);
         ITEMS.register(eventBus);
         CREATIVE_MODE_TABS.register(eventBus);
         FEATURES.register(eventBus);
+        DEFERRED_REGISTRY_STRUCTURE.register(eventBus);
     }
 }

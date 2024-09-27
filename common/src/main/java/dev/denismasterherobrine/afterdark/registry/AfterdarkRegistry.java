@@ -2,13 +2,16 @@ package dev.denismasterherobrine.afterdark.registry;
 
 import dev.denismasterherobrine.afterdark.TheAfterdark;
 import dev.denismasterherobrine.afterdark.blocks.TeleportBlock;
+import dev.denismasterherobrine.afterdark.features.structures.TeleportAltarFeature;
 import dev.denismasterherobrine.afterdark.items.TeleportCatalystItem;
 import net.minecraft.block.Block;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
-import net.minecraft.registry.*;
+import net.minecraft.registry.Registerable;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
@@ -18,6 +21,7 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.dimension.DimensionOptions;
 import net.minecraft.world.dimension.DimensionType;
 import net.minecraft.world.dimension.DimensionTypes;
+import net.minecraft.world.gen.structure.StructureType;
 
 import java.util.OptionalLong;
 
@@ -30,6 +34,8 @@ public class AfterdarkRegistry {
     public static final RegistryKey<World> AFTERDARK_LEVEL = RegistryKey.of(RegistryKeys.WORLD, new Identifier(TheAfterdark.MOD_ID, "afterdark"));
 
     public static final RegistryKey<DimensionOptions> AFTERDARK_DIMENSION_OPTIONS = RegistryKey.of(RegistryKeys.DIMENSION, new Identifier(TheAfterdark.MOD_ID, "afterdark"));
+
+    public static StructureType<TeleportAltarFeature> TELEPORT_ALTAR;
 
     public static void bootstrapDimensionType(Registerable<DimensionType> context) {
         context.register(AFTERDARK_DIMENSION, new DimensionType(

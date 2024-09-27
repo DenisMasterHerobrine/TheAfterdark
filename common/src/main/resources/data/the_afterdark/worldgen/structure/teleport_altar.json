@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:jigsaw",
+  "start_pool": "the_afterdark:teleport_altar/start_pool",
+  "size": 2,
+  "max_distance_from_center": 80,
+  "biomes": "#the_afterdark:has_structure/teleport_altar",
+  "step": "surface_structures",
+  "start_height": {
+    "absolute": 0
+  },
+  "project_start_to_heightmap": "WORLD_SURFACE_WG",
+  "use_expansion_hack": false,
+  "spawn_overrides": {
+    "creature": {
+      "bounding_box": "piece",
+      "spawns": []
+    }
+  }
+}
