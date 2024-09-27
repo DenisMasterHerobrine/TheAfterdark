@@ -35,5 +35,5 @@
     "java": ">=17",
     "fabric-api": "*"
   },
-  "accessWidener": "the_afterdark.accesswidener.json"
+  "accessWidener": "the_afterdark.accesswidener"
 }
