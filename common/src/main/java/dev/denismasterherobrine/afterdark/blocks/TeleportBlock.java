@@ -4,6 +4,7 @@ import dev.denismasterherobrine.afterdark.registry.AfterdarkRegistry;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.function.BooleanBiFunction;
@@ -68,6 +69,9 @@ public class TeleportBlock extends BlockWithEntity implements BlockEntityProvide
                         player.teleport(world.getServer().getWorld(AfterdarkRegistry.AFTERDARK_LEVEL), safePos.toCenterPos().getX(), safePos.getY(), safePos.toCenterPos().getZ(), null, player.getYaw(), player.getPitch());
                     }
                 }
+            } else {
+                // Send a colored cyan i18n message to the player
+                player.sendMessage(Text.translatable("chat.the_afterdark.teleport_missing_catalyst"), false);
             }
         }
 

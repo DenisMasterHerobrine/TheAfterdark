@@ -1,5 +1,6 @@
 {
   "itemGroup.afterdark": "The AfterDark",
   "item.the_afterdark.teleport_catalyst": "Teleport Catalyst",
-  "block.the_afterdark.teleport_block": "Teleport Block"
+  "block.the_afterdark.teleport_block": "Teleport Block",
+  "chat.the_afterdark.teleport_missing_catalyst": "§3This shrine rejects your offering..."
 }

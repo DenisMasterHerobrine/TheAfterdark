@@ -1,5 +1,6 @@
 {
   "itemGroup.afterdark": "The AfterDark",
   "item.the_afterdark.teleport_catalyst": "Катализатор Телепорта",
-  "block.the_afterdark.teleport_block": "Блок Телепорта"
+  "block.the_afterdark.teleport_block": "Блок Телепорта",
+  "chat.the_afterdark.teleport_missing_catalyst": "§3Похоже, что этот алтарь отвергает ваше подношение..."
 }
