@@ -4,14 +4,11 @@ import com.mojang.serialization.Codec;
 import dev.denismasterherobrine.afterdark.TheAfterdark;
 import dev.denismasterherobrine.afterdark.features.*;
 import dev.denismasterherobrine.afterdark.features.configuration.*;
-import dev.denismasterherobrine.afterdark.features.structures.TeleportAltarFeature;
 import dev.denismasterherobrine.afterdark.registry.AfterdarkRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.registry.Registries;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.util.Identifier;
 import net.minecraft.world.gen.ProbabilityConfig;
 import net.minecraft.world.gen.feature.DefaultFeatureConfig;
 import net.minecraft.world.gen.feature.DiskFeatureConfig;
@@ -63,8 +60,6 @@ public class AfterdarkForgeRegistry {
     public static final RegistryObject<Feature<LargeDripstoneFeatureConfig>> LARGE_PACKED_ICE_PILLAR = FEATURES.register("large_packed_ice_pillar", () -> new LargePackedIcePillarFeature(LargeDripstoneFeatureConfig.CODEC));
     public static final RegistryObject<Feature<LargeDripstoneFeatureConfig>> LARGE_ICE_PILLAR = FEATURES.register("large_ice_pillar", () -> new LargeIcePillarFeature(LargeDripstoneFeatureConfig.CODEC));
     public static final RegistryObject<Feature<LargeDripstoneFeatureConfig>> LARGE_BLUE_ICE_PILLAR = FEATURES.register("large_blue_ice_pillar", () -> new LargeBlueIcePillarFeature(LargeDripstoneFeatureConfig.CODEC));
-
-
 
     private static <T extends Structure> StructureType<T> explicitStructureTypeTyping(Codec<T> structureCodec) {
         return () -> structureCodec;

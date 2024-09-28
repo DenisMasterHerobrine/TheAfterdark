@@ -8,7 +8,6 @@ import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
 
 public class AfterdarkFabricRegistry {
-
     public static void registerItems() {
         Registry.register(Registries.BLOCK, Identifier.of(TheAfterdark.MOD_ID, "teleport_block"), AfterdarkRegistry.TELEPORT_BLOCK);
         Registry.register(Registries.ITEM, Identifier.of(TheAfterdark.MOD_ID, "teleport_block"), AfterdarkRegistry.TELEPORT_BLOCK_ITEM);
@@ -16,13 +15,8 @@ public class AfterdarkFabricRegistry {
         Registry.register(Registries.ITEM_GROUP, Identifier.of(TheAfterdark.MOD_ID, "afterdark"), AfterdarkRegistry.AFTERDARK);
     }
 
-    public static void registerStructureFeatures() {
-        AfterdarkRegistry.TELEPORT_ALTAR = Registry.register(Registries.STRUCTURE_TYPE, new Identifier(TheAfterdark.MOD_ID, "teleport_altar"), () -> TeleportAltarFeature.CODEC);
-    }
-
     public static void register() {
         registerItems();
         FabricLootModifier.registerLootModifier();
-        registerStructureFeatures();
     }
 }
