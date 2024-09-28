@@ -17,9 +17,6 @@ public class DataGeneratorRegistry implements DataGeneratorEntrypoint {
 
     @Override
     public void buildRegistry(RegistryBuilder registryBuilder) {
-        //registryBuilder.addRegistry(RegistryKeys.CONFIGURED_FEATURE, ModConfiguredFeatures::boostrapConfiguredFeature);
-        //registryBuilder.addRegistry(RegistryKeys.PLACED_FEATURE, ModPlacedFeatures::boostrapPlacedFeature);
-        //registryBuilder.addRegistry(RegistryKeys.BIOME, AfterdarkRegistry::boostrapBiome);
         registryBuilder.addRegistry(RegistryKeys.DIMENSION_TYPE, AfterdarkRegistry::bootstrapDimensionType);
     }
 }

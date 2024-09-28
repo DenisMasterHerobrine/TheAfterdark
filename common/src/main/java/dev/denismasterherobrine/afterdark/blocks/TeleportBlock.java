@@ -70,7 +70,6 @@ public class TeleportBlock extends BlockWithEntity implements BlockEntityProvide
                     }
                 }
             } else {
-                // Send a colored cyan i18n message to the player
                 player.sendMessage(Text.translatable("chat.the_afterdark.teleport_missing_catalyst"), false);
             }
         }

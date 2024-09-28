@@ -1,7 +1,6 @@
 package dev.denismasterherobrine.afterdark.registry_fabric;
 
 import dev.denismasterherobrine.afterdark.TheAfterdark;
-import dev.denismasterherobrine.afterdark.features.structures.TeleportAltarFeature;
 import dev.denismasterherobrine.afterdark.loot.lootTables.FabricLootModifier;
 import dev.denismasterherobrine.afterdark.registry.AfterdarkRegistry;
 import net.minecraft.registry.Registries;
