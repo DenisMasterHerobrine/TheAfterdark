@@ -65,6 +65,9 @@
       "minecraft:amethyst_geode",
       "the_afterdark:sparse_smooth_basalt_pillar",
       "the_afterdark:sparse_calcite_pillar",
+      "the_afterdark:sparse_raw_copper_pillar",
+      "the_afterdark:sparse_raw_iron_pillar",
+      "the_afterdark:sparse_emerald_ore_pillar",
       "the_afterdark:amethyst_crystal_spike",
       "the_afterdark:amethyst_crystal_ground_spike",
       "the_afterdark:amethyst_spiral"

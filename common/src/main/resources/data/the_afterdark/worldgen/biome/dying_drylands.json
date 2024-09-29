@@ -141,7 +141,9 @@
       "minecraft:lake_lava_surface"
     ],
     [
-      "minecraft:amethyst_geode"
+      "minecraft:amethyst_geode",
+      "the_afterdark:sparse_raw_copper_pillar",
+      "the_afterdark:sparse_raw_gold_pillar"
     ],
     [
       "minecraft:monster_room",

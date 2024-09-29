@@ -44,7 +44,8 @@
     [
       "minecraft:amethyst_geode",
       "the_afterdark:sparse_deepslate_pillar",
-      "the_afterdark:sparse_thin_obsidian_pillar"
+      "the_afterdark:sparse_thin_obsidian_pillar",
+      "the_afterdark:sparse_diamond_ore_pillar"
     ],
     [
       "minecraft:monster_room",

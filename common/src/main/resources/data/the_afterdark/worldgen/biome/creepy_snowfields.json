@@ -151,7 +151,10 @@
       "minecraft:amethyst_geode",
       "the_afterdark:sparse_packed_ice_pillar",
       "the_afterdark:thin_ice_pillar",
-      "the_afterdark:sparse_thin_blue_ice_pillar"
+      "the_afterdark:sparse_thin_blue_ice_pillar",
+      "the_afterdark:sparse_raw_iron_pillar",
+      "the_afterdark:sparse_redstone_ore_pillar",
+      "the_afterdark:sparse_diamond_ore_pillar"
     ],
     [
       "minecraft:monster_room",
