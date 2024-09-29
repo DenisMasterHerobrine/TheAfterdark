@@ -116,8 +116,8 @@
     [
       "minecraft:amethyst_geode",
       "minecraft:large_dripstone",
-      "the_afterdark:sparse_redstone_ore_pillar",
-      "the_afterdark:sparse_lapis_ore_pillar"
+      "the_afterdark:sparse_lapis_ore_pillar",
+      "the_afterdark:sparse_redstone_ore_pillar"
     ],
     [
       "minecraft:monster_room",

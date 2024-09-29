@@ -61,6 +61,17 @@ public class AfterdarkForgeRegistry {
     public static final RegistryObject<Feature<LargeDripstoneFeatureConfig>> LARGE_ICE_PILLAR = FEATURES.register("large_ice_pillar", () -> new LargeIcePillarFeature(LargeDripstoneFeatureConfig.CODEC));
     public static final RegistryObject<Feature<LargeDripstoneFeatureConfig>> LARGE_BLUE_ICE_PILLAR = FEATURES.register("large_blue_ice_pillar", () -> new LargeBlueIcePillarFeature(LargeDripstoneFeatureConfig.CODEC));
 
+    // Raw Ore Pillars
+    public static final RegistryObject<Feature<LargeDripstoneFeatureConfig>> LARGE_RAW_IRON_PILLAR = FEATURES.register("raw_iron_pillar", () -> new LargeRawIronPillarFeature(LargeDripstoneFeatureConfig.CODEC));
+    public static final RegistryObject<Feature<LargeDripstoneFeatureConfig>> LARGE_RAW_COPPER_PILLAR = FEATURES.register("raw_copper_pillar", () -> new LargeRawCopperPillarFeature(LargeDripstoneFeatureConfig.CODEC));
+    public static final RegistryObject<Feature<LargeDripstoneFeatureConfig>> LARGE_RAW_GOLD_PILLAR = FEATURES.register("raw_gold_pillar", () -> new LargeRawGoldPillarFeature(LargeDripstoneFeatureConfig.CODEC));
+
+    // Ore Pillars
+    public static final RegistryObject<Feature<LargeDripstoneFeatureConfig>> LARGE_REDSTONE_ORE_PILLAR = FEATURES.register("redstone_ore_pillar", () -> new LargeRedstoneOrePillarFeature(LargeDripstoneFeatureConfig.CODEC));
+    public static final RegistryObject<Feature<LargeDripstoneFeatureConfig>> LARGE_LAPIS_ORE_PILLAR = FEATURES.register("lapis_ore_pillar", () -> new LargeLapisOrePillarFeature(LargeDripstoneFeatureConfig.CODEC));
+    public static final RegistryObject<Feature<LargeDripstoneFeatureConfig>> LARGE_EMERALD_ORE_PILLAR = FEATURES.register("emerald_ore_pillar", () -> new LargeEmeraldOrePillarFeature(LargeDripstoneFeatureConfig.CODEC));
+    public static final RegistryObject<Feature<LargeDripstoneFeatureConfig>> LARGE_DIAMOND_ORE_PILLAR = FEATURES.register("diamond_ore_pillar", () -> new LargeDiamondOrePillarFeature(LargeDripstoneFeatureConfig.CODEC));
+
     private static <T extends Structure> StructureType<T> explicitStructureTypeTyping(Codec<T> structureCodec) {
         return () -> structureCodec;
     }

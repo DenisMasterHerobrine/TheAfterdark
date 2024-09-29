@@ -38,10 +38,10 @@
     }
   },
   "start_height": {
-    "absolute": -27
+    "absolute": -48
   },
   "start_pool": "the_afterdark:teleport_altar/start_pool",
-  "step": "underground_decoration",
+  "step": "underground_structures",
   "terrain_adaptation": "beard_box",
   "use_expansion_hack": false
 }
