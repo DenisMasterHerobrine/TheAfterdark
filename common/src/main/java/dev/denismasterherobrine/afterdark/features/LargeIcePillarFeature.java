@@ -1,6 +1,7 @@
 package dev.denismasterherobrine.afterdark.features;
 
 import com.mojang.serialization.Codec;
+import dev.denismasterherobrine.afterdark.mixin.DripstoneHelperMixin;
 import org.jetbrains.annotations.Nullable;
 import java.util.Optional;
 import net.minecraft.block.Block;
@@ -30,7 +31,7 @@ public class LargeIcePillarFeature extends Feature<LargeDripstoneFeatureConfig> 
         net.minecraft.util.math.random.Random random = pContext.getRandom();
         LargeDripstoneFeatureConfig config = pContext.getConfig();
 
-        if (!DripstoneHelper.canGenerateOrLava(worldgenlevel, blockpos)) {
+        if (!DripstoneHelperMixin.invokeCanGenerateOrLava(worldgenlevel, blockpos)) {
             return false;
         } else {
             Optional<CaveSurface> optional = CaveSurface.create(worldgenlevel, blockpos, config.floorToCeilingSearchRange, DripstoneHelper::canGenerate, DripstoneHelper::canReplaceOrLava);
@@ -110,7 +111,7 @@ public class LargeIcePillarFeature extends Feature<LargeDripstoneFeatureConfig> 
                         return false;
                     }
 
-                    if (DripstoneHelper.canGenerateBase(pLevel, pWindOffsetter.offset(blockpos$mutableblockpos), this.radius)) {
+                    if (DripstoneHelperMixin.invokeCanGenerateBase(pLevel, pWindOffsetter.offset(blockpos$mutableblockpos), this.radius)) {
                         this.root = blockpos$mutableblockpos;
                         return true;
                     }
@@ -125,7 +126,7 @@ public class LargeIcePillarFeature extends Feature<LargeDripstoneFeatureConfig> 
         }
 
         private int getHeightAtRadius(float pRadius) {
-            return (int)DripstoneHelper.scaleHeightFromRadius((double)pRadius, (double)this.radius, this.scale, this.bluntness);
+            return (int)DripstoneHelperMixin.invokeScaleHeightFromRadius((double)pRadius, (double)this.radius, this.scale, this.bluntness);
         }
 
         void placeBlocks(StructureWorldAccess pLevel, net.minecraft.util.math.random.Random pRandom, WindOffsetter pWindOffsetter) {
@@ -145,7 +146,7 @@ public class LargeIcePillarFeature extends Feature<LargeDripstoneFeatureConfig> 
 
                             for(int i1 = 0; i1 < k && blockpos$mutableblockpos.getY() < l; ++i1) {
                                 BlockPos blockpos = pWindOffsetter.offset(blockpos$mutableblockpos);
-                                if (DripstoneHelper.canGenerateOrLava(pLevel, blockpos)) {
+                                if (DripstoneHelperMixin.invokeCanGenerateOrLava(pLevel, blockpos)) {
                                     flag = true;
                                     Block block = Blocks.ICE;
                                     pLevel.setBlockState(blockpos, block.getDefaultState(), 2);
