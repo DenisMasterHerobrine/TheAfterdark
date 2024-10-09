@@ -7,6 +7,12 @@ architectury {
     forge()
 }
 
+loom {
+    forge {
+        mixinConfig "the_afterdark.mixins.json"
+    }
+}
+
 def generatedResources = file("src/generated")
 
 sourceSets {
