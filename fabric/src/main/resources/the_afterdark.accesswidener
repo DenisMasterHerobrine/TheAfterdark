@@ -1,4 +1,0 @@
-accessWidener v2 named
-accessible method net/minecraft/world/gen/feature/util/DripstoneHelper canGenerateOrLava (Lnet/minecraft/world/WorldAccess;Lnet/minecraft/util/math/BlockPos;)Z
-accessible method net/minecraft/world/gen/feature/util/DripstoneHelper canGenerateBase (Lnet/minecraft/world/StructureWorldAccess;Lnet/minecraft/util/math/BlockPos;I)Z
-accessible method net/minecraft/world/gen/feature/util/DripstoneHelper scaleHeightFromRadius (DDDD)D

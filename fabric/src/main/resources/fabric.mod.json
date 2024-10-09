@@ -33,6 +33,5 @@
     "minecraft": "~1.21.1",
     "java": ">=17",
     "fabric-api": "*"
-  },
-  "accessWidener": "the_afterdark.accesswidener"
+  }
 }

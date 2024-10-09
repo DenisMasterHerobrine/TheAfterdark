@@ -1,0 +1,6 @@
+{
+  "itemGroup.afterdark": "The Afterdark",
+  "item.the_afterdark.teleport_catalyst": "순간이동 촉매",
+  "block.the_afterdark.teleport_block": "순간이동 블록",
+  "chat.the_afterdark.teleport_missing_catalyst": "§3이 제단은 당신의 제물을 거부합니다..."
+}

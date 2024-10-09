@@ -1,6 +1,7 @@
 package dev.denismasterherobrine.afterdark.features;
 
 import com.mojang.serialization.Codec;
+import dev.denismasterherobrine.afterdark.mixin.DripstoneHelperMixin;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.registry.tag.BlockTags;
@@ -31,7 +32,7 @@ public class LargeLapisOrePillarFeature extends Feature<LargeDripstoneFeatureCon
         net.minecraft.util.math.random.Random random = pContext.getRandom();
         LargeDripstoneFeatureConfig config = pContext.getConfig();
 
-        if (!DripstoneHelper.canGenerateOrLava(worldgenlevel, blockpos)) {
+        if (!DripstoneHelperMixin.invokeCanGenerateOrLava(worldgenlevel, blockpos)) {
             return false;
         } else {
             Optional<CaveSurface> optional = CaveSurface.create(worldgenlevel, blockpos, config.floorToCeilingSearchRange, DripstoneHelper::canGenerate, DripstoneHelper::canReplaceOrLava);
@@ -112,7 +113,7 @@ public class LargeLapisOrePillarFeature extends Feature<LargeDripstoneFeatureCon
                         return false;
                     }
 
-                    if (DripstoneHelper.canGenerateBase(pLevel, pWindOffsetter.offset(blockpos$mutableblockpos), this.radius)) {
+                    if (DripstoneHelperMixin.invokeCanGenerateBase(pLevel, pWindOffsetter.offset(blockpos$mutableblockpos), this.radius)) {
                         this.root = blockpos$mutableblockpos;
                         return true;
                     }
@@ -127,7 +128,7 @@ public class LargeLapisOrePillarFeature extends Feature<LargeDripstoneFeatureCon
         }
 
         private int getHeightAtRadius(float pRadius) {
-            return (int)DripstoneHelper.scaleHeightFromRadius((double)pRadius, (double)this.radius, this.scale, this.bluntness);
+            return (int)DripstoneHelperMixin.invokeScaleHeightFromRadius((double)pRadius, (double)this.radius, this.scale, this.bluntness);
         }
 
         void placeBlocks(StructureWorldAccess pLevel, net.minecraft.util.math.random.Random pRandom, WindOffsetter pWindOffsetter) {
@@ -147,7 +148,7 @@ public class LargeLapisOrePillarFeature extends Feature<LargeDripstoneFeatureCon
 
                             for(int i1 = 0; i1 < k && blockpos$mutableblockpos.getY() < l; ++i1) {
                                 BlockPos blockpos = pWindOffsetter.offset(blockpos$mutableblockpos);
-                                if (DripstoneHelper.canGenerateOrLava(pLevel, blockpos)) {
+                                if (DripstoneHelperMixin.invokeCanGenerateOrLava(pLevel, blockpos)) {
                                     flag = true;
                                     Block block = Blocks.REDSTONE_ORE;
                                     pLevel.setBlockState(blockpos, block.getDefaultState(), 2);
