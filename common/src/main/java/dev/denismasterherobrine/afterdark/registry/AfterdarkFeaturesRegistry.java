@@ -48,38 +48,38 @@ public class AfterdarkFeaturesRegistry {
     public static final Feature<LargeDripstoneFeatureConfig> LARGE_REDSTONE_ORE_PILLAR = new LargeRedstoneOrePillarFeature(LargeDripstoneFeatureConfig.CODEC);
 
     public static void register() {
-        Registry.register(Registries.FEATURE, new Identifier(TheAfterdark.MOD_ID, "large_basalt_pillar"), LARGE_BASALT_PILLAR);
-        Registry.register(Registries.FEATURE, new Identifier(TheAfterdark.MOD_ID, "additive_ground_blob"), ADDITIVE_GROUND_BLOB);
-        Registry.register(Registries.FEATURE, new Identifier(TheAfterdark.MOD_ID, "crystal_spike"), CRYSTAL_SPIKE);
-        Registry.register(Registries.FEATURE, new Identifier(TheAfterdark.MOD_ID, "additive_blob"), ADDITIVE_BLOB);
-        Registry.register(Registries.FEATURE, new Identifier(TheAfterdark.MOD_ID, "spiral"), SPIRAL);
-        Registry.register(Registries.FEATURE, new Identifier(TheAfterdark.MOD_ID, "anvil_rock"), ANVIL_ROCK_FEATURE);
-        Registry.register(Registries.FEATURE, new Identifier(TheAfterdark.MOD_ID, "catching_fall"), CATCHING_FALL);
-        Registry.register(Registries.FEATURE, new Identifier(TheAfterdark.MOD_ID, "pond"), POND);
-        Registry.register(Registries.FEATURE, new Identifier(TheAfterdark.MOD_ID, "large_calcite_pillar"), LARGE_CALCITE_PILLAR);
-        Registry.register(Registries.FEATURE, new Identifier(TheAfterdark.MOD_ID, "large_prismarine_pillar"), LARGE_PRISMARINE_PILLAR);
-        Registry.register(Registries.FEATURE, new Identifier(TheAfterdark.MOD_ID, "large_dark_prismarine_pillar"), LARGE_DARK_PRISMARINE_PILLAR);
-        Registry.register(Registries.FEATURE, new Identifier(TheAfterdark.MOD_ID, "large_slime_pillar"), LARGE_SLIME_PILLAR);
-        Registry.register(Registries.FEATURE, new Identifier(TheAfterdark.MOD_ID, "waterloggable_random_patch"), WATERLOGGABLE_RANDOM_PATCH_FEATURE);
-        Registry.register(Registries.FEATURE, new Identifier(TheAfterdark.MOD_ID, "cave_kelp"), CAVE_KELP_FEATURE);
-        Registry.register(Registries.FEATURE, new Identifier(TheAfterdark.MOD_ID, "cave_pickle"), CAVE_PICKLE_FEATURE);
-        Registry.register(Registries.FEATURE, new Identifier(TheAfterdark.MOD_ID, "large_deepslate_pillar"), LARGE_DEEPSLATE_PILLAR);
-        Registry.register(Registries.FEATURE, new Identifier(TheAfterdark.MOD_ID, "cave_seagrass"), CAVE_SEAGRASS_FEATURE);
-        Registry.register(Registries.FEATURE, new Identifier(TheAfterdark.MOD_ID, "large_obsidian_pillar"), LARGE_OBSIDIAN_PILLAR);
-        Registry.register(Registries.FEATURE, new Identifier(TheAfterdark.MOD_ID, "supported_disk"), SUPPORTED_DISK_FEATURE);
-        Registry.register(Registries.FEATURE, new Identifier(TheAfterdark.MOD_ID, "large_packed_ice_pillar"), LARGE_PACKED_ICE_PILLAR);
-        Registry.register(Registries.FEATURE, new Identifier(TheAfterdark.MOD_ID, "large_ice_pillar"), LARGE_ICE_PILLAR);
-        Registry.register(Registries.FEATURE, new Identifier(TheAfterdark.MOD_ID, "large_blue_ice_pillar"), LARGE_BLUE_ICE_PILLAR);
+        Registry.register(Registries.FEATURE, Identifier.of(TheAfterdark.MOD_ID, "large_basalt_pillar"), LARGE_BASALT_PILLAR);
+        Registry.register(Registries.FEATURE, Identifier.of(TheAfterdark.MOD_ID, "additive_ground_blob"), ADDITIVE_GROUND_BLOB);
+        Registry.register(Registries.FEATURE, Identifier.of(TheAfterdark.MOD_ID, "crystal_spike"), CRYSTAL_SPIKE);
+        Registry.register(Registries.FEATURE, Identifier.of(TheAfterdark.MOD_ID, "additive_blob"), ADDITIVE_BLOB);
+        Registry.register(Registries.FEATURE, Identifier.of(TheAfterdark.MOD_ID, "spiral"), SPIRAL);
+        Registry.register(Registries.FEATURE, Identifier.of(TheAfterdark.MOD_ID, "anvil_rock"), ANVIL_ROCK_FEATURE);
+        Registry.register(Registries.FEATURE, Identifier.of(TheAfterdark.MOD_ID, "catching_fall"), CATCHING_FALL);
+        Registry.register(Registries.FEATURE, Identifier.of(TheAfterdark.MOD_ID, "pond"), POND);
+        Registry.register(Registries.FEATURE, Identifier.of(TheAfterdark.MOD_ID, "large_calcite_pillar"), LARGE_CALCITE_PILLAR);
+        Registry.register(Registries.FEATURE, Identifier.of(TheAfterdark.MOD_ID, "large_prismarine_pillar"), LARGE_PRISMARINE_PILLAR);
+        Registry.register(Registries.FEATURE, Identifier.of(TheAfterdark.MOD_ID, "large_dark_prismarine_pillar"), LARGE_DARK_PRISMARINE_PILLAR);
+        Registry.register(Registries.FEATURE, Identifier.of(TheAfterdark.MOD_ID, "large_slime_pillar"), LARGE_SLIME_PILLAR);
+        Registry.register(Registries.FEATURE, Identifier.of(TheAfterdark.MOD_ID, "waterloggable_random_patch"), WATERLOGGABLE_RANDOM_PATCH_FEATURE);
+        Registry.register(Registries.FEATURE, Identifier.of(TheAfterdark.MOD_ID, "cave_kelp"), CAVE_KELP_FEATURE);
+        Registry.register(Registries.FEATURE, Identifier.of(TheAfterdark.MOD_ID, "cave_pickle"), CAVE_PICKLE_FEATURE);
+        Registry.register(Registries.FEATURE, Identifier.of(TheAfterdark.MOD_ID, "large_deepslate_pillar"), LARGE_DEEPSLATE_PILLAR);
+        Registry.register(Registries.FEATURE, Identifier.of(TheAfterdark.MOD_ID, "cave_seagrass"), CAVE_SEAGRASS_FEATURE);
+        Registry.register(Registries.FEATURE, Identifier.of(TheAfterdark.MOD_ID, "large_obsidian_pillar"), LARGE_OBSIDIAN_PILLAR);
+        Registry.register(Registries.FEATURE, Identifier.of(TheAfterdark.MOD_ID, "supported_disk"), SUPPORTED_DISK_FEATURE);
+        Registry.register(Registries.FEATURE, Identifier.of(TheAfterdark.MOD_ID, "large_packed_ice_pillar"), LARGE_PACKED_ICE_PILLAR);
+        Registry.register(Registries.FEATURE, Identifier.of(TheAfterdark.MOD_ID, "large_ice_pillar"), LARGE_ICE_PILLAR);
+        Registry.register(Registries.FEATURE, Identifier.of(TheAfterdark.MOD_ID, "large_blue_ice_pillar"), LARGE_BLUE_ICE_PILLAR);
 
         // Raw Ore Pillars
-        Registry.register(Registries.FEATURE, new Identifier(TheAfterdark.MOD_ID, "raw_iron_pillar"), LARGE_RAW_IRON_PILLAR);
-        Registry.register(Registries.FEATURE, new Identifier(TheAfterdark.MOD_ID, "raw_gold_pillar"), LARGE_RAW_GOLD_PILLAR);
-        Registry.register(Registries.FEATURE, new Identifier(TheAfterdark.MOD_ID, "raw_copper_pillar"), LARGE_RAW_COPPER_PILLAR);
+        Registry.register(Registries.FEATURE, Identifier.of(TheAfterdark.MOD_ID, "raw_iron_pillar"), LARGE_RAW_IRON_PILLAR);
+        Registry.register(Registries.FEATURE, Identifier.of(TheAfterdark.MOD_ID, "raw_gold_pillar"), LARGE_RAW_GOLD_PILLAR);
+        Registry.register(Registries.FEATURE, Identifier.of(TheAfterdark.MOD_ID, "raw_copper_pillar"), LARGE_RAW_COPPER_PILLAR);
 
         // Ore Pillars
-        Registry.register(Registries.FEATURE, new Identifier(TheAfterdark.MOD_ID, "diamond_ore_pillar"), LARGE_DIAMOND_ORE_PILLAR);
-        Registry.register(Registries.FEATURE, new Identifier(TheAfterdark.MOD_ID, "emerald_ore_pillar"), LARGE_EMERALD_ORE_PILLAR);
-        Registry.register(Registries.FEATURE, new Identifier(TheAfterdark.MOD_ID, "lapis_ore_pillar"), LARGE_LAPIS_ORE_PILLAR);
-        Registry.register(Registries.FEATURE, new Identifier(TheAfterdark.MOD_ID, "redstone_ore_pillar"), LARGE_REDSTONE_ORE_PILLAR);
+        Registry.register(Registries.FEATURE, Identifier.of(TheAfterdark.MOD_ID, "diamond_ore_pillar"), LARGE_DIAMOND_ORE_PILLAR);
+        Registry.register(Registries.FEATURE, Identifier.of(TheAfterdark.MOD_ID, "emerald_ore_pillar"), LARGE_EMERALD_ORE_PILLAR);
+        Registry.register(Registries.FEATURE, Identifier.of(TheAfterdark.MOD_ID, "lapis_ore_pillar"), LARGE_LAPIS_ORE_PILLAR);
+        Registry.register(Registries.FEATURE, Identifier.of(TheAfterdark.MOD_ID, "redstone_ore_pillar"), LARGE_REDSTONE_ORE_PILLAR);
     }
 }

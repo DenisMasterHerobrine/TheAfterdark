@@ -9,8 +9,7 @@
     "VeiTr"
   ],
   "contact": {
-    "homepage": "https://fabricmc.net/",
-    "sources": "https://github.com/FabricMC/fabric-example-mod"
+    "sources": "https://github.com/DenisMasterHerobrine/TheAfterdark"
   },
   "license": "LGPLv3",
   "icon": "assets/the_afterdark/icon.png",
@@ -31,7 +30,7 @@
   ],
   "depends": {
     "fabricloader": ">=0.16.5",
-    "minecraft": "~1.20.1",
+    "minecraft": "~1.21.1",
     "java": ">=17",
     "fabric-api": "*"
   },

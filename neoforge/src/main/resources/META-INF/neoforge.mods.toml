@@ -1,0 +1,28 @@
+modLoader = "javafml"
+loaderVersion = "[4,)"
+#issueTrackerURL = ""
+license = "LGPLv3"
+
+[[mods]]
+modId = "the_afterdark"
+version = "${version}"
+displayName = "The Afterdark"
+authors = "DenisMasterHerobrine, VeiTr"
+description = '''
+A dimension Minecraft mod related to the afterlife, the dark, and the unknown.
+'''
+#logoFile = ""
+
+[[dependencies.the_afterdark]]
+modId = "neoforge"
+mandatory = true
+versionRange = "[21.0,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.the_afterdark]]
+modId = "minecraft"
+mandatory = true
+versionRange = "[1.21,)"
+ordering = "NONE"
+side = "BOTH"

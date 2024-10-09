@@ -1,141 +1,140 @@
 {
-  "temperature": 0.9,
-  "downfall": 1.0,
-  "has_precipitation": true,
-  "category": "mushroom",
-  "effects": {
-    "sky_color": 9806079,
-    "fog_color": 12638463,
-    "water_color": 7318712,
-    "water_fog_color": 272948,
-    "foliage_color": 8028646,
-    "mood_sound": {
-      "sound": "minecraft:ambient.cave",
-      "tick_delay": 6000,
-      "block_search_extent": 8,
-      "offset": 2
-    }
-  },
-  "spawners": {
-    "ambient": [
-      {
-        "type": "minecraft:bat",
-        "weight": 10,
-        "minCount": 8,
-        "maxCount": 8
-      }
-    ],
-    "axolotls": [],
-    "creature": [
-      {
-        "type": "minecraft:mooshroom",
-        "weight": 8,
-        "minCount": 4,
-        "maxCount": 8
-      }
-    ],
-    "misc": [],
-    "monster": [],
-    "underground_water_creature": [
-      {
-        "type": "minecraft:glow_squid",
-        "weight": 10,
-        "minCount": 4,
-        "maxCount": 6
-      }
-    ],
-    "water_ambient": [],
-    "water_creature": []
-  },
-  "spawn_costs": {},
-  "carvers": {
-    "air": [
-      "minecraft:cave",
-      "minecraft:cave_extra_underground",
-      "minecraft:canyon"
+    "temperature": 0.9,
+    "downfall": 1.0,
+    "has_precipitation": true,
+    "effects": {
+        "sky_color": 9806079,
+        "fog_color": 12638463,
+        "water_color": 7318712,
+        "water_fog_color": 272948,
+        "foliage_color": 8028646,
+        "mood_sound": {
+            "sound": "minecraft:ambient.cave",
+            "tick_delay": 6000,
+            "block_search_extent": 8,
+            "offset": 2
+        }
+    },
+    "spawners": {
+        "ambient": [
+            {
+                "type": "minecraft:bat",
+                "weight": 10,
+                "minCount": 8,
+                "maxCount": 8
+            }
+        ],
+        "axolotls": [],
+        "creature": [
+            {
+                "type": "minecraft:mooshroom",
+                "weight": 8,
+                "minCount": 4,
+                "maxCount": 8
+            }
+        ],
+        "misc": [],
+        "monster": [],
+        "underground_water_creature": [
+            {
+                "type": "minecraft:glow_squid",
+                "weight": 10,
+                "minCount": 4,
+                "maxCount": 6
+            }
+        ],
+        "water_ambient": [],
+        "water_creature": []
+    },
+    "spawn_costs": {},
+    "carvers": {
+        "air": [
+            "minecraft:cave",
+            "minecraft:cave_extra_underground",
+            "minecraft:canyon"
+        ]
+    },
+    "features": [
+        [],
+        [
+            "minecraft:lake_lava_underground",
+            "minecraft:lake_lava_surface"
+        ],
+        [
+            "minecraft:amethyst_geode",
+            "the_afterdark:sparse_smooth_basalt_pillar",
+            "the_afterdark:sparse_calcite_pillar",
+            "the_afterdark:sparse_raw_copper_pillar",
+            "the_afterdark:sparse_raw_iron_pillar",
+            "the_afterdark:sparse_emerald_ore_pillar",
+            "the_afterdark:amethyst_crystal_spike",
+            "the_afterdark:amethyst_crystal_ground_spike",
+            "the_afterdark:amethyst_spiral"
+        ],
+        [
+            "minecraft:monster_room",
+            "minecraft:monster_room_deep"
+        ],
+        [
+            "the_afterdark:amethyst_water_fall"
+        ],
+        [],
+        [
+            "minecraft:ore_dirt",
+            "minecraft:ore_gravel",
+            "minecraft:ore_granite_upper",
+            "minecraft:ore_granite_lower",
+            "minecraft:ore_diorite_upper",
+            "minecraft:ore_diorite_lower",
+            "minecraft:ore_andesite_upper",
+            "minecraft:ore_andesite_lower",
+            "minecraft:ore_tuff",
+            "minecraft:ore_coal_upper",
+            "minecraft:ore_coal_lower",
+            "minecraft:ore_iron_upper",
+            "minecraft:ore_iron_middle",
+            "minecraft:ore_iron_small",
+            "minecraft:ore_gold",
+            "minecraft:ore_gold_lower",
+            "minecraft:ore_redstone",
+            "minecraft:ore_redstone_lower",
+            "minecraft:ore_diamond",
+            "minecraft:ore_diamond_large",
+            "minecraft:ore_diamond_buried",
+            "minecraft:ore_lapis",
+            "minecraft:ore_lapis_buried",
+            "minecraft:ore_copper",
+            "minecraft:underwater_magma",
+            "minecraft:disk_sand",
+            "minecraft:disk_clay",
+            "minecraft:disk_gravel"
+        ],
+        [
+            "the_afterdark:smooth_basalt_blob",
+            "the_afterdark:calcite_blob",
+            "the_afterdark:calcite_ground_blob",
+            "the_afterdark:deepslate_calcite_blob",
+            "the_afterdark:smooth_basalt_calcite_blob"
+        ],
+        [
+            "minecraft:spring_water",
+            "minecraft:spring_lava",
+            "minecraft:glow_lichen",
+            "the_afterdark:blackstone_anvil_rocks",
+            "the_afterdark:mud",
+            "the_afterdark:calcite_pond",
+            "the_afterdark:mud_pond",
+            "the_afterdark:mud_pool"
+        ],
+        [
+            "minecraft:warm_ocean_vegetation",
+            "the_afterdark:calcite",
+            "the_afterdark:lush_caves_vegetation",
+            "the_afterdark:sparse_lush_caves_vegetation",
+            "the_afterdark:lush_spore_blossom"
+        ],
+        [
+            "minecraft:freeze_top_layer"
+        ]
     ]
-  },
-  "features": [
-    [],
-    [
-      "minecraft:lake_lava_underground",
-      "minecraft:lake_lava_surface"
-    ],
-    [
-      "minecraft:amethyst_geode",
-      "the_afterdark:sparse_smooth_basalt_pillar",
-      "the_afterdark:sparse_calcite_pillar",
-      "the_afterdark:sparse_raw_copper_pillar",
-      "the_afterdark:sparse_raw_iron_pillar",
-      "the_afterdark:sparse_emerald_ore_pillar",
-      "the_afterdark:amethyst_crystal_spike",
-      "the_afterdark:amethyst_crystal_ground_spike",
-      "the_afterdark:amethyst_spiral"
-    ],
-    [
-      "minecraft:monster_room",
-      "minecraft:monster_room_deep"
-    ],
-    [
-      "the_afterdark:amethyst_water_fall"
-    ],
-    [],
-    [
-      "minecraft:ore_dirt",
-      "minecraft:ore_gravel",
-      "minecraft:ore_granite_upper",
-      "minecraft:ore_granite_lower",
-      "minecraft:ore_diorite_upper",
-      "minecraft:ore_diorite_lower",
-      "minecraft:ore_andesite_upper",
-      "minecraft:ore_andesite_lower",
-      "minecraft:ore_tuff",
-      "minecraft:ore_coal_upper",
-      "minecraft:ore_coal_lower",
-      "minecraft:ore_iron_upper",
-      "minecraft:ore_iron_middle",
-      "minecraft:ore_iron_small",
-      "minecraft:ore_gold",
-      "minecraft:ore_gold_lower",
-      "minecraft:ore_redstone",
-      "minecraft:ore_redstone_lower",
-      "minecraft:ore_diamond",
-      "minecraft:ore_diamond_large",
-      "minecraft:ore_diamond_buried",
-      "minecraft:ore_lapis",
-      "minecraft:ore_lapis_buried",
-      "minecraft:ore_copper",
-      "minecraft:underwater_magma",
-      "minecraft:disk_sand",
-      "minecraft:disk_clay",
-      "minecraft:disk_gravel"
-    ],
-    [
-      "the_afterdark:smooth_basalt_blob",
-      "the_afterdark:calcite_blob",
-      "the_afterdark:calcite_ground_blob",
-      "the_afterdark:deepslate_calcite_blob",
-      "the_afterdark:smooth_basalt_calcite_blob"
-    ],
-    [
-      "minecraft:spring_water",
-      "minecraft:spring_lava",
-      "minecraft:glow_lichen",
-      "the_afterdark:blackstone_anvil_rocks",
-      "the_afterdark:mud",
-      "the_afterdark:calcite_pond",
-      "the_afterdark:mud_pond",
-      "the_afterdark:mud_pool"
-    ],
-    [
-      "minecraft:warm_ocean_vegetation",
-      "the_afterdark:calcite",
-      "the_afterdark:lush_caves_vegetation",
-      "the_afterdark:sparse_lush_caves_vegetation",
-      "the_afterdark:lush_spore_blossom"
-    ],
-    [
-      "minecraft:freeze_top_layer"
-    ]
-  ]
 }

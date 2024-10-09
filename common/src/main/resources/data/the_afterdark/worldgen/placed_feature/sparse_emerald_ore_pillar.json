@@ -1,33 +1,31 @@
 {
-  "feature": "the_afterdark:emerald_ore_pillar",
-  "placement": [
-    {
-      "type": "minecraft:count",
-      "count": {
-        "type": "minecraft:uniform",
-        "value": {
-          "min_inclusive": 0,
-          "max_inclusive": 2
-        }
-      }
-    },
-    {
-      "type": "minecraft:in_square"
-    },
-    {
-      "type": "minecraft:height_range",
-      "height": {
-        "type": "minecraft:uniform",
-        "min_inclusive": {
-          "absolute": -96
+    "feature": "the_afterdark:emerald_ore_pillar",
+    "placement": [
+        {
+            "type": "minecraft:count",
+            "count": {
+                "type": "minecraft:uniform",
+                "min_inclusive": 0,
+                "max_inclusive": 2
+            }
         },
-        "max_inclusive": {
-          "absolute": 240
+        {
+            "type": "minecraft:in_square"
+        },
+        {
+            "type": "minecraft:height_range",
+            "height": {
+                "type": "minecraft:uniform",
+                "min_inclusive": {
+                    "absolute": -96
+                },
+                "max_inclusive": {
+                    "absolute": 240
+                }
+            }
+        },
+        {
+            "type": "minecraft:biome"
         }
-      }
-    },
-    {
-      "type": "minecraft:biome"
-    }
-  ]
+    ]
 }

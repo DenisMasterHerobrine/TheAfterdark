@@ -13,12 +13,12 @@ import java.util.List;
 
 public class CommonLootModifier {
     private static final List<Identifier> lootTablesIds = List.of(
-            new Identifier("minecraft", "chests/abandoned_mineshaft"),
-            new Identifier("minecraft", "chests/ancient_city"),
-            new Identifier("minecraft", "chests/buried_treasure"),
-            new Identifier("minecraft", "chests/end_city_treasure"),
-            new Identifier("minecraft", "chests/ruined_portal"),
-            new Identifier("minecraft", "chests/nether_bridge")
+            Identifier.of("minecraft", "chests/abandoned_mineshaft"),
+            Identifier.of("minecraft", "chests/ancient_city"),
+            Identifier.of("minecraft", "chests/buried_treasure"),
+            Identifier.of("minecraft", "chests/end_city_treasure"),
+            Identifier.of("minecraft", "chests/ruined_portal"),
+            Identifier.of("minecraft", "chests/nether_bridge")
     );
 
     public static LootPool.Builder createLootPool() {

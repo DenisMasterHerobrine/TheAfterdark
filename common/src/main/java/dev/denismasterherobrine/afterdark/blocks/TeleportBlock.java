@@ -1,12 +1,12 @@
 package dev.denismasterherobrine.afterdark.blocks;
 
+import com.mojang.serialization.MapCodec;
 import dev.denismasterherobrine.afterdark.registry.AfterdarkRegistry;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
 import net.minecraft.util.function.BooleanBiFunction;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
@@ -19,6 +19,11 @@ import org.jetbrains.annotations.Nullable;
 public class TeleportBlock extends BlockWithEntity implements BlockEntityProvider {
     public TeleportBlock() {
         super(Block.Settings.copy(Blocks.DEEPSLATE));
+    }
+
+    @Override
+    protected MapCodec<? extends BlockWithEntity> getCodec() {
+        return null;
     }
 
     @Override
@@ -54,12 +59,11 @@ public class TeleportBlock extends BlockWithEntity implements BlockEntityProvide
         return null;
     }
 
-    @SuppressWarnings("deprecation")
     @Override
-    public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+    protected ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
         if (!world.isClient) {
-            if (player.getStackInHand(hand).getItem() == AfterdarkRegistry.TELEPORT_CATALYST_ITEM && player.getStackInHand(hand).getCount() > 0) {
-                player.getStackInHand(hand).decrement(1);
+            if (player.getStackInHand(player.getActiveHand()).getItem() == AfterdarkRegistry.TELEPORT_CATALYST_ITEM && player.getStackInHand(player.getActiveHand()).getCount() > 0) {
+                player.getStackInHand(player.getActiveHand()).decrement(1);
                 if (world.getServer() != null) {
                     if (player.getWorld() == world.getServer().getWorld(AfterdarkRegistry.AFTERDARK_LEVEL)) {
                         BlockPos safePos = getSafeTeleportPos(world.getServer().getWorld(World.OVERWORLD), player.getBlockPos(), player);

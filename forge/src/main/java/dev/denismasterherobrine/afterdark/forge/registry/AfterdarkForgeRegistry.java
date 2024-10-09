@@ -1,6 +1,5 @@
 package dev.denismasterherobrine.afterdark.forge.registry;
 
-import com.mojang.serialization.Codec;
 import dev.denismasterherobrine.afterdark.TheAfterdark;
 import dev.denismasterherobrine.afterdark.features.*;
 import dev.denismasterherobrine.afterdark.features.configuration.*;
@@ -14,8 +13,6 @@ import net.minecraft.world.gen.feature.DefaultFeatureConfig;
 import net.minecraft.world.gen.feature.DiskFeatureConfig;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.LargeDripstoneFeatureConfig;
-import net.minecraft.world.gen.structure.Structure;
-import net.minecraft.world.gen.structure.StructureType;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.DeferredRegister;
@@ -71,10 +68,6 @@ public class AfterdarkForgeRegistry {
     public static final RegistryObject<Feature<LargeDripstoneFeatureConfig>> LARGE_LAPIS_ORE_PILLAR = FEATURES.register("lapis_ore_pillar", () -> new LargeLapisOrePillarFeature(LargeDripstoneFeatureConfig.CODEC));
     public static final RegistryObject<Feature<LargeDripstoneFeatureConfig>> LARGE_EMERALD_ORE_PILLAR = FEATURES.register("emerald_ore_pillar", () -> new LargeEmeraldOrePillarFeature(LargeDripstoneFeatureConfig.CODEC));
     public static final RegistryObject<Feature<LargeDripstoneFeatureConfig>> LARGE_DIAMOND_ORE_PILLAR = FEATURES.register("diamond_ore_pillar", () -> new LargeDiamondOrePillarFeature(LargeDripstoneFeatureConfig.CODEC));
-
-    private static <T extends Structure> StructureType<T> explicitStructureTypeTyping(Codec<T> structureCodec) {
-        return () -> structureCodec;
-    }
 
     public static void register(IEventBus eventBus) {
         BLOCKS.register(eventBus);

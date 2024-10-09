@@ -1,40 +1,40 @@
 {
-  "type": "minecraft:simple_block",
-  "config": {
-    "to_place": {
-      "type": "minecraft:weighted_state_provider",
-      "entries": [
-        {
-          "weight": 2,
-          "data": {
-            "Name": "minecraft:bamboo"
-          }
-        },
-        {
-          "weight": 1,
-          "data": {
-            "Name": "minecraft:bamboo_sapling"
-          }
-        },
-        {
-          "weight": 7,
-          "data": {
-            "Name": "minecraft:torchflower"
-          }
-        },
-        {
-          "weight": 10,
-          "data": {
-            "Name": "minecraft:medium_amethyst_bud"
-          }
-        },
-        {
-          "weight": 80,
-          "data": {
-            "Name": "minecraft:grass"
-          }
+    "type": "minecraft:simple_block",
+    "config": {
+        "to_place": {
+            "type": "minecraft:weighted_state_provider",
+            "entries": [
+                {
+                    "weight": 2,
+                    "data": {
+                        "Name": "minecraft:bamboo"
+                    }
+                },
+                {
+                    "weight": 1,
+                    "data": {
+                        "Name": "minecraft:bamboo_sapling"
+                    }
+                },
+                {
+                    "weight": 7,
+                    "data": {
+                        "Name": "minecraft:torchflower"
+                    }
+                },
+                {
+                    "weight": 10,
+                    "data": {
+                        "Name": "minecraft:medium_amethyst_bud"
+                    }
+                },
+                {
+                    "weight": 80,
+                    "data": {
+                        "Name": "minecraft:short_grass"
+                    }
+                }
+            ]
         }
-      ]
     }
-  }
 }

@@ -25,13 +25,13 @@ import java.util.OptionalLong;
 
 public class AfterdarkRegistry {
     public static final RegistryKey<DimensionType> AFTERDARK_DIMENSION =
-            RegistryKey.of(RegistryKeys.DIMENSION_TYPE, new Identifier(TheAfterdark.MOD_ID, "afterdark"));
+            RegistryKey.of(RegistryKeys.DIMENSION_TYPE, Identifier.of(TheAfterdark.MOD_ID, "afterdark"));
 
-    public static final RegistryKey<Biome> AFTERDARK_BIOME_BASIC = RegistryKey.of(RegistryKeys.BIOME, new Identifier(TheAfterdark.MOD_ID, "blank_biome"));
+    public static final RegistryKey<Biome> AFTERDARK_BIOME_BASIC = RegistryKey.of(RegistryKeys.BIOME, Identifier.of(TheAfterdark.MOD_ID, "blank_biome"));
 
-    public static final RegistryKey<World> AFTERDARK_LEVEL = RegistryKey.of(RegistryKeys.WORLD, new Identifier(TheAfterdark.MOD_ID, "afterdark"));
+    public static final RegistryKey<World> AFTERDARK_LEVEL = RegistryKey.of(RegistryKeys.WORLD, Identifier.of(TheAfterdark.MOD_ID, "afterdark"));
 
-    public static final RegistryKey<DimensionOptions> AFTERDARK_DIMENSION_OPTIONS = RegistryKey.of(RegistryKeys.DIMENSION, new Identifier(TheAfterdark.MOD_ID, "afterdark"));
+    public static final RegistryKey<DimensionOptions> AFTERDARK_DIMENSION_OPTIONS = RegistryKey.of(RegistryKeys.DIMENSION, Identifier.of(TheAfterdark.MOD_ID, "afterdark"));
 
     public static void bootstrapDimensionType(Registerable<DimensionType> context) {
         context.register(AFTERDARK_DIMENSION, new DimensionType(

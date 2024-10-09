@@ -5,8 +5,8 @@ import net.minecraft.loot.LootPool;
 
 public class FabricLootModifier {
     public static void registerLootModifier() {
-        LootTableEvents.MODIFY.register((resourceManager, lootManager, id, tableBuilder, source) -> {
-            if (CommonLootModifier.isTargetLootTable(id)) {
+        LootTableEvents.MODIFY.register((key, tableBuilder, source) -> {
+            if (CommonLootModifier.isTargetLootTable(key.getValue())) {
                 LootPool.Builder poolBuilder = CommonLootModifier.createLootPool();
                 tableBuilder.pool(poolBuilder.build());
             }

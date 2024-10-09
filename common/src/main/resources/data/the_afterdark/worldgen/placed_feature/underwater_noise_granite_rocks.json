@@ -1,21 +1,21 @@
 {
-  "feature": "the_afterdark:underwater_granite_rocks",
-  "placement": [
-    {
-      "type": "minecraft:noise_based_count",
-      "noise_to_count_ratio": 25,
-      "noise_factor": 2,
-      "noise_offset": 0
-    },
-    {
-      "type": "minecraft:in_square"
-    },
-    {
-      "type": "minecraft:heightmap",
-      "heightmap": "OCEAN_FLOOR"
-    },
-    {
-      "type": "minecraft:biome"
-    }
-  ]
+    "feature": "the_afterdark:underwater_granite_rocks",
+    "placement": [
+        {
+            "type": "minecraft:noise_based_count",
+            "noise_to_count_ratio": 25,
+            "noise_factor": 2,
+            "noise_offset": 0
+        },
+        {
+            "type": "minecraft:in_square"
+        },
+        {
+            "type": "minecraft:heightmap",
+            "heightmap": "OCEAN_FLOOR"
+        },
+        {
+            "type": "minecraft:biome"
+        }
+    ]
 }
