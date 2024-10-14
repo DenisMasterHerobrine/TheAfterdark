@@ -8,9 +8,11 @@ import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 import net.minecraft.entity.player.PlayerEntity;
 
+import static dev.denismasterherobrine.afterdark.registry.AfterdarkRegistry.AFTERDARK;
+
 public class TeleportCatalystItem extends Item {
     public TeleportCatalystItem() {
-        super(new Item.Settings());
+        super(new Item.Settings().group(AFTERDARK));
     }
 
     @Override

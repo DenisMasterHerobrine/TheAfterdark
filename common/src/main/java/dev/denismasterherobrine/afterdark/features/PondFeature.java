@@ -21,15 +21,15 @@ public class PondFeature extends Feature<DoubleBlockConfiguration> {
         StructureWorldAccess worldgenlevel = pContext.getWorld();
         BlockPos blockpos = pContext.getOrigin();
         Random random = pContext.getRandom();
-        BlockState material = pContext.getConfig().toPlace().get(random, blockpos);
-        BlockState slab = pContext.getConfig().slabToPlace().get(random, blockpos);
+        BlockState material = pContext.getConfig().toPlace().getBlockState(random, blockpos);
+        BlockState slab = pContext.getConfig().slabToPlace().getBlockState(random, blockpos);
         BlockState water = Blocks.WATER.getDefaultState();
         BlockState mud = Blocks.MUD.getDefaultState();
 
-        if (!worldgenlevel.getBlockState(blockpos.add(3, 0, 0)).isReplaceable() && !worldgenlevel.getBlockState(blockpos.add(0, 0, 3)).isReplaceable() ||
-                !worldgenlevel.getBlockState(blockpos.add(-3, 0, 0)).isReplaceable() && !worldgenlevel.getBlockState(blockpos.add(0, 0, -3)).isReplaceable() ||
-                !worldgenlevel.getBlockState(blockpos.add(2, -1, 2)).isReplaceable() && !worldgenlevel.getBlockState(blockpos.add(-2, -1, 2)).isReplaceable() ||
-                !worldgenlevel.getBlockState(blockpos.add(-2, -1, -2)).isReplaceable() && !worldgenlevel.getBlockState(blockpos.add(2, -1, -2)).isReplaceable()) {
+        if (!worldgenlevel.getBlockState(blockpos.add(3, 0, 0)).getMaterial().isReplaceable() && !worldgenlevel.getBlockState(blockpos.add(0, 0, 3)).getMaterial().isReplaceable() ||
+                !worldgenlevel.getBlockState(blockpos.add(-3, 0, 0)).getMaterial().isReplaceable() && !worldgenlevel.getBlockState(blockpos.add(0, 0, -3)).getMaterial().isReplaceable() ||
+                !worldgenlevel.getBlockState(blockpos.add(2, -1, 2)).getMaterial().isReplaceable() && !worldgenlevel.getBlockState(blockpos.add(-2, -1, 2)).getMaterial().isReplaceable() ||
+                !worldgenlevel.getBlockState(blockpos.add(-2, -1, -2)).getMaterial().isReplaceable() && !worldgenlevel.getBlockState(blockpos.add(2, -1, -2)).getMaterial().isReplaceable()) {
 
             return false;
         }
@@ -69,7 +69,7 @@ public class PondFeature extends Feature<DoubleBlockConfiguration> {
         replaceAir(worldgenlevel, blockpos.add(0, -1, 2), material);
         replaceAir(worldgenlevel, blockpos.add(1, -1, 2), material);
 
-        int randomNumber = (int)(Math.random()*(6)+1);
+        int randomNumber = (int) (Math.random() * (6) + 1);
 
         if (randomNumber < 2) {
             worldgenlevel.setBlockState(blockpos.add(-3, -1, -1), material, 2);
@@ -127,7 +127,7 @@ public class PondFeature extends Feature<DoubleBlockConfiguration> {
             worldgenlevel.setBlockState(blockpos.add(0, 0, -2), randomSapling(), 2);
         }
 
-        int randomNumber2 = (int)(Math.random()*(6)+1);
+        int randomNumber2 = (int) (Math.random() * (6) + 1);
 
         if (randomNumber2 < 3) {
             generateCorner(worldgenlevel, blockpos.add(-1, -1, -1), material, slab);
@@ -148,7 +148,7 @@ public class PondFeature extends Feature<DoubleBlockConfiguration> {
     }
 
     private void replaceAir(StructureWorldAccess worldGenLevel, BlockPos blockPos, BlockState material) {
-        if (!worldGenLevel.getBlockState(blockPos).isSolid()) {
+        if (!worldGenLevel.getBlockState(blockPos).getMaterial().isSolid()) {
             worldGenLevel.setBlockState(blockPos, material, 2);
         }
     }
@@ -157,12 +157,12 @@ public class PondFeature extends Feature<DoubleBlockConfiguration> {
         worldGenLevel.setBlockState(blockPos, material, 2);
         worldGenLevel.setBlockState(blockPos.up(), material, 2);
 
-        int randomNumber = (int)(Math.random()*(3)+1);
+        int randomNumber = (int) (Math.random() * (3) + 1);
         if (randomNumber < 3) { //66% chance to put a moss carpet ontop.
             replaceAir(worldGenLevel, blockPos.up(2), Blocks.MOSS_CARPET.getDefaultState());
         }
 
-        int randomNumber2 = (int)(Math.random()*(4)+1);
+        int randomNumber2 = (int) (Math.random() * (4) + 1);
         if (randomNumber2 < 2) { //25% chance to extend north.
             generateExtension(worldGenLevel, blockPos.north(), material, slab);
         }
@@ -170,7 +170,7 @@ public class PondFeature extends Feature<DoubleBlockConfiguration> {
 
     private void generateExtension(StructureWorldAccess worldGenLevel, BlockPos blockPos, BlockState material, BlockState slab) {
         worldGenLevel.setBlockState(blockPos, material, 2);
-        int randomNumber = (int)(Math.random()*(3)+1);
+        int randomNumber = (int) (Math.random() * (3) + 1);
         if (randomNumber < 2) { //33% chance to generate a slab ontop.
             replaceAir(worldGenLevel, blockPos.up(), slab);
         } else if (randomNumber < 3) { //33% chance to generate a solid block ontop.
@@ -182,9 +182,9 @@ public class PondFeature extends Feature<DoubleBlockConfiguration> {
     }
 
     private void generateExtensionDecor(StructureWorldAccess worldGenLevel, BlockPos blockPos) {
-        int randomNumber = (int)(Math.random()*(2)+1);
+        int randomNumber = (int) (Math.random() * (2) + 1);
         if (randomNumber < 2) { //50% chance to generate decoration.
-            int randomNumber2 = (int)(Math.random()*(3)+1);
+            int randomNumber2 = (int) (Math.random() * (3) + 1);
             if (randomNumber2 < 2) { //66% chance to generate moss.
                 replaceAir(worldGenLevel, blockPos, Blocks.MOSS_CARPET.getDefaultState());
             } else { //33% chance to generate a random sapling.
@@ -194,7 +194,7 @@ public class PondFeature extends Feature<DoubleBlockConfiguration> {
     }
 
     private BlockState randomSapling() {
-        int randomNumber = (int)(Math.random()*(15)+1);
+        int randomNumber = (int) (Math.random() * (15) + 1);
 
         if (randomNumber < 2) {
             return Blocks.OAK_SAPLING.getDefaultState();
@@ -209,10 +209,8 @@ public class PondFeature extends Feature<DoubleBlockConfiguration> {
         } else if (randomNumber < 7) {
             return Blocks.JUNGLE_SAPLING.getDefaultState();
         } else if (randomNumber < 8) {
-            return Blocks.CHERRY_SAPLING.getDefaultState();
-        } else if (randomNumber < 9) {
             return Blocks.RED_MUSHROOM.getDefaultState();
-        } else if (randomNumber < 10) {
+        } else if (randomNumber < 9) {
             return Blocks.BROWN_MUSHROOM.getDefaultState();
         }
 

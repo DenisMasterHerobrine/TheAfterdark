@@ -97,15 +97,15 @@ public class CatchingFallFeature extends Feature<CatchingFallConfiguration> {
                             if (springconfiguration.validBlocks.contains(blockBelow.getBlock())) {
                                 blockpos1 = blockpos1.down();
                                 worldgenlevel.setBlockState(blockpos1, springconfiguration.state.getBlockState(), 2);
-                                worldgenlevel.scheduleFluidTick(blockpos1, springconfiguration.state.getFluid(), 0);
+//                                worldgenlevel.scheduleFluidTick(blockpos1, springconfiguration.state.getFluid(), 0);
                                 worldgenlevel.setBlockState(blockpos1.north(), springconfiguration.state.getBlockState(), 2);
-                                worldgenlevel.scheduleFluidTick(blockpos1.north(), springconfiguration.state.getFluid(), 0);
+//                                worldgenlevel.scheduleFluidTick(blockpos1.north(), springconfiguration.state.getFluid(), 0);
                                 worldgenlevel.setBlockState(blockpos1.east(), springconfiguration.state.getBlockState(), 2);
-                                worldgenlevel.scheduleFluidTick(blockpos1.east(), springconfiguration.state.getFluid(), 0);
+//                                worldgenlevel.scheduleFluidTick(blockpos1.east(), springconfiguration.state.getFluid(), 0);
                                 worldgenlevel.setBlockState(blockpos1.south(), springconfiguration.state.getBlockState(), 2);
-                                worldgenlevel.scheduleFluidTick(blockpos1.south(), springconfiguration.state.getFluid(), 0);
+//                                worldgenlevel.scheduleFluidTick(blockpos1.south(), springconfiguration.state.getFluid(), 0);
                                 worldgenlevel.setBlockState(blockpos1.west(), springconfiguration.state.getBlockState(), 2);
-                                worldgenlevel.scheduleFluidTick(blockpos1.west(), springconfiguration.state.getFluid(), 0);
+//                                worldgenlevel.scheduleFluidTick(blockpos1.west(), springconfiguration.state.getFluid(), 0);
 
                                 worldgenlevel.setBlockState(blockpos1.south().south(), springconfiguration.basinMaterial.getDefaultState(), 2);
                                 worldgenlevel.setBlockState(blockpos1.south().south().south(), springconfiguration.basinMaterial.getDefaultState(), 2);
@@ -153,7 +153,7 @@ public class CatchingFallFeature extends Feature<CatchingFallConfiguration> {
 
                         if (shouldGenerate) {
                             worldgenlevel.setBlockState(blockpos, springconfiguration.state.getBlockState(), 2);
-                            worldgenlevel.scheduleFluidTick(blockpos, springconfiguration.state.getFluid(), 0);
+//                            worldgenlevel.scheduleFluidTick(blockpos, springconfiguration.state.getFluid(), 0);
                         }
                     }
 

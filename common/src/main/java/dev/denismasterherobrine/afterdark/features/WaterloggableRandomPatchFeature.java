@@ -30,7 +30,7 @@ public class WaterloggableRandomPatchFeature extends Feature<WaterloggableRandom
         for (int l = 0; l < randomPatchConfiguration.tries; ++l) {
             mutableBlockPos.set(blockpos, random.nextInt(j) - random.nextInt(j), random.nextInt(k) - random.nextInt(k), random.nextInt(j) - random.nextInt(j));
             if (worldgenlevel.getBlockState(mutableBlockPos).equals(Blocks.WATER)) {
-                placeBlock(worldgenlevel, mutableBlockPos, randomPatchConfiguration.to_place.get(random, mutableBlockPos));
+                placeBlock(worldgenlevel, mutableBlockPos, randomPatchConfiguration.to_place.getBlockState(random, mutableBlockPos));
             } else {
 
             }

@@ -43,7 +43,7 @@ public class SupportedDiskFeature extends Feature<DiskFeatureConfig> {
 
         for(int i = j; i > k; --i) {
             blockPos.setY(i);
-            if (pContext.target().test(worldGenLevel, blockPos) && (worldGenLevel.getBlockState(blockPos.down()).isSolid() || worldGenLevel.getBlockState(blockPos.down()).isOf(Blocks.WATER) || worldGenLevel.getBlockState(blockPos.down()).isOf(Blocks.LAVA) || worldGenLevel.getBlockState(blockPos.down()).isOf(Blocks.POWDER_SNOW))) {
+            if (pContext.target().test(worldGenLevel, blockPos) && (worldGenLevel.getBlockState(blockPos.down()).getMaterial().isSolid() || worldGenLevel.getBlockState(blockPos.down()).isOf(Blocks.WATER) || worldGenLevel.getBlockState(blockPos.down()).isOf(Blocks.LAVA) || worldGenLevel.getBlockState(blockPos.down()).isOf(Blocks.POWDER_SNOW))) {
                 BlockState blockstate = pContext.stateProvider().getBlockState(worldGenLevel, random, blockPos);
                 worldGenLevel.setBlockState(blockPos, blockstate, 2);
                 this.markBlocksAboveForPostProcessing(worldGenLevel, blockPos);

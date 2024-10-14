@@ -7,7 +7,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import java.util.Set;
 import net.minecraft.block.Block;
 import net.minecraft.fluid.FluidState;
-import net.minecraft.registry.Registries;
+import net.minecraft.util.registry.Registry;
 import net.minecraft.world.gen.feature.FeatureConfig;
 
 public class CatchingFallConfiguration implements FeatureConfig {
@@ -21,12 +21,12 @@ public class CatchingFallConfiguration implements FeatureConfig {
                     .orElse(4)
                     .forGetter((v) -> v.rockCount), Codec.INT
                     .fieldOf("hole_count").orElse(1)
-                    .forGetter((v) -> v.holeCount), Registries.BLOCK.getCodec().listOf()
+                    .forGetter((v) -> v.holeCount), Registry.BLOCK.getCodec().listOf()
                     .fieldOf("validBlocks").xmap(ImmutableSet::copyOf, ImmutableList::copyOf)
-                    .forGetter((v) -> (ImmutableSet<Block>)v.validBlocks), Registries.BLOCK.getCodec().listOf()
+                    .forGetter((v) -> (ImmutableSet<Block>)v.validBlocks), Registry.BLOCK.getCodec().listOf()
                     .fieldOf("invalidBlocks").xmap(ImmutableSet::copyOf, ImmutableList::copyOf)
-                    .forGetter((v) -> (ImmutableSet<Block>) v.validBlocks), Registries.BLOCK.getCodec()
-                    .fieldOf("basinMaterial").forGetter((v) -> v.basinMaterial), Registries.BLOCK.getCodec()
+                    .forGetter((v) -> (ImmutableSet<Block>) v.validBlocks), Registry.BLOCK.getCodec()
+                    .fieldOf("basinMaterial").forGetter((v) -> v.basinMaterial), Registry.BLOCK.getCodec()
                     .fieldOf("basinMaterial2").forGetter((v) -> v.basinMaterial2))
                     .apply(fields, CatchingFallConfiguration::new));
 

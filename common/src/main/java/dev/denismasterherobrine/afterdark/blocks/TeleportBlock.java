@@ -63,10 +63,12 @@ public class TeleportBlock extends BlockWithEntity implements BlockEntityProvide
                 if (world.getServer() != null) {
                     if (player.getWorld() == world.getServer().getWorld(AfterdarkRegistry.AFTERDARK_LEVEL)) {
                         BlockPos safePos = getSafeTeleportPos(world.getServer().getWorld(World.OVERWORLD), player.getBlockPos(), player);
-                        player.teleport(world.getServer().getWorld(World.OVERWORLD), safePos.toCenterPos().getX(), safePos.getY(), safePos.toCenterPos().getZ(), null, player.getYaw(), player.getPitch());
+                        player.moveToWorld(world.getServer().getWorld(World.OVERWORLD));
+                        player.teleport(safePos.getX(), safePos.getY(), safePos.getZ());
                     } else {
                         BlockPos safePos = getSafeTeleportPos(world.getServer().getWorld(AfterdarkRegistry.AFTERDARK_LEVEL), player.getBlockPos(), player);
-                        player.teleport(world.getServer().getWorld(AfterdarkRegistry.AFTERDARK_LEVEL), safePos.toCenterPos().getX(), safePos.getY(), safePos.toCenterPos().getZ(), null, player.getYaw(), player.getPitch());
+                        player.moveToWorld(world.getServer().getWorld(AfterdarkRegistry.AFTERDARK_LEVEL));
+                        player.teleport(safePos.getX(), safePos.getY(), safePos.getZ());
                     }
                 }
             } else {

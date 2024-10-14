@@ -7,13 +7,13 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 import java.util.Set;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.registry.Registries;
 import net.minecraft.util.math.intprovider.IntProvider;
+import net.minecraft.util.registry.Registry;
 import net.minecraft.world.gen.feature.FeatureConfig;
 
 public class SpiralConfiguration implements FeatureConfig {
     public static final Codec<SpiralConfiguration> CODEC = RecordCodecBuilder.create(
-            (fields) -> fields.group(Registries.BLOCK.getCodec().listOf()
+            (fields) -> fields.group(Registry.BLOCK.getCodec().listOf()
                     .fieldOf("validBlocks").xmap(ImmutableSet::copyOf, ImmutableList::copyOf)
                     .forGetter((v) -> (ImmutableSet<Block>)v.validBlocks), BlockState.CODEC
                     .fieldOf("stemMaterial")

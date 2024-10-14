@@ -4,7 +4,7 @@ import com.mojang.serialization.Codec;
 import dev.denismasterherobrine.afterdark.mixin.DripstoneHelperMixin;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
-import net.minecraft.registry.tag.BlockTags;
+import net.minecraft.tag.BlockTags;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.MathHelper;
@@ -28,7 +28,7 @@ public class LargeDiamondOrePillarFeature extends Feature<LargeDripstoneFeatureC
 
     public boolean generate(FeatureContext<LargeDripstoneFeatureConfig> pContext) {
         StructureWorldAccess worldgenlevel = pContext.getWorld();
-        BlockPos blockpos = new BlockPos((int) pContext.getOrigin().toCenterPos().getX(), pContext.getOrigin().getY(), (int) pContext.getOrigin().toCenterPos().getZ());
+        BlockPos blockpos = new BlockPos((int) pContext.getOrigin().getX(), pContext.getOrigin().getY(), (int) pContext.getOrigin().getZ());
         net.minecraft.util.math.random.Random random = pContext.getRandom();
         LargeDripstoneFeatureConfig config = pContext.getConfig();
 

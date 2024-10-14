@@ -16,7 +16,7 @@ public class AnvilRockFeature extends Feature<AnvilRockConfiguration> {
 
     public boolean generate(FeatureContext<AnvilRockConfiguration> pContext) {
         StructureWorldAccess worldgenlevel = pContext.getWorld();
-        BlockPos blockpos = new BlockPos((int) pContext.getOrigin().toCenterPos().getX(), pContext.getOrigin().getY(), (int) pContext.getOrigin().toCenterPos().getZ());
+        BlockPos blockpos = new BlockPos((int) pContext.getOrigin().getX(), pContext.getOrigin().getY(), (int) pContext.getOrigin().getZ());
         Random random = pContext.getRandom();
         AnvilRockConfiguration config = pContext.getConfig();
         Integer radius = config.getRadius().get(random);
