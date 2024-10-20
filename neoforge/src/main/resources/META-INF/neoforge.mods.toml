@@ -1,31 +1,31 @@
 modLoader = "javafml"
 loaderVersion = "[4,)"
-#issueTrackerURL = ""
-license = "LGPLv3"
+license = "${mod_license}"
 
 [[mods]]
-modId = "the_afterdark"
+modId = "${mod_id}"
 version = "${version}"
-displayName = "The Afterdark"
-authors = "DenisMasterHerobrine, VeiTr"
+displayName = "${mod_name}"
+authors = "${mod_authors}"
 description = '''
-A dimension Minecraft mod related to the afterlife, the dark, and the unknown.
+${mod_description}
 '''
-#logoFile = ""
+sources = "${mod_sources}"
+issueTrackerURL = "${mod_issue_tracker}"
 
-[[dependencies.the_afterdark]]
+[[dependencies.${mod_id}]]
 modId = "neoforge"
 mandatory = true
-versionRange = "[21.0,)"
+versionRange = "[${neoforge_version},)"
 ordering = "NONE"
 side = "BOTH"
 
-[[dependencies.the_afterdark]]
+[[dependencies.${mod_id}]]
 modId = "minecraft"
 mandatory = true
-versionRange = "[1.21,)"
+versionRange = "[${minecraft_version},)"
 ordering = "NONE"
 side = "BOTH"
 
 [[mixins]]
-config = "the_afterdark.mixins.json"
+config = "${mod_id}.mixins.json"

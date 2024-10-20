@@ -58,9 +58,43 @@ dependencies {
 
 processResources {
     inputs.property 'version', project.version
+    inputs.property 'mod_id', project.archives_name
+    inputs.property 'mod_name', project.mod_name
+    inputs.property 'mod_description', project.mod_description
+    inputs.property 'mod_authors', project.mod_authors
+    inputs.property 'mod_license', project.mod_license
+    inputs.property 'mod_sources', project.mod_sources
+    inputs.property 'mod_issue_tracker', project.mod_issue_tracker
+    inputs.property 'minecraft_version', project.minecraft_version
+    inputs.property 'neoforge_version', project.neoforge_version
+    inputs.property 'minimum_minecraft_version', project.minimum_minecraft_version
+
+
+    def majorNeoForgeVersion = project.neoforge_version.replaceAll(/(\d+)\..*/, '$1')
+    println("Using NeoForge version: $majorNeoForgeVersion")
+
+    def majorMinecraftVersion
+    if (project.minimum_minecraft_version != "0") {
+        println("Using minimum Minecraft version: ${project.minimum_minecraft_version}")
+        majorMinecraftVersion = project.minimum_minecraft_version
+    } else {
+        majorMinecraftVersion = project.minecraft_version.replaceAll(/(\d+\.\d+)\..*/, '$1')
+        println("Using Minecraft version: $majorMinecraftVersion")
+    }
 
     filesMatching('META-INF/neoforge.mods.toml') {
-        expand version: project.version
+        expand(
+                version: project.version,
+                mod_id: project.archives_name,
+                mod_name: project.mod_name,
+                mod_description: project.mod_description,
+                mod_authors: project.mod_authors,
+                mod_license: project.mod_license,
+                mod_sources: project.mod_sources,
+                mod_issue_tracker: project.mod_issue_tracker,
+                minecraft_version: majorMinecraftVersion,
+                neoforge_version: majorNeoForgeVersion
+        )
     }
 }
 
