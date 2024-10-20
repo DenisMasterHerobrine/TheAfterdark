@@ -4,7 +4,7 @@ plugins {
 
 loom {
     forge {
-        mixinConfig "the_afterdark.mixins.json"
+        mixinConfig "$project.archives_name" + ".mixins.json"
     }
 }
 
@@ -29,7 +29,7 @@ loom {
     runs {
         data {
             data()
-            programArgs "--all", "--mod", "the_afterdark"
+            programArgs "--all", "--mod", project.archives_name
             programArgs "--output", generatedResources.absolutePath
         }
     }
@@ -44,8 +44,6 @@ configurations {
     runtimeClasspath.extendsFrom common
     developmentForge.extendsFrom common
 
-    // Files in this configuration will be bundled into your mod using the Shadow plugin.
-    // Don't use the `shadow` configuration from the plugin itself as it's meant for excluding files.
     shadowBundle {
         canBeResolved = true
         canBeConsumed = false
@@ -57,15 +55,46 @@ dependencies {
 
     common(project(path: ':common', configuration: 'namedElements')) { transitive false }
     shadowBundle project(path: ':common', configuration: 'transformProductionForge')
-
-//    modImplementation "com.github.glitchfiend:TerraBlender-forge:$rootProject.minecraft_version-$rootProject.terrablender_version"
 }
 
 processResources {
     inputs.property 'version', project.version
+    inputs.property 'mod_id', project.archives_name
+    inputs.property 'mod_name', project.mod_name
+    inputs.property 'mod_description', project.mod_description
+    inputs.property 'mod_authors', project.mod_authors
+    inputs.property 'mod_license', project.mod_license
+    inputs.property 'mod_sources', project.mod_sources
+    inputs.property 'mod_issue_tracker', project.mod_issue_tracker
+    inputs.property 'minecraft_version', project.minecraft_version
+    inputs.property 'forge_version', project.forge_version
+    inputs.property 'minimum_minecraft_version', project.minimum_minecraft_version
+
+    def majorForgeVersion = project.forge_version.replaceAll(/.*-(\d+)\..*/, '$1')
+    println("Using Forge version: $majorForgeVersion")
+
+    def majorMinecraftVersion
+    if (project.minimum_minecraft_version != "0") {
+        println("Using minimum Minecraft version: ${project.minimum_minecraft_version}")
+        majorMinecraftVersion = project.minimum_minecraft_version
+    } else {
+        majorMinecraftVersion = project.minecraft_version.replaceAll(/(\d+\.\d+)\..*/, '$1')
+        println("Using Minecraft version: $majorMinecraftVersion")
+    }
 
     filesMatching('META-INF/mods.toml') {
-        expand version: project.version
+        expand(
+                version: project.version,
+                mod_id: project.archives_name,
+                mod_name: project.mod_name,
+                mod_description: project.mod_description,
+                mod_authors: project.mod_authors,
+                mod_license: project.mod_license,
+                mod_sources: project.mod_sources,
+                mod_issue_tracker: project.mod_issue_tracker,
+                minecraft_version: majorMinecraftVersion,
+                forge_version: majorForgeVersion
+        )
     }
 }
 
