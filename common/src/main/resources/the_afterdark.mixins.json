@@ -3,10 +3,11 @@
   "package": "dev.denismasterherobrine.afterdark.mixin",
   "compatibilityLevel": "JAVA_17",
   "minVersion": "0.8",
-  "client": [
-  ],
+  "client": [],
   "mixins": [
-    "DripstoneHelperMixin"
+    "DripstoneHelperMixin",
+    "MixinFireBlock",
+    "MixinLavaFluid"
   ],
   "injectors": {
     "defaultRequire": 1

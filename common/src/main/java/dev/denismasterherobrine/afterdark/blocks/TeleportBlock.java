@@ -1,5 +1,6 @@
 package dev.denismasterherobrine.afterdark.blocks;
 
+import dev.denismasterherobrine.afterdark.Config;
 import dev.denismasterherobrine.afterdark.registry.AfterdarkRegistry;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
@@ -57,10 +58,13 @@ public class TeleportBlock extends BlockWithEntity implements BlockEntityProvide
     @SuppressWarnings("deprecation")
     @Override
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-        if (!world.isClient) {
-            if (player.getStackInHand(hand).getItem() == AfterdarkRegistry.TELEPORT_CATALYST_ITEM && player.getStackInHand(hand).getCount() > 0) {
-                player.getStackInHand(hand).decrement(1);
-                if (world.getServer() != null) {
+        if (!world.isClient && world.getServer() != null) {
+            if (player.getWorld() == world.getServer().getWorld(AfterdarkRegistry.AFTERDARK_LEVEL) && Config.INSTANCE.canReturnWithoutCatalyst) {
+                BlockPos safePos = getSafeTeleportPos(world.getServer().getWorld(World.OVERWORLD), player.getBlockPos(), player);
+                player.teleport(world.getServer().getWorld(World.OVERWORLD), safePos.toCenterPos().getX(), safePos.getY(), safePos.toCenterPos().getZ(), null, player.getYaw(), player.getPitch());
+            } else {
+                if (player.getStackInHand(hand).getItem() == AfterdarkRegistry.TELEPORT_CATALYST_ITEM && player.getStackInHand(hand).getCount() > 0) {
+                    player.getStackInHand(hand).decrement(1);
                     if (player.getWorld() == world.getServer().getWorld(AfterdarkRegistry.AFTERDARK_LEVEL)) {
                         BlockPos safePos = getSafeTeleportPos(world.getServer().getWorld(World.OVERWORLD), player.getBlockPos(), player);
                         player.teleport(world.getServer().getWorld(World.OVERWORLD), safePos.toCenterPos().getX(), safePos.getY(), safePos.toCenterPos().getZ(), null, player.getYaw(), player.getPitch());
@@ -68,13 +72,14 @@ public class TeleportBlock extends BlockWithEntity implements BlockEntityProvide
                         BlockPos safePos = getSafeTeleportPos(world.getServer().getWorld(AfterdarkRegistry.AFTERDARK_LEVEL), player.getBlockPos(), player);
                         player.teleport(world.getServer().getWorld(AfterdarkRegistry.AFTERDARK_LEVEL), safePos.toCenterPos().getX(), safePos.getY(), safePos.toCenterPos().getZ(), null, player.getYaw(), player.getPitch());
                     }
+                } else {
+                    player.sendMessage(Text.translatable("chat.the_afterdark.teleport_missing_catalyst"), false);
                 }
-            } else {
-                player.sendMessage(Text.translatable("chat.the_afterdark.teleport_missing_catalyst"), false);
             }
-        }
 
-        return ActionResult.SUCCESS;
+            return ActionResult.SUCCESS;
+        }
+        return ActionResult.PASS;
     }
 
     public boolean isTeleportSafe(World world, BlockPos pos, PlayerEntity player) {
@@ -91,8 +96,7 @@ public class TeleportBlock extends BlockWithEntity implements BlockEntityProvide
     }
 
     public BlockPos getSafeTeleportPos(World world, BlockPos pos, PlayerEntity player) {
-        //TODO: replace with config or replace method with more effective algorithm
-        int radius = 20;
+        int radius = Config.INSTANCE.SafeTeleportCheckRadius;
 
         if (isTeleportSafe(world, pos, player)) {
             return pos;
