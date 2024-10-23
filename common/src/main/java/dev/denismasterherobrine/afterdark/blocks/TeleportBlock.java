@@ -6,6 +6,7 @@ import dev.denismasterherobrine.afterdark.registry.AfterdarkRegistry;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.network.packet.s2c.play.PositionFlag;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.function.BooleanBiFunction;
@@ -48,7 +49,6 @@ public class TeleportBlock extends BlockWithEntity implements BlockEntityProvide
         return shape;
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public VoxelShape getOutlineShape(BlockState state, BlockView view, BlockPos pos, ShapeContext context) {
         return makeShape();
@@ -65,16 +65,16 @@ public class TeleportBlock extends BlockWithEntity implements BlockEntityProvide
         if (!world.isClient && world.getServer() != null) {
             if (player.getWorld() == world.getServer().getWorld(AfterdarkRegistry.AFTERDARK_LEVEL) && Config.INSTANCE.canReturnWithoutCatalyst) {
                 BlockPos safePos = getSafeTeleportPos(world.getServer().getWorld(World.OVERWORLD), player.getBlockPos(), player);
-                player.teleport(world.getServer().getWorld(World.OVERWORLD), safePos.toCenterPos().getX(), safePos.getY(), safePos.toCenterPos().getZ(), null, player.getYaw(), player.getPitch());
+                player.teleport(world.getServer().getWorld(World.OVERWORLD), safePos.toCenterPos().getX(), safePos.getY(), safePos.toCenterPos().getZ(), PositionFlag.getFlags(0), player.getYaw(), player.getPitch());
             } else {
                 if (player.getStackInHand(player.getActiveHand()).getItem() == AfterdarkRegistry.TELEPORT_CATALYST_ITEM && player.getStackInHand(player.getActiveHand()).getCount() > 0) {
                     player.getStackInHand(player.getActiveHand()).decrement(1);
                     if (player.getWorld() == world.getServer().getWorld(AfterdarkRegistry.AFTERDARK_LEVEL)) {
                         BlockPos safePos = getSafeTeleportPos(world.getServer().getWorld(World.OVERWORLD), player.getBlockPos(), player);
-                        player.teleport(world.getServer().getWorld(World.OVERWORLD), safePos.toCenterPos().getX(), safePos.getY(), safePos.toCenterPos().getZ(), null, player.getYaw(), player.getPitch());
+                        player.teleport(world.getServer().getWorld(World.OVERWORLD), safePos.toCenterPos().getX(), safePos.getY(), safePos.toCenterPos().getZ(), PositionFlag.getFlags(0), player.getYaw(), player.getPitch());
                     } else {
                         BlockPos safePos = getSafeTeleportPos(world.getServer().getWorld(AfterdarkRegistry.AFTERDARK_LEVEL), player.getBlockPos(), player);
-                        player.teleport(world.getServer().getWorld(AfterdarkRegistry.AFTERDARK_LEVEL), safePos.toCenterPos().getX(), safePos.getY(), safePos.toCenterPos().getZ(), null, player.getYaw(), player.getPitch());
+                        player.teleport(world.getServer().getWorld(AfterdarkRegistry.AFTERDARK_LEVEL), safePos.toCenterPos().getX(), safePos.getY(), safePos.toCenterPos().getZ(), PositionFlag.getFlags(0), player.getYaw(), player.getPitch());
                     }
                 } else {
                     player.sendMessage(Text.translatable("chat.the_afterdark.teleport_missing_catalyst"), false);
@@ -89,7 +89,7 @@ public class TeleportBlock extends BlockWithEntity implements BlockEntityProvide
     public boolean isTeleportSafe(World world, BlockPos pos, PlayerEntity player) {
         if (world.getBlockState(pos.down()).isSolidBlock(world, pos.down())) {
             for (int i = 0; i < player.getHeight(); i++) {
-                if (world.getBlockState(pos.up(i)).isSolidBlock(world, pos.up(i))) {
+                if (!world.getBlockState(pos.up(i)).isAir()) {
                     return false;
                 }
             }
@@ -117,26 +117,44 @@ public class TeleportBlock extends BlockWithEntity implements BlockEntityProvide
                     }
                 }
             }
-            for (int y = world.getBottomY(); y <= world.getTopY() - pos.getY(); y++) {
-                BlockPos checkPos = pos.add(0, y, 0);
+            for (int y = world.getBottomY(); y <= world.getHeight(); y++) {
+                BlockPos checkPos = pos.withY(y);
                 if (isTeleportSafe(world, checkPos, player)) {
                     return checkPos;
                 }
             }
-            for (int y = world.getBottomY(); y <= world.getTopY() - pos.getY(); y++) {
-                for (int x = -1; x <= 1; x++) {
-                    for (int z = -1; z <= 1; z++) {
-                        if (x == 0 && z == 0) {
-                            continue;
+            for (int i = 0; i < world.getHeight() + Math.abs(world.getBottomY()); i++) {
+                int y = pos.getY() + i;
+                if (y <= world.getHeight()) {
+                    for (int x = -1; x <= 1; x++) {
+                        for (int z = -1; z <= 1; z++) {
+                            if (x == 0 && z == 0) {
+                                continue;
+                            }
+
+                            BlockPos checkPos = new BlockPos(pos.getX() + x, y, pos.getZ() + z);
+                            if (isTeleportSafe(world, checkPos, player)) {
+                                return checkPos;
+                            }
                         }
-                        BlockPos checkPos = pos.add(x, y, z);
-                        if (isTeleportSafe(world, checkPos, player)) {
-                            return checkPos;
+                    }
+                }
+                y = pos.getY() - i;
+                if (pos.getY() - i >= world.getBottomY()) {
+                    for (int x = -1; x <= 1; x++) {
+                        for (int z = -1; z <= 1; z++) {
+                            if (x == 0 && z == 0) {
+                                continue;
+                            }
+
+                            BlockPos checkPos = new BlockPos(pos.getX() + x, y, pos.getZ() + z);
+                            if (isTeleportSafe(world, checkPos, player)) {
+                                return checkPos;
+                            }
                         }
                     }
                 }
             }
-
 
             return pos;
         }
