@@ -114,13 +114,11 @@
         ]
     },
     "spawn_costs": {},
-    "carvers": {
-        "air": [
-            "minecraft:cave",
-            "minecraft:cave_extra_underground",
-            "minecraft:canyon"
-        ]
-    },
+    "carvers": [
+        "minecraft:canyon",
+        "minecraft:cave",
+        "minecraft:cave_extra_underground"
+    ],
     "features": [
         [],
         [
@@ -190,7 +188,6 @@
             "minecraft:patch_sugar_cane",
             "minecraft:patch_pumpkin",
             "minecraft:seagrass_normal",
-            "minecraft:seagrass_simple",
             "minecraft:kelp_cold",
             "the_afterdark:cave_ceiling_shrubbery",
             "the_afterdark:cave_leaf_vines",
