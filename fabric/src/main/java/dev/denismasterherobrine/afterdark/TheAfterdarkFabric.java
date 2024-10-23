@@ -1,6 +1,5 @@
 package dev.denismasterherobrine.afterdark;
 
-import dev.denismasterherobrine.afterdark.registry.AfterdarkFeaturesRegistry;
 import dev.denismasterherobrine.afterdark.registry_fabric.AfterdarkFabricRegistry;
 import net.fabricmc.api.ModInitializer;
 
@@ -9,7 +8,5 @@ public final class TheAfterdarkFabric implements ModInitializer {
     public void onInitialize() {
         TheAfterdark.init();
         AfterdarkFabricRegistry.register();
-
-        AfterdarkFeaturesRegistry.register();
     }
 }
