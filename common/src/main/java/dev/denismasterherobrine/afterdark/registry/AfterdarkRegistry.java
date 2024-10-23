@@ -54,7 +54,7 @@ public class AfterdarkRegistry {
     }
 
     public static final Block TELEPORT_BLOCK = new TeleportBlock();
-    public static final Item TELEPORT_BLOCK_ITEM = new BlockItem(TELEPORT_BLOCK, new Item.Settings());
+    public static final Item TELEPORT_BLOCK_ITEM = new BlockItem(TELEPORT_BLOCK, new Item.Settings().useBlockPrefixedTranslationKey().registryKey(RegistryKey.of(RegistryKeys.ITEM, Identifier.of(TheAfterdark.MOD_ID, "teleport_block"))));
     public static final Item TELEPORT_CATALYST_ITEM = new TeleportCatalystItem();
 
     public static ItemGroup AFTERDARK = ItemGroup.create(null, -1)
