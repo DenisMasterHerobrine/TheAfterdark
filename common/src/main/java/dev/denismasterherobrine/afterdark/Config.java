@@ -28,7 +28,7 @@ public class Config {
     public boolean canReturnWithoutCatalyst = true;
     public boolean shouldGrassBurn = false;
     public List<String> GrassBlocks = List.of(
-            "minecraft:grass",
+            "minecraft:short_grass",
             "minecraft:tall_grass"
     );
     public int SafeTeleportCheckRadius = 20;

@@ -9,9 +9,9 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 @Mod(TheAfterdark.MOD_ID)
 public final class TheAfterdarkForge {
-    public TheAfterdarkForge() {
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
-        AfterdarkForgeRegistry.register(FMLJavaModLoadingContext.get().getModEventBus());
+    public TheAfterdarkForge(FMLJavaModLoadingContext context) {
+        context.getModEventBus().addListener(this::setup);
+        AfterdarkForgeRegistry.register(context.getModEventBus());
     }
 
     private void setup(final FMLCommonSetupEvent event) {
