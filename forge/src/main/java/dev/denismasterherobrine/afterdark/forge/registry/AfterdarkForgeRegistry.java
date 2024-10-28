@@ -1,10 +1,12 @@
 package dev.denismasterherobrine.afterdark.forge.registry;
 
 import dev.denismasterherobrine.afterdark.TheAfterdark;
+import dev.denismasterherobrine.afterdark.blocks.entity.TeleportBlockEntity;
 import dev.denismasterherobrine.afterdark.features.*;
 import dev.denismasterherobrine.afterdark.features.configuration.*;
 import dev.denismasterherobrine.afterdark.registry.AfterdarkRegistry;
 import net.minecraft.block.Block;
+import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.registry.Registries;
@@ -23,12 +25,16 @@ import net.minecraftforge.registries.RegistryObject;
 @Mod.EventBusSubscriber(modid = TheAfterdark.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class AfterdarkForgeRegistry {
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, TheAfterdark.MOD_ID);
+    public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES =
+            DeferredRegister.create(ForgeRegistries.BLOCK_ENTITY_TYPES, TheAfterdark.MOD_ID);
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, TheAfterdark.MOD_ID);
     public static final DeferredRegister<Feature<?>> FEATURES = DeferredRegister.create(ForgeRegistries.FEATURES, TheAfterdark.MOD_ID);
 
     public static final RegistryObject<Block> TELEPORT_BLOCK = BLOCKS.register("teleport_block", () -> AfterdarkRegistry.TELEPORT_BLOCK);
     public static final RegistryObject<Item> TELEPORT_BLOCK_ITEM = ITEMS.register("teleport_block", () -> AfterdarkRegistry.TELEPORT_BLOCK_ITEM);
     public static final RegistryObject<Item> TELEPORT_CATALYST_ITEM = ITEMS.register("teleport_catalyst", () -> AfterdarkRegistry.TELEPORT_CATALYST_ITEM);
+    public static final RegistryObject<BlockEntityType<?>> TELEPORT_BLOCK_ENTITY = BLOCK_ENTITIES.register(TeleportBlockEntity.TELEPORT_BE_ID, () -> BlockEntityType.Builder.create(TeleportBlockEntity::new, TELEPORT_BLOCK.get()).build(null));
+
 
     public static final DeferredRegister<ItemGroup> CREATIVE_MODE_TABS =
             DeferredRegister.create(Registries.ITEM_GROUP.getKey(), TheAfterdark.MOD_ID);
@@ -71,6 +77,7 @@ public class AfterdarkForgeRegistry {
 
     public static void register(IEventBus eventBus) {
         BLOCKS.register(eventBus);
+        BLOCK_ENTITIES.register(eventBus);
         ITEMS.register(eventBus);
         CREATIVE_MODE_TABS.register(eventBus);
         FEATURES.register(eventBus);
