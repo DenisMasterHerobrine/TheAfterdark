@@ -1,14 +1,19 @@
 package dev.denismasterherobrine.afterdark.blocks;
 
 import dev.denismasterherobrine.afterdark.Config;
+import dev.denismasterherobrine.afterdark.blocks.entity.TeleportBlockEntity;
 import dev.denismasterherobrine.afterdark.registry.AfterdarkRegistry;
+import dev.denismasterherobrine.afterdark.util.PlayerEntityAccess;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.packet.s2c.play.PositionFlag;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.registry.RegistryKeys;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.function.BooleanBiFunction;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
@@ -52,7 +57,7 @@ public class TeleportBlock extends BlockWithEntity implements BlockEntityProvide
     @Nullable
     @Override
     public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
-        return null;
+        return new TeleportBlockEntity(pos, state);
     }
 
     @SuppressWarnings("deprecation")
@@ -60,26 +65,66 @@ public class TeleportBlock extends BlockWithEntity implements BlockEntityProvide
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
         if (!world.isClient && world.getServer() != null) {
             if (player.getWorld() == world.getServer().getWorld(AfterdarkRegistry.AFTERDARK_LEVEL) && Config.INSTANCE.canReturnWithoutCatalyst) {
-                BlockPos safePos = getSafeTeleportPos(world.getServer().getWorld(World.OVERWORLD), player.getBlockPos(), player);
-                player.teleport(world.getServer().getWorld(World.OVERWORLD), safePos.toCenterPos().getX(), safePos.getY(), safePos.toCenterPos().getZ(), PositionFlag.getFlags(0), player.getYaw(), player.getPitch());
+                teleportFromDimension(player);
             } else {
-                if (player.getStackInHand(hand).getItem() == AfterdarkRegistry.TELEPORT_CATALYST_ITEM && player.getStackInHand(hand).getCount() > 0) {
-                    player.getStackInHand(hand).decrement(1);
-                    if (player.getWorld() == world.getServer().getWorld(AfterdarkRegistry.AFTERDARK_LEVEL)) {
-                        BlockPos safePos = getSafeTeleportPos(world.getServer().getWorld(World.OVERWORLD), player.getBlockPos(), player);
-                        player.teleport(world.getServer().getWorld(World.OVERWORLD), safePos.toCenterPos().getX(), safePos.getY(), safePos.toCenterPos().getZ(), PositionFlag.getFlags(0), player.getYaw(), player.getPitch());
+                BlockEntity blockEntity = world.getBlockEntity(pos);
+                if (blockEntity instanceof TeleportBlockEntity teleportBlockEntity) {
+                    if (teleportBlockEntity.getRemainingTeleports() > 0 || Config.INSTANCE.TeleportCatalystUses < 1) {
+                        PlayerEntityAccess playerAccess = (PlayerEntityAccess) player;
+                        if (player.getWorld() == world.getServer().getWorld(AfterdarkRegistry.AFTERDARK_LEVEL)) {
+                            if (teleportBlockEntity.getRemainingTeleports() > 0) {
+                                teleportBlockEntity.setRemainingTeleports(teleportBlockEntity.getRemainingTeleports() - 1);
+                            }
+                            teleportFromDimension(player);
+
+                        } else {
+                            if (teleportBlockEntity.getRemainingTeleports() > 0) {
+                                teleportBlockEntity.setRemainingTeleports(teleportBlockEntity.getRemainingTeleports() - 1);
+                            }
+                            playerAccess.the_afterdark$setLastWorld(player.getWorld().getRegistryKey().getValue().toString());
+                            teleportToDimension(player);
+                        }
+                    } else if (player.getStackInHand(hand).getItem() == AfterdarkRegistry.TELEPORT_CATALYST_ITEM && player.getStackInHand(hand).getCount() > 0) {
+                        player.getStackInHand(hand).decrement(1);
+                        teleportBlockEntity.renewTeleports();
                     } else {
-                        BlockPos safePos = getSafeTeleportPos(world.getServer().getWorld(AfterdarkRegistry.AFTERDARK_LEVEL), player.getBlockPos(), player);
-                        player.teleport(world.getServer().getWorld(AfterdarkRegistry.AFTERDARK_LEVEL), safePos.toCenterPos().getX(), safePos.getY(), safePos.toCenterPos().getZ(), PositionFlag.getFlags(0), player.getYaw(), player.getPitch());
+                        player.sendMessage(Text.translatable("chat.the_afterdark.teleport_missing_catalyst"), false);
                     }
-                } else {
-                    player.sendMessage(Text.translatable("chat.the_afterdark.teleport_missing_catalyst"), false);
                 }
             }
 
             return ActionResult.SUCCESS;
         }
         return ActionResult.PASS;
+    }
+
+    public void teleportToDimension(PlayerEntity player) {
+        if (player.getServer() != null) {
+            BlockPos safePos = getSafeTeleportPos(player.getServer().getWorld(AfterdarkRegistry.AFTERDARK_LEVEL), player.getBlockPos(), player);
+            player.teleport(player.getServer().getWorld(AfterdarkRegistry.AFTERDARK_LEVEL), safePos.toCenterPos().getX(), safePos.getY(), safePos.toCenterPos().getZ(), PositionFlag.getFlags(0), player.getYaw(), player.getPitch());
+        }
+    }
+
+    public void teleportFromDimension(PlayerEntity player) {
+        if (player.getServer() != null) {
+            RegistryKey<World> playerLastWorld;
+
+            if (!Config.INSTANCE.shouldTeleportReturnToSetWorld) {
+                String lastWorld = ((PlayerEntityAccess) player).the_afterdark$getLastWorld();
+                if (lastWorld == null) {
+                    playerLastWorld = RegistryKey.of(RegistryKeys.WORLD, Identifier.tryParse(Config.INSTANCE.returnSetWorld));
+                } else {
+                    playerLastWorld = RegistryKey.of(RegistryKeys.WORLD, Identifier.tryParse(lastWorld));
+                    if (playerLastWorld == null) {
+                        playerLastWorld = World.OVERWORLD;
+                    }
+                }
+            } else {
+                playerLastWorld = RegistryKey.of(RegistryKeys.WORLD, Identifier.tryParse(Config.INSTANCE.returnSetWorld));
+            }
+            BlockPos safePos = getSafeTeleportPos(player.getServer().getWorld(playerLastWorld), player.getBlockPos(), player);
+            player.teleport(player.getServer().getWorld(playerLastWorld), safePos.toCenterPos().getX(), safePos.getY(), safePos.toCenterPos().getZ(), PositionFlag.getFlags(0), player.getYaw(), player.getPitch());
+        }
     }
 
     public boolean isTeleportSafe(World world, BlockPos pos, PlayerEntity player) {

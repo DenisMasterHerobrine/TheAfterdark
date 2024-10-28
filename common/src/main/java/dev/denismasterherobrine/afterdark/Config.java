@@ -33,6 +33,9 @@ public class Config {
             "minecraft:tall_grass"
     );
     public int SafeTeleportCheckRadius = 20;
+    public int TeleportCatalystUses = 5;
+    public boolean shouldTeleportReturnToSetWorld = false;
+    public String returnSetWorld = "minecraft:overworld";
 
     public static void load() {
         if (CONFIG_FILE.exists()) {

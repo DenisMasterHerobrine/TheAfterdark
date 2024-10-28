@@ -1,9 +1,11 @@
 package dev.denismasterherobrine.afterdark.registry_fabric;
 
 import dev.denismasterherobrine.afterdark.TheAfterdark;
+import dev.denismasterherobrine.afterdark.blocks.entity.TeleportBlockEntity;
 import dev.denismasterherobrine.afterdark.loot.lootTables.FabricLootModifier;
 import dev.denismasterherobrine.afterdark.registry.AfterdarkFeaturesRegistry;
 import dev.denismasterherobrine.afterdark.registry.AfterdarkRegistry;
+import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
@@ -14,6 +16,7 @@ public class AfterdarkFabricRegistry {
         Registry.register(Registries.ITEM, Identifier.of(TheAfterdark.MOD_ID, "teleport_block"), AfterdarkRegistry.TELEPORT_BLOCK_ITEM);
         Registry.register(Registries.ITEM, Identifier.of(TheAfterdark.MOD_ID, "teleport_catalyst"), AfterdarkRegistry.TELEPORT_CATALYST_ITEM);
         Registry.register(Registries.ITEM_GROUP, Identifier.of(TheAfterdark.MOD_ID, "afterdark"), AfterdarkRegistry.AFTERDARK);
+        Registry.register(Registries.BLOCK_ENTITY_TYPE, Identifier.of(TheAfterdark.MOD_ID, TeleportBlockEntity.TELEPORT_BE_ID), FabricBlockEntityTypeBuilder.create(TeleportBlockEntity::new, AfterdarkRegistry.TELEPORT_BLOCK).build());
     }
 
     public static void registerFeatures() {
