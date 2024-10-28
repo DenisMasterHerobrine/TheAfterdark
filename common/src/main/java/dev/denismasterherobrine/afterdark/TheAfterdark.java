@@ -6,5 +6,6 @@ public final class TheAfterdark {
     public static void init() {
         System.out.println("The Afterdark is initializing...");
         Config.load();
+
     }
 }
