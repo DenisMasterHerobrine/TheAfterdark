@@ -2,6 +2,7 @@ package dev.denismasterherobrine.afterdark.mixin;
 
 import dev.denismasterherobrine.afterdark.util.FireCheck;
 import net.minecraft.fluid.LavaFluid;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.WorldView;
 import org.spongepowered.asm.mixin.Mixin;
@@ -14,6 +15,6 @@ public class MixinLavaFluid {
 
     @Inject(method = "canLightFire", at = @At("HEAD"), cancellable = true)
     private void preventFireLighting(WorldView world, BlockPos pos, CallbackInfoReturnable<Boolean> cir) {
-        FireCheck.GrassAroundCheck(world, pos, cir);
+        FireCheck.GrassAroundCheck((ServerWorld) world, pos, cir);
     }
 }
