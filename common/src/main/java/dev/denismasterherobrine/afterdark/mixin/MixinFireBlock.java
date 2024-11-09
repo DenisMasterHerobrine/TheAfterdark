@@ -15,7 +15,9 @@ public class MixinFireBlock {
 
     @Inject(method = "areBlocksAroundFlammable", at = @At("HEAD"), cancellable = true)
     private void preventGrassBurning(BlockView world, BlockPos pos, CallbackInfoReturnable<Boolean> cir) {
-        FireCheck.GrassAroundCheck((World) world, pos, cir);
+        if (world instanceof World) {
+            FireCheck.GrassAroundCheck((World) world, pos, cir);
+        }
     }
 
 }
