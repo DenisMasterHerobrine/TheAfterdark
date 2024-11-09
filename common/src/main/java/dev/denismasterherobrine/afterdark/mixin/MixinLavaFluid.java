@@ -15,11 +15,15 @@ public class MixinLavaFluid {
 
     @Inject(method = "canLightFire", at = @At("HEAD"), cancellable = true)
     private void preventFireLighting(WorldView world, BlockPos pos, CallbackInfoReturnable<Boolean> cir) {
-        FireCheck.GrassAroundCheck((World) world, pos, cir);
+        if (world instanceof World) {
+            FireCheck.GrassAroundCheck((World) world, pos, cir);
+        }
     }
 
     @Inject(method = "hasBurnableBlock", at = @At("HEAD"), cancellable = true)
     private void preventFireLighting2(WorldView world, BlockPos pos, CallbackInfoReturnable<Boolean> cir) {
-        FireCheck.GrassAroundCheck((World) world, pos, cir);
+        if (world instanceof World) {
+            FireCheck.GrassAroundCheck((World) world, pos, cir);
+        }
     }
 }
