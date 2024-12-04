@@ -13,12 +13,17 @@
             "block_search_extent": 8,
             "offset": 2
         },
-        "music": {
+        "music": [
+        {
+          "data": {
             "sound": "minecraft:music.overworld.deep_dark",
             "min_delay": 12000,
             "max_delay": 24000,
             "replace_current_music": false
+          },
+          "weight": 1
         }
+      ]
     },
     "spawners": {
         "ambient": [],

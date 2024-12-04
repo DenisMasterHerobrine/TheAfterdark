@@ -15,12 +15,12 @@ import java.util.concurrent.CompletableFuture;
 @EventBusSubscriber(modid = TheAfterdark.MOD_ID, bus = EventBusSubscriber.Bus.MOD)
 public class DataGeneratorRegistry {
     @SubscribeEvent
-    public static void gatherData(GatherDataEvent event) {
+    public static void gatherData(GatherDataEvent.Server event) {
         DataGenerator generator = event.getGenerator();
         DataOutput output = generator.getPackOutput();
         ExistingFileHelper existingFileHelper = event.getExistingFileHelper();
         CompletableFuture<RegistryWrapper.WrapperLookup> lookupProvider = event.getLookupProvider();
 
-        generator.addProvider(event.includeServer(), new ModWorldgenProvider(output, lookupProvider));
+        generator.addProvider(true, new ModWorldgenProvider(output, lookupProvider));
     }
 }
