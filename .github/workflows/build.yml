@@ -25,13 +25,19 @@ jobs:
         run: chmod +x ./gradlew
       - name: build
         run: ./gradlew build
+      - name: move jars to root directory
+        run: |
+          mkdir -p jars
+          mv fabric/build/libs/*.jar jars/ || true
+          mv forge/build/libs/*.jar jars/ || true
+          mv neoforge/build/libs/*.jar jars/ || true
+          rm -f jars/*-dev-shadow.jar || true
+      - name: Extract repository name
+        id: repo_name
+        run: echo "repo_name=$(echo ${{ github.repository }} | cut -d'/' -f2)" >> $GITHUB_ENV
       - name: capture build artifacts
         if: ${{ matrix.java == '21' }}
         uses: actions/upload-artifact@v4
         with:
-          name: Artifacts
-          path: |
-            fabric/build/libs/
-            forge/build/libs/
-            neoforge/build/libs/
-            !**/*-dev-shadow.jar
+          name: ${{ env.repo_name }}
+          path: jars/
