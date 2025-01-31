@@ -1,4 +1,12 @@
 {
+  "biome.the_afterdark.calcite_fields": "Calcite Fields",
+  "biome.the_afterdark.creepy_snowfields": "Creepy Snowfields",
+  "biome.the_afterdark.deep_afterdark": "Deep Afterdark",
+  "biome.the_afterdark.dripstone_deltas": "Dripstone Deltas",
+  "biome.the_afterdark.dying_drylands": "Dying Drylands",
+  "biome.the_afterdark.lush_gardens": "Lush Gardens",
+  "biome.the_afterdark.prismarine_peaks": "Prismarine Peaks",
+  "biome.the_afterdark.prismarine_ponds": "Prismarine Ponds",
   "itemGroup.afterdark": "The Afterdark",
   "item.the_afterdark.teleport_catalyst": "Teleport Catalyst",
   "block.the_afterdark.teleport_block": "Teleport Block",
