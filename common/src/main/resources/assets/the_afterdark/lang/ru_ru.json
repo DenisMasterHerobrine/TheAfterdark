@@ -1,6 +1,14 @@
 {
+  "biome.the_afterdark.calcite_fields": "Кальцитовые поля",
+  "biome.the_afterdark.creepy_snowfields": "Жуткие снежные поля",
+  "biome.the_afterdark.deep_afterdark": "Глубокое подземье",
+  "biome.the_afterdark.dripstone_deltas": "Карстовые дельты",
+  "biome.the_afterdark.dying_drylands": "Умирающие сухоземли",
+  "biome.the_afterdark.lush_gardens": "Пышные сады",
+  "biome.the_afterdark.prismarine_peaks": "Призмариновые вершины",
+  "biome.the_afterdark.prismarine_ponds": "Призмариновые пруды",
   "itemGroup.afterdark": "The Afterdark",
-  "item.the_afterdark.teleport_catalyst": "Катализатор Телепорта",
-  "block.the_afterdark.teleport_block": "Блок Телепорта",
-  "chat.the_afterdark.teleport_missing_catalyst": "§3Похоже, что этот алтарь отвергает ваше подношение..."
+  "item.the_afterdark.teleport_catalyst": "Катализатор телепортации",
+  "block.the_afterdark.teleport_block": "Блок телепортатора",
+  "chat.the_afterdark.teleport_missing_catalyst": "§3Этот алтарь отвергает ваше подношение..."
 }
