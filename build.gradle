@@ -2,6 +2,8 @@ plugins {
     id 'dev.architectury.loom' version '1.7-SNAPSHOT' apply false
     id 'architectury-plugin' version '3.4-SNAPSHOT'
     id 'com.github.johnrengelman.shadow' version '8.1.1' apply false
+    id 'co.uzzu.dotenv.gradle' version "4.0.0"
+    id "me.modmuss50.mod-publish-plugin" version "0.8.4"
 }
 
 architectury {
@@ -67,4 +69,82 @@ subprojects {
             // retrieving dependencies.
         }
     }
+}
+
+publishMods {
+    changelog = file("$rootDir/CHANGELOG.md").text
+    type = STABLE
+
+    def withSources = true
+
+    def cfOptions = curseforgeOptions {
+        accessToken = env.fetchOrNull("CURSEFORGE_TOKEN") ?: System.getProperty("CURSEFORGE_TOKEN")
+        projectId = "1110531"
+        changelogType = "markdown"
+        minecraftVersionRange {
+            start = project.minecraft_version
+            end = project.minecraft_version
+        }
+        clientRequired = true
+        serverRequired = true
+    }
+
+    def mrOptions = modrinthOptions {
+        accessToken = env.fetchOrNull("MODRINTH_TOKEN") ?: System.getProperty("MODRINTH_TOKEN")
+        projectId = "EjqfdsbN"
+        minecraftVersionRange {
+            start = project.minecraft_version
+            end = project.minecraft_version
+        }
+    }
+
+    curseforge("curseforgeFabric") {
+        from cfOptions
+        file project(":fabric")
+        if (withSources) {
+            additionalFiles.from(project(":fabric").tasks.named("remapSourcesJar"))
+        }
+        modLoaders.add("fabric")
+        requires {
+            slug = "fabric-api"
+        }
+        displayName = "[Fabric] " + "The Afterdark v" + project.version
+    }
+
+    curseforge("curseforgeForge") {
+        from cfOptions
+        file project(":forge")
+        if (withSources) {
+            additionalFiles.from(project(":forge").tasks.named("remapSourcesJar"))
+        }
+        modLoaders.add("forge")
+        modLoaders.add("neoforge")
+        displayName = "[Forge] " + "The Afterdark v" + project.version
+    }
+
+
+    modrinth("modrinthFabric") {
+        from mrOptions
+        file project(":fabric")
+        if (withSources) {
+            additionalFiles.from(project(":fabric").tasks.named("remapSourcesJar"))
+        }
+        modLoaders.add("fabric")
+        requires {
+            slug = "fabric-api"
+        }
+        displayName = "[Fabric] " + "The Afterdark v" + project.version
+    }
+
+    modrinth("modrinthForge") {
+        from mrOptions
+        file project(":forge")
+        if (withSources) {
+            additionalFiles.from(project(":forge").tasks.named("remapSourcesJar"))
+        }
+        modLoaders.add("forge")
+        modLoaders.add("neoforge")
+        displayName = "[Forge] " + "The Afterdark v" + project.version
+    }
+
 }
