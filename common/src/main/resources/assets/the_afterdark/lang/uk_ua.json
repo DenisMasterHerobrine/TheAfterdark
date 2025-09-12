@@ -1,0 +1,15 @@
+{
+  "biome.the_afterdark.calcite_fields": "Кальцитові поля",
+  "biome.the_afterdark.creepy_snowfields": "Моторошні снігові поля",
+  "biome.the_afterdark.deep_afterdark": "Глибока післятемрява",
+  "biome.the_afterdark.dripstone_deltas": "Сталактитові дельти",
+  "biome.the_afterdark.dying_drylands": "Вимерлі посушливі землі",
+  "biome.the_afterdark.lush_gardens": "Зарослі сади",
+  "biome.the_afterdark.prismarine_peaks": "Призмаринові вершини",
+  "biome.the_afterdark.prismarine_ponds": "Призмаринові ставки",
+  "itemGroup.afterdark": "The Afterdark",
+  "item.the_afterdark.teleport_catalyst": "Телепортаційний каталізатор",
+  "block.the_afterdark.teleport_block": "Телепортер",
+  "chat.the_afterdark.teleport_missing_catalyst": "§3Ця святиня відхиляє вас…",
+  "modmenu.descriptionTranslation.the_afterdark": "Мод, що додає до Minecraft новий вимір, пов'язаний з потойбічним життям, темрявою та невідомістю"
+}
