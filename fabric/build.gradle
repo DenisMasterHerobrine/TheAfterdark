@@ -40,7 +40,7 @@ dependencies {
 
 processResources {
     inputs.property 'version', project.version
-    inputs.property 'mod_id', project.archives_name
+    inputs.property 'mod_id', project.mod_id
     inputs.property 'minecraft_version', project.minecraft_version
     inputs.property 'mod_name', project.mod_name
     inputs.property 'mod_description', project.mod_description
@@ -63,10 +63,10 @@ processResources {
     filesMatching('fabric.mod.json') {
         expand(
                 version: project.version,
-                mod_id: project.archives_name,
+                mod_id: project.mod_id,
                 mod_name: project.mod_name,
                 mod_description: project.mod_description,
-                mod_authors: project.mod_authors.split(',').collect { it.trim() },
+                mod_authors: project.mod_authors.split(',').collect { it.trim() }.join('", "'),
                 mod_license: project.mod_license,
                 mod_sources: project.mod_sources,
                 mod_issue_tracker: project.mod_issue_tracker,

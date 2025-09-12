@@ -23,7 +23,7 @@ public class PlayerEntityNBTMixin implements PlayerEntityAccess {
 
     @Inject(method = "readCustomDataFromNbt", at = @At("HEAD"))
     private void readCustomDataFromNbt(NbtCompound nbt, CallbackInfo ci) {
-        the_afterdark$lastWorld = nbt.getString("lastWorld");
+        the_afterdark$lastWorld = nbt.getString("lastWorld").isPresent() ? nbt.getString("lastWorld").get() : "minecraft:overworld";
     }
 
     @Override

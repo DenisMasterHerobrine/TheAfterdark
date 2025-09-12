@@ -36,7 +36,7 @@ public class TeleportBlockEntity extends BlockEntity {
     @Override
     public void readNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
         super.readNbt(nbt, registryLookup);
-        remainingTeleports = nbt.getInt("RemainingTeleports");
+        remainingTeleports = nbt.getInt("RemainingTeleports").isPresent() ? nbt.getInt("RemainingTeleports").get() : 0;
     }
 
     @Override

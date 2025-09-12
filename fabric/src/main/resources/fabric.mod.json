@@ -4,10 +4,7 @@
   "version": "${version}",
   "name": "${mod_name}",
   "description": "${mod_description}",
-  "authors": [
-    "DenisMasterHerobrine",
-    "VeiTr"
-  ],
+  "authors": ["${mod_authors}"],
   "contact": {
     "sources": "${mod_sources}",
     "issues": "${mod_issue_tracker}"
