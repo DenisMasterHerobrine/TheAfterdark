@@ -5,7 +5,7 @@ jobs:
   build:
     strategy:
       matrix:
-        java: [17]
+        java: [25]
     runs-on: ubuntu-22.04
     steps:
       - name: checkout repository
