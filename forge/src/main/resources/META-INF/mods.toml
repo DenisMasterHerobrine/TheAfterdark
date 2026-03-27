@@ -26,3 +26,10 @@ mandatory = true
 versionRange = "[${minecraft_version},)"
 ordering = "NONE"
 side = "BOTH"
+
+[[dependencies.${mod_id}]]
+modId = "lostcities"
+mandatory = false
+versionRange = "[0,)"
+ordering = "NONE"
+side = "BOTH"
