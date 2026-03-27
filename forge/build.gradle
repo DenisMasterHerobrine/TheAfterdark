@@ -1,5 +1,5 @@
 plugins {
-    id 'com.github.johnrengelman.shadow'
+    id 'com.gradleup.shadow'
 }
 
 loom {
@@ -96,6 +96,9 @@ processResources {
                 forge_version: majorForgeVersion
         )
     }
+
+    // Common mixin config must be on the Forge classpath even if transformProductionForge omits resources
+    from(project(':common').file('src/main/resources/the_afterdark.mixins.json'))
 }
 
 shadowJar {

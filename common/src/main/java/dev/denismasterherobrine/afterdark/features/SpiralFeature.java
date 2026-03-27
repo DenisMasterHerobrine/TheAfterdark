@@ -35,7 +35,7 @@ public class SpiralFeature extends Feature<SpiralConfiguration> {
             BlockPos blockpos1 = blockpos;
             boolean northNegative = false; //x
             boolean eastNegative = false; //z
-            int randomNumber = (int)(Math.random()*(4-1+1)+1);
+            int randomNumber = random.nextInt(4) + 1;
 
             if (randomNumber >= 4) {
                 northNegative = true;
@@ -54,7 +54,7 @@ public class SpiralFeature extends Feature<SpiralConfiguration> {
             if (eastNegative) {zFactor = -1;}
 
             for (int i = 0; i < blobMass*4;) {
-                int randomNumber2 = (int)(Math.random()*(4)+1);
+                int randomNumber2 = random.nextInt(4) + 1;
 
                 if (randomNumber2 >= 4/blobHeight) { //25% chance per number up to 4.
                     blockpos1 = new BlockPos(blockpos1.getX() + xFactor, blockpos1.getY() - 1, blockpos1.getZ() + zFactor);
@@ -87,13 +87,13 @@ public class SpiralFeature extends Feature<SpiralConfiguration> {
                     break;
                 } else if (randomNumber2 >= 4/blobHeight && !(xDistance >= blobWidth - 4) && !(zDistance >= blobWidth - 4) && !leafMaterial.getDefaultState().isAir()) {
                     for (int b = 1; b <= 4;) {
-                        int randomNumber3 = (int)(Math.random()*(2));
+                        int randomNumber3 = random.nextInt(2);
                         if (randomNumber3 >= 1) {
                             placeBranch(worldgenlevel, blockpos1.down(b).north(randomNumber3).east(randomNumber3 - 1), leafMaterial.getDefaultState());
                             b++;
                         } else {
                             b = 5;
-                            int randomNumber4 = (int)(Math.random()*(8));
+                            int randomNumber4 = random.nextInt(8);
                             if (randomNumber4 >= 7 && Blocks.WARPED_WART_BLOCK.equals(leafMaterial)) {
                                 worldgenlevel.setBlockState(blockpos1.down(b), Blocks.SHROOMLIGHT.getDefaultState(), 2);
                             }

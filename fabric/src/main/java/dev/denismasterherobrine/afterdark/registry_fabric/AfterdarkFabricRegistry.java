@@ -53,6 +53,7 @@ public class AfterdarkFabricRegistry {
         Registry.register(Registries.FEATURE, Identifier.of(TheAfterdark.MOD_ID, "emerald_ore_pillar"), AfterdarkFeaturesRegistry.LARGE_EMERALD_ORE_PILLAR);
         Registry.register(Registries.FEATURE, Identifier.of(TheAfterdark.MOD_ID, "lapis_ore_pillar"), AfterdarkFeaturesRegistry.LARGE_LAPIS_ORE_PILLAR);
         Registry.register(Registries.FEATURE, Identifier.of(TheAfterdark.MOD_ID, "redstone_ore_pillar"), AfterdarkFeaturesRegistry.LARGE_REDSTONE_ORE_PILLAR);
+        Registry.register(Registries.FEATURE, Identifier.of(TheAfterdark.MOD_ID, "coal_ore_pillar"), AfterdarkFeaturesRegistry.LARGE_COAL_ORE_PILLAR);
     }
 
     public static void register() {

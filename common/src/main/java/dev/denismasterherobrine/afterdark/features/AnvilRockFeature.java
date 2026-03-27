@@ -27,7 +27,7 @@ public class AnvilRockFeature extends Feature<AnvilRockConfiguration> {
         if (worldgenlevel.isAir(blockpos.down())) {
             return false;
         } else {
-            int randomNumber = (int)(Math.random()*(4));
+            int randomNumber = random.nextInt(4);
 
             for (int s = 0; s <= stretch; ++s) {
                 for (int h = 0; h < height; ++h) {

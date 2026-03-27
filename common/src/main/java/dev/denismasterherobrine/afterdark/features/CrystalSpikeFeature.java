@@ -40,7 +40,7 @@ public class CrystalSpikeFeature extends Feature<VerticalBlobConfiguration> {
                 BlockPos blockpos1 = blockpos;
                 boolean northNegative = false;//x
                 boolean eastNegative = false;//z
-                int randomNumber = (int)(Math.random()*(4-1+1)+1);
+                int randomNumber = random.nextInt(4) + 1;
 
                 if (randomNumber >= 4) {
                     northNegative = true;
@@ -58,7 +58,7 @@ public class CrystalSpikeFeature extends Feature<VerticalBlobConfiguration> {
                 if (eastNegative) {zFactor = -1;}
 
                 for (int i = 0; i < blobMass*4; ++i) {
-                    int randomNumber2 = (int)(Math.random()*(4)+1);
+                    int randomNumber2 = random.nextInt(4) + 1;
 
                     if (randomNumber2 >= 4/blobHeight) { //25% chance per number up to 4.
                         blockpos1 = new BlockPos(blockpos1.getX() + xFactor, blockpos1.getY() - 1, blockpos1.getZ() + zFactor);

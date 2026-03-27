@@ -12,7 +12,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(LavaFluid.class)
 public class MixinLavaFluid {
-
     @Inject(method = "canLightFire", at = @At("HEAD"), cancellable = true)
     private void preventFireLighting(WorldView world, BlockPos pos, CallbackInfoReturnable<Boolean> cir) {
         if (world instanceof World) {

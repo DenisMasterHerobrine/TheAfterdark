@@ -5,6 +5,7 @@ import dev.denismasterherobrine.afterdark.TheAfterdark;
 import dev.denismasterherobrine.afterdark.blocks.entity.TeleportBlockEntity;
 import dev.denismasterherobrine.afterdark.features.*;
 import dev.denismasterherobrine.afterdark.features.configuration.*;
+import dev.denismasterherobrine.afterdark.registry.AfterdarkFeaturesRegistry;
 import dev.denismasterherobrine.afterdark.registry.AfterdarkRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntityType;
@@ -15,7 +16,6 @@ import net.minecraft.world.gen.ProbabilityConfig;
 import net.minecraft.world.gen.feature.DefaultFeatureConfig;
 import net.minecraft.world.gen.feature.DiskFeatureConfig;
 import net.minecraft.world.gen.feature.Feature;
-import net.minecraft.world.gen.feature.LargeDripstoneFeatureConfig;
 import net.minecraft.world.gen.structure.Structure;
 import net.minecraft.world.gen.structure.StructureType;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -44,7 +44,8 @@ public class AfterdarkForgeRegistry {
 
     public static final RegistryObject<ItemGroup> AFTERDARK = CREATIVE_MODE_TABS.register("afterdark", () -> AfterdarkRegistry.AFTERDARK);
 
-    public static final RegistryObject<Feature<LargeDripstoneFeatureConfig>> LARGE_BASALT_PILLAR = FEATURES.register("large_basalt_pillar", () -> new LargeBasaltPillarFeature(LargeDripstoneFeatureConfig.CODEC));
+    public static final RegistryObject<Feature<PillarFeatureConfiguration>> LARGE_BASALT_PILLAR =
+            FEATURES.register("large_basalt_pillar", () -> AfterdarkFeaturesRegistry.LARGE_BASALT_PILLAR);
     public static final RegistryObject<Feature<VerticalBlobConfiguration>> CRYSTAL_SPIKE = FEATURES.register("crystal_spike", () -> new CrystalSpikeFeature(VerticalBlobConfiguration.CODEC));
     public static final RegistryObject<Feature<SpiralConfiguration>> SPIRAL = FEATURES.register("spiral", () -> new SpiralFeature(SpiralConfiguration.CODEC));
     public static final RegistryObject<Feature<VerticalBlobConfiguration>> ADDITIVE_BLOB = FEATURES.register("additive_blob", () -> new AdditiveBlobFeature(VerticalBlobConfiguration.CODEC));
@@ -52,31 +53,47 @@ public class AfterdarkForgeRegistry {
     public static final RegistryObject<Feature<CatchingFallConfiguration>> CATCHING_FALL = FEATURES.register("catching_fall", () -> new CatchingFallFeature(CatchingFallConfiguration.CODEC));
     public static final RegistryObject<Feature<DoubleBlockConfiguration>> POND = FEATURES.register("pond", () -> new PondFeature(DoubleBlockConfiguration.CODEC));
     public static final RegistryObject<Feature<VerticalBlobConfiguration>> ADDITIVE_GROUND_BLOB = FEATURES.register("additive_ground_blob", () -> new AdditiveGroundBlobFeature(VerticalBlobConfiguration.CODEC));
-    public static final RegistryObject<Feature<LargeDripstoneFeatureConfig>> LARGE_CALCITE_PILLAR = FEATURES.register("large_calcite_pillar", () -> new LargeCalcitePillarFeature(LargeDripstoneFeatureConfig.CODEC));
-    public static final RegistryObject<Feature<LargeDripstoneFeatureConfig>> LARGE_PRISMARINE_PILLAR = FEATURES.register("large_prismarine_pillar", () -> new LargePrismarinePillarFeature(LargeDripstoneFeatureConfig.CODEC));
-    public static final RegistryObject<Feature<LargeDripstoneFeatureConfig>> LARGE_DARK_PRISMARINE_PILLAR = FEATURES.register("large_dark_prismarine_pillar", () -> new LargeDarkPrismarinePillarFeature(LargeDripstoneFeatureConfig.CODEC));
-    public static final RegistryObject<Feature<LargeDripstoneFeatureConfig>> LARGE_SLIME_PILLAR = FEATURES.register("large_slime_pillar", () -> new LargeSlimePillarFeature(LargeDripstoneFeatureConfig.CODEC));
+    public static final RegistryObject<Feature<PillarFeatureConfiguration>> LARGE_CALCITE_PILLAR =
+            FEATURES.register("large_calcite_pillar", () -> AfterdarkFeaturesRegistry.LARGE_CALCITE_PILLAR);
+    public static final RegistryObject<Feature<PillarFeatureConfiguration>> LARGE_PRISMARINE_PILLAR =
+            FEATURES.register("large_prismarine_pillar", () -> AfterdarkFeaturesRegistry.LARGE_PRISMARINE_PILLAR);
+    public static final RegistryObject<Feature<PillarFeatureConfiguration>> LARGE_DARK_PRISMARINE_PILLAR =
+            FEATURES.register("large_dark_prismarine_pillar", () -> AfterdarkFeaturesRegistry.LARGE_DARK_PRISMARINE_PILLAR);
+    public static final RegistryObject<Feature<PillarFeatureConfiguration>> LARGE_SLIME_PILLAR =
+            FEATURES.register("large_slime_pillar", () -> AfterdarkFeaturesRegistry.LARGE_SLIME_PILLAR);
     public static final RegistryObject<Feature<WaterloggableRandomPatchConfiguration>> WATERLOGGABLE_RANDOM_PATCH_FEATURE = FEATURES.register("waterloggable_random_patch", () -> new WaterloggableRandomPatchFeature(WaterloggableRandomPatchConfiguration.CODEC));
     public static final RegistryObject<Feature<DefaultFeatureConfig>> CAVE_KELP_FEATURE = FEATURES.register("cave_kelp", () -> new CaveKelpFeature(DefaultFeatureConfig.CODEC));
     public static final RegistryObject<Feature<DefaultFeatureConfig>> CAVE_PICKLE_FEATURE = FEATURES.register("cave_pickle", () -> new CavePickleFeature(DefaultFeatureConfig.CODEC));
-    public static final RegistryObject<Feature<LargeDripstoneFeatureConfig>> LARGE_DEEPSLATE_PILLAR = FEATURES.register("large_deepslate_pillar", () -> new LargeDeepslatePillarFeature(LargeDripstoneFeatureConfig.CODEC));
+    public static final RegistryObject<Feature<PillarFeatureConfiguration>> LARGE_DEEPSLATE_PILLAR =
+            FEATURES.register("large_deepslate_pillar", () -> AfterdarkFeaturesRegistry.LARGE_DEEPSLATE_PILLAR);
     public static final RegistryObject<Feature<ProbabilityConfig>> CAVE_SEAGRASS_FEATURE = FEATURES.register("cave_seagrass", () -> new CaveSeagrassFeature(ProbabilityConfig.CODEC));
-    public static final RegistryObject<Feature<LargeDripstoneFeatureConfig>> LARGE_OBSIDIAN_PILLAR = FEATURES.register("large_obsidian_pillar", () -> new LargeObsidianPillarFeature(LargeDripstoneFeatureConfig.CODEC));
+    public static final RegistryObject<Feature<PillarFeatureConfiguration>> LARGE_OBSIDIAN_PILLAR =
+            FEATURES.register("large_obsidian_pillar", () -> AfterdarkFeaturesRegistry.LARGE_OBSIDIAN_PILLAR);
     public static final RegistryObject<Feature<DiskFeatureConfig>> SUPPORTED_DISK_FEATURE = FEATURES.register("supported_disk", () -> new SupportedDiskFeature(DiskFeatureConfig.CODEC));
-    public static final RegistryObject<Feature<LargeDripstoneFeatureConfig>> LARGE_PACKED_ICE_PILLAR = FEATURES.register("large_packed_ice_pillar", () -> new LargePackedIcePillarFeature(LargeDripstoneFeatureConfig.CODEC));
-    public static final RegistryObject<Feature<LargeDripstoneFeatureConfig>> LARGE_ICE_PILLAR = FEATURES.register("large_ice_pillar", () -> new LargeIcePillarFeature(LargeDripstoneFeatureConfig.CODEC));
-    public static final RegistryObject<Feature<LargeDripstoneFeatureConfig>> LARGE_BLUE_ICE_PILLAR = FEATURES.register("large_blue_ice_pillar", () -> new LargeBlueIcePillarFeature(LargeDripstoneFeatureConfig.CODEC));
+    public static final RegistryObject<Feature<PillarFeatureConfiguration>> LARGE_PACKED_ICE_PILLAR =
+            FEATURES.register("large_packed_ice_pillar", () -> AfterdarkFeaturesRegistry.LARGE_PACKED_ICE_PILLAR);
+    public static final RegistryObject<Feature<PillarFeatureConfiguration>> LARGE_ICE_PILLAR =
+            FEATURES.register("large_ice_pillar", () -> AfterdarkFeaturesRegistry.LARGE_ICE_PILLAR);
+    public static final RegistryObject<Feature<PillarFeatureConfiguration>> LARGE_BLUE_ICE_PILLAR =
+            FEATURES.register("large_blue_ice_pillar", () -> AfterdarkFeaturesRegistry.LARGE_BLUE_ICE_PILLAR);
 
-    // Raw Ore Pillars
-    public static final RegistryObject<Feature<LargeDripstoneFeatureConfig>> LARGE_RAW_IRON_PILLAR = FEATURES.register("raw_iron_pillar", () -> new LargeRawIronPillarFeature(LargeDripstoneFeatureConfig.CODEC));
-    public static final RegistryObject<Feature<LargeDripstoneFeatureConfig>> LARGE_RAW_COPPER_PILLAR = FEATURES.register("raw_copper_pillar", () -> new LargeRawCopperPillarFeature(LargeDripstoneFeatureConfig.CODEC));
-    public static final RegistryObject<Feature<LargeDripstoneFeatureConfig>> LARGE_RAW_GOLD_PILLAR = FEATURES.register("raw_gold_pillar", () -> new LargeRawGoldPillarFeature(LargeDripstoneFeatureConfig.CODEC));
+    public static final RegistryObject<Feature<PillarFeatureConfiguration>> LARGE_RAW_IRON_PILLAR =
+            FEATURES.register("raw_iron_pillar", () -> AfterdarkFeaturesRegistry.LARGE_RAW_IRON_PILLAR);
+    public static final RegistryObject<Feature<PillarFeatureConfiguration>> LARGE_RAW_COPPER_PILLAR =
+            FEATURES.register("raw_copper_pillar", () -> AfterdarkFeaturesRegistry.LARGE_RAW_COPPER_PILLAR);
+    public static final RegistryObject<Feature<PillarFeatureConfiguration>> LARGE_RAW_GOLD_PILLAR =
+            FEATURES.register("raw_gold_pillar", () -> AfterdarkFeaturesRegistry.LARGE_RAW_GOLD_PILLAR);
 
-    // Ore Pillars
-    public static final RegistryObject<Feature<LargeDripstoneFeatureConfig>> LARGE_REDSTONE_ORE_PILLAR = FEATURES.register("redstone_ore_pillar", () -> new LargeRedstoneOrePillarFeature(LargeDripstoneFeatureConfig.CODEC));
-    public static final RegistryObject<Feature<LargeDripstoneFeatureConfig>> LARGE_LAPIS_ORE_PILLAR = FEATURES.register("lapis_ore_pillar", () -> new LargeLapisOrePillarFeature(LargeDripstoneFeatureConfig.CODEC));
-    public static final RegistryObject<Feature<LargeDripstoneFeatureConfig>> LARGE_EMERALD_ORE_PILLAR = FEATURES.register("emerald_ore_pillar", () -> new LargeEmeraldOrePillarFeature(LargeDripstoneFeatureConfig.CODEC));
-    public static final RegistryObject<Feature<LargeDripstoneFeatureConfig>> LARGE_DIAMOND_ORE_PILLAR = FEATURES.register("diamond_ore_pillar", () -> new LargeDiamondOrePillarFeature(LargeDripstoneFeatureConfig.CODEC));
+    public static final RegistryObject<Feature<PillarFeatureConfiguration>> LARGE_REDSTONE_ORE_PILLAR =
+            FEATURES.register("redstone_ore_pillar", () -> AfterdarkFeaturesRegistry.LARGE_REDSTONE_ORE_PILLAR);
+    public static final RegistryObject<Feature<PillarFeatureConfiguration>> LARGE_LAPIS_ORE_PILLAR =
+            FEATURES.register("lapis_ore_pillar", () -> AfterdarkFeaturesRegistry.LARGE_LAPIS_ORE_PILLAR);
+    public static final RegistryObject<Feature<PillarFeatureConfiguration>> LARGE_EMERALD_ORE_PILLAR =
+            FEATURES.register("emerald_ore_pillar", () -> AfterdarkFeaturesRegistry.LARGE_EMERALD_ORE_PILLAR);
+    public static final RegistryObject<Feature<PillarFeatureConfiguration>> LARGE_DIAMOND_ORE_PILLAR =
+            FEATURES.register("diamond_ore_pillar", () -> AfterdarkFeaturesRegistry.LARGE_DIAMOND_ORE_PILLAR);
+    public static final RegistryObject<Feature<PillarFeatureConfiguration>> LARGE_COAL_ORE_PILLAR =
+            FEATURES.register("coal_ore_pillar", () -> AfterdarkFeaturesRegistry.LARGE_COAL_ORE_PILLAR);
 
     private static <T extends Structure> StructureType<T> explicitStructureTypeTyping(Codec<T> structureCodec) {
         return () -> structureCodec;

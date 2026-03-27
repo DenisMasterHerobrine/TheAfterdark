@@ -69,40 +69,40 @@ public class PondFeature extends Feature<DoubleBlockConfiguration> {
         replaceAir(worldgenlevel, blockpos.add(0, -1, 2), material);
         replaceAir(worldgenlevel, blockpos.add(1, -1, 2), material);
 
-        int randomNumber = (int)(Math.random()*(6)+1);
+        int randomNumber = random.nextInt(6) + 1;
 
         if (randomNumber < 2) {
             worldgenlevel.setBlockState(blockpos.add(-3, -1, -1), material, 2);
             worldgenlevel.setBlockState(blockpos.add(-3, -1, 0), material, 2);
             worldgenlevel.setBlockState(blockpos.add(-3, -1, 1), material, 2);
             worldgenlevel.setBlockState(blockpos.add(-2, -1, 0), water, 2);
-            worldgenlevel.setBlockState(blockpos.add(2, 0, 0), randomSapling(), 2);
-            worldgenlevel.setBlockState(blockpos.add(0, 0, 2), randomSapling(), 2);
-            worldgenlevel.setBlockState(blockpos.add(0, 0, -2), randomSapling(), 2);
+            worldgenlevel.setBlockState(blockpos.add(2, 0, 0), randomSapling(random), 2);
+            worldgenlevel.setBlockState(blockpos.add(0, 0, 2), randomSapling(random), 2);
+            worldgenlevel.setBlockState(blockpos.add(0, 0, -2), randomSapling(random), 2);
         } else if (randomNumber < 3) {
             worldgenlevel.setBlockState(blockpos.add(3, -1, -1), material, 2);
             worldgenlevel.setBlockState(blockpos.add(3, -1, 0), material, 2);
             worldgenlevel.setBlockState(blockpos.add(3, -1, 1), material, 2);
             worldgenlevel.setBlockState(blockpos.add(2, -1, 0), water, 2);
-            worldgenlevel.setBlockState(blockpos.add(-2, 0, 0), randomSapling(), 2);
-            worldgenlevel.setBlockState(blockpos.add(0, 0, 2), randomSapling(), 2);
-            worldgenlevel.setBlockState(blockpos.add(0, 0, -2), randomSapling(), 2);
+            worldgenlevel.setBlockState(blockpos.add(-2, 0, 0), randomSapling(random), 2);
+            worldgenlevel.setBlockState(blockpos.add(0, 0, 2), randomSapling(random), 2);
+            worldgenlevel.setBlockState(blockpos.add(0, 0, -2), randomSapling(random), 2);
         } else if (randomNumber < 4) {
             worldgenlevel.setBlockState(blockpos.add(-1, -1, -3), material, 2);
             worldgenlevel.setBlockState(blockpos.add(0, -1, -3), material, 2);
             worldgenlevel.setBlockState(blockpos.add(1, -1, -3), material, 2);
             worldgenlevel.setBlockState(blockpos.add(0, -1, -2), water, 2);
-            worldgenlevel.setBlockState(blockpos.add(2, 0, 0), randomSapling(), 2);
-            worldgenlevel.setBlockState(blockpos.add(0, 0, 2), randomSapling(), 2);
-            worldgenlevel.setBlockState(blockpos.add(-2, 0, 0), randomSapling(), 2);
+            worldgenlevel.setBlockState(blockpos.add(2, 0, 0), randomSapling(random), 2);
+            worldgenlevel.setBlockState(blockpos.add(0, 0, 2), randomSapling(random), 2);
+            worldgenlevel.setBlockState(blockpos.add(-2, 0, 0), randomSapling(random), 2);
         } else if (randomNumber < 5) {
             worldgenlevel.setBlockState(blockpos.add(-1, -1, 3), material, 2);
             worldgenlevel.setBlockState(blockpos.add(0, -1, 3), material, 2);
             worldgenlevel.setBlockState(blockpos.add(1, -1, 3), material, 2);
             worldgenlevel.setBlockState(blockpos.add(0, -1, 2), water, 2);
-            worldgenlevel.setBlockState(blockpos.add(2, 0, 0), randomSapling(), 2);
-            worldgenlevel.setBlockState(blockpos.add(-2, 0, 0), randomSapling(), 2);
-            worldgenlevel.setBlockState(blockpos.add(0, 0, -2), randomSapling(), 2);
+            worldgenlevel.setBlockState(blockpos.add(2, 0, 0), randomSapling(random), 2);
+            worldgenlevel.setBlockState(blockpos.add(-2, 0, 0), randomSapling(random), 2);
+            worldgenlevel.setBlockState(blockpos.add(0, 0, -2), randomSapling(random), 2);
         } else if (randomNumber < 6) {
             worldgenlevel.setBlockState(blockpos.add(-1, -1, -3), material, 2);
             worldgenlevel.setBlockState(blockpos.add(0, -1, -3), material, 2);
@@ -112,8 +112,8 @@ public class PondFeature extends Feature<DoubleBlockConfiguration> {
             worldgenlevel.setBlockState(blockpos.add(3, -1, 0), material, 2);
             worldgenlevel.setBlockState(blockpos.add(3, -1, 1), material, 2);
             worldgenlevel.setBlockState(blockpos.add(2, -1, 0), water, 2);
-            worldgenlevel.setBlockState(blockpos.add(-2, 0, 0), randomSapling(), 2);
-            worldgenlevel.setBlockState(blockpos.add(0, 0, 2), randomSapling(), 2);
+            worldgenlevel.setBlockState(blockpos.add(-2, 0, 0), randomSapling(random), 2);
+            worldgenlevel.setBlockState(blockpos.add(0, 0, 2), randomSapling(random), 2);
         } else if (randomNumber < 7) {
             worldgenlevel.setBlockState(blockpos.add(-1, -1, 3), material, 2);
             worldgenlevel.setBlockState(blockpos.add(0, -1, 3), material, 2);
@@ -123,25 +123,25 @@ public class PondFeature extends Feature<DoubleBlockConfiguration> {
             worldgenlevel.setBlockState(blockpos.add(-3, -1, 0), material, 2);
             worldgenlevel.setBlockState(blockpos.add(-3, -1, 1), material, 2);
             worldgenlevel.setBlockState(blockpos.add(-2, -1, 0), water, 2);
-            worldgenlevel.setBlockState(blockpos.add(2, 0, 0), randomSapling(), 2);
-            worldgenlevel.setBlockState(blockpos.add(0, 0, -2), randomSapling(), 2);
+            worldgenlevel.setBlockState(blockpos.add(2, 0, 0), randomSapling(random), 2);
+            worldgenlevel.setBlockState(blockpos.add(0, 0, -2), randomSapling(random), 2);
         }
 
-        int randomNumber2 = (int)(Math.random()*(6)+1);
+        int randomNumber2 = random.nextInt(6) + 1;
 
         if (randomNumber2 < 3) {
-            generateCorner(worldgenlevel, blockpos.add(-1, -1, -1), material, slab);
+            generateCorner(worldgenlevel, blockpos.add(-1, -1, -1), material, slab, random);
         } else if (randomNumber2 < 4) {
-            generateCorner(worldgenlevel, blockpos.add(1, -1, -1), material, slab);
-            generateCorner(worldgenlevel, blockpos.add(-1, -1, 1), material, slab);
+            generateCorner(worldgenlevel, blockpos.add(1, -1, -1), material, slab, random);
+            generateCorner(worldgenlevel, blockpos.add(-1, -1, 1), material, slab, random);
         } else if (randomNumber2 < 5) {
-            generateCorner(worldgenlevel, blockpos.add(1, -1, 1), material, slab);
+            generateCorner(worldgenlevel, blockpos.add(1, -1, 1), material, slab, random);
         } else if (randomNumber2 < 6) {
-            generateCorner(worldgenlevel, blockpos.add(-1, -1, -1), material, slab);
-            generateCorner(worldgenlevel, blockpos.add(1, -1, 1), material, slab);
+            generateCorner(worldgenlevel, blockpos.add(-1, -1, -1), material, slab, random);
+            generateCorner(worldgenlevel, blockpos.add(1, -1, 1), material, slab, random);
         } else if (randomNumber2 < 7) {
-            generateCorner(worldgenlevel, blockpos.add(1, -1, -1), material, slab);
-            generateCorner(worldgenlevel, blockpos.add(1, -1, 1), material, slab);
+            generateCorner(worldgenlevel, blockpos.add(1, -1, -1), material, slab, random);
+            generateCorner(worldgenlevel, blockpos.add(1, -1, 1), material, slab, random);
         }
 
         return true;
@@ -153,48 +153,48 @@ public class PondFeature extends Feature<DoubleBlockConfiguration> {
         }
     }
 
-    private void generateCorner(StructureWorldAccess worldGenLevel, BlockPos blockPos, BlockState material, BlockState slab) {
+    private void generateCorner(StructureWorldAccess worldGenLevel, BlockPos blockPos, BlockState material, BlockState slab, Random random) {
         worldGenLevel.setBlockState(blockPos, material, 2);
         worldGenLevel.setBlockState(blockPos.up(), material, 2);
 
-        int randomNumber = (int)(Math.random()*(3)+1);
+        int randomNumber = random.nextInt(3) + 1;
         if (randomNumber < 3) { //66% chance to put a moss carpet ontop.
             replaceAir(worldGenLevel, blockPos.up(2), Blocks.MOSS_CARPET.getDefaultState());
         }
 
-        int randomNumber2 = (int)(Math.random()*(4)+1);
+        int randomNumber2 = random.nextInt(4) + 1;
         if (randomNumber2 < 2) { //25% chance to extend north.
-            generateExtension(worldGenLevel, blockPos.north(), material, slab);
+            generateExtension(worldGenLevel, blockPos.north(), material, slab, random);
         }
     }
 
-    private void generateExtension(StructureWorldAccess worldGenLevel, BlockPos blockPos, BlockState material, BlockState slab) {
+    private void generateExtension(StructureWorldAccess worldGenLevel, BlockPos blockPos, BlockState material, BlockState slab, Random random) {
         worldGenLevel.setBlockState(blockPos, material, 2);
-        int randomNumber = (int)(Math.random()*(3)+1);
+        int randomNumber = random.nextInt(3) + 1;
         if (randomNumber < 2) { //33% chance to generate a slab ontop.
             replaceAir(worldGenLevel, blockPos.up(), slab);
         } else if (randomNumber < 3) { //33% chance to generate a solid block ontop.
             worldGenLevel.setBlockState(blockPos.up(), material, 2);
-            generateExtensionDecor(worldGenLevel, blockPos.up(2));
+            generateExtensionDecor(worldGenLevel, blockPos.up(2), random);
         } else { //33% chance to attempt a 50% at generating decor ontop.
-            generateExtensionDecor(worldGenLevel, blockPos.up());
+            generateExtensionDecor(worldGenLevel, blockPos.up(), random);
         }
     }
 
-    private void generateExtensionDecor(StructureWorldAccess worldGenLevel, BlockPos blockPos) {
-        int randomNumber = (int)(Math.random()*(2)+1);
+    private void generateExtensionDecor(StructureWorldAccess worldGenLevel, BlockPos blockPos, Random random) {
+        int randomNumber = random.nextInt(2) + 1;
         if (randomNumber < 2) { //50% chance to generate decoration.
-            int randomNumber2 = (int)(Math.random()*(3)+1);
+            int randomNumber2 = random.nextInt(3) + 1;
             if (randomNumber2 < 2) { //66% chance to generate moss.
                 replaceAir(worldGenLevel, blockPos, Blocks.MOSS_CARPET.getDefaultState());
             } else { //33% chance to generate a random sapling.
-                replaceAir(worldGenLevel, blockPos, randomSapling());
+                replaceAir(worldGenLevel, blockPos, randomSapling(random));
             }
         }
     }
 
-    private BlockState randomSapling() {
-        int randomNumber = (int)(Math.random()*(15)+1);
+    private static BlockState randomSapling(Random random) {
+        int randomNumber = random.nextInt(15) + 1;
 
         if (randomNumber < 2) {
             return Blocks.OAK_SAPLING.getDefaultState();
