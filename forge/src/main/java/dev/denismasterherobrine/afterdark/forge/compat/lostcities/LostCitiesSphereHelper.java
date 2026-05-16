@@ -3,6 +3,7 @@ package dev.denismasterherobrine.afterdark.forge.compat.lostcities;
 import mcjty.lostcities.config.LostCityProfile;
 import mcjty.lostcities.varia.ChunkCoord;
 import mcjty.lostcities.worldgen.IDimensionInfo;
+import mcjty.lostcities.worldgen.lost.BuildingInfo;
 import mcjty.lostcities.worldgen.lost.CitySphere;
 import net.minecraft.block.Blocks;
 import net.minecraft.server.world.ServerWorld;
@@ -16,8 +17,8 @@ import org.jetbrains.annotations.Nullable;
 public final class LostCitiesSphereHelper {
     private LostCitiesSphereHelper() {}
 
-    // Clears all non-air blocks in the chunk that are inside the city to prevent terrain spawning
-    public static void clearChunkInsideSphere(StructureWorldAccess level, IDimensionInfo dimInfo, ChunkPos chunkPos) {
+    // Clears terrain/features from the city's airspace while preserving the floor Lost Cities/Lost Worlds builds on.
+    public static void clearChunkAboveLostCityFloorInsideSphere(StructureWorldAccess level, IDimensionInfo dimInfo, ChunkPos chunkPos) {
         LostCityProfile profile = dimInfo.getProfile();
         if (!profile.isSpace() && !profile.isSpheres()) {
             return;
@@ -30,13 +31,18 @@ public final class LostCitiesSphereHelper {
         float radius = sphere.getRadius();
         BlockPos center = sphere.getCenterPos();
         double r2 = radius * radius;
+        BuildingInfo buildingInfo = BuildingInfo.getBuildingInfo(coord, dimInfo);
+        int floorY = buildingInfo.getCityGroundLevel();
         int cx = center.getX();
         int cy = center.getY();
         int cz = center.getZ();
         int baseX = chunkPos.x << 4;
         int baseZ = chunkPos.z << 4;
-        int minY = Math.max(level.getBottomY(), cy - (int) radius - 2);
-        int maxY = Math.min(level.getTopY() - 1, cy + (int) radius + 2);
+        int minY = Math.max(level.getBottomY(), floorY + 1);
+        int maxY = Math.min(level.getTopY() - 1, cy + (int) Math.ceil(radius));
+        if (minY > maxY) {
+            return;
+        }
         BlockPos.Mutable mutable = new BlockPos.Mutable();
         for (int lx = 0; lx < 16; lx++) {
             for (int lz = 0; lz < 16; lz++) {
