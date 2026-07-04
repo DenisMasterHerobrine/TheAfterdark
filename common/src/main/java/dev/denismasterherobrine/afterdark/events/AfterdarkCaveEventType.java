@@ -22,6 +22,7 @@ import net.minecraft.util.math.Box;
 
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.ThreadLocalRandom;
 
 public enum AfterdarkCaveEventType {
     WALL_WHISPERS(35, 20 * 45, SoundEvents.AMBIENT_CAVE.value()),
@@ -74,7 +75,7 @@ public enum AfterdarkCaveEventType {
 
     public void begin(ServerPlayerEntity player, ServerWorld world) {
         player.sendMessage(Text.translatable(translationKey("start")), true);
-        play(player, world, omenSound, 0.9F, 0.55F + player.getRandom().nextFloat() * 0.35F);
+        play(player, world, omenSound, 0.9F, 0.55F + randomFloat() * 0.35F);
         pulse(world, player, 24, 0.08D);
 
         switch (this) {
@@ -127,7 +128,7 @@ public enum AfterdarkCaveEventType {
             }
             case STONE_HEARTBEAT -> every(age, 55, () -> {
                 play(player, world, SoundEvents.ENTITY_WARDEN_HEARTBEAT, 1.8F, 0.55F);
-                player.takeKnockback(0.35D, player.getRandom().nextDouble() - 0.5D, player.getRandom().nextDouble() - 0.5D);
+                player.takeKnockback(0.35D, randomDouble() - 0.5D, randomDouble() - 0.5D);
                 empowerHostiles(world, player, 18, StatusEffects.STRENGTH, 120, 0);
             });
             case MEMORY_DROP -> every(age, 90, () -> {
@@ -153,7 +154,7 @@ public enum AfterdarkCaveEventType {
             case DEEP_RAGE -> every(age, 100, () -> {
                 empowerHostiles(world, player, 28, StatusEffects.SPEED, 160, 0);
                 empowerHostiles(world, player, 28, StatusEffects.STRENGTH, 160, 0);
-                if (player.getRandom().nextFloat() < 0.28F) {
+                if (randomFloat() < 0.28F) {
                     spawnZombie(world, player, false);
                 }
             });
@@ -179,7 +180,7 @@ public enum AfterdarkCaveEventType {
             case BLACK_TIDE -> every(age, 200, () -> {
                 player.addStatusEffect(effect(StatusEffects.DARKNESS, 100, 0));
                 play(player, world, SoundEvents.BLOCK_SCULK_SHRIEKER_SHRIEK, 1.0F, 0.7F);
-                if (player.getRandom().nextFloat() < 0.35F) {
+                if (randomFloat() < 0.35F) {
                     spawnZombie(world, player, false);
                 }
             });
@@ -194,7 +195,7 @@ public enum AfterdarkCaveEventType {
                 BlockPos below = player.getBlockPos().down();
                 world.spawnParticles(new BlockStateParticleEffect(ParticleTypes.FALLING_DUST, world.getBlockState(below)), below.getX() + 0.5D, below.getY() + 1.0D, below.getZ() + 0.5D, 16, 0.35D, 0.05D, 0.35D, 0.02D);
                 play(player, world, SoundEvents.BLOCK_STONE_BREAK, 1.0F, 0.45F);
-                if (age > 100 && player.getRandom().nextFloat() < 0.24F) {
+                if (age > 100 && randomFloat() < 0.24F) {
                     spawnZombie(world, player, false);
                 }
             });
@@ -214,15 +215,15 @@ public enum AfterdarkCaveEventType {
                 }
             });
             case MIRROR_ECHO -> every(age, 75, () -> {
-                playOffset(player, world, player.getRandom().nextBoolean() ? SoundEvents.BLOCK_NOTE_BLOCK_BELL.value() : SoundEvents.ENTITY_SKELETON_STEP, 12.0D, 1.0F, randomPitch(player, 0.5F, 1.5F));
-                if (player.getRandom().nextFloat() < 0.20F) {
+                playOffset(player, world, randomBoolean() ? SoundEvents.BLOCK_NOTE_BLOCK_BELL.value() : SoundEvents.ENTITY_SKELETON_STEP, 12.0D, 1.0F, randomPitch(player, 0.5F, 1.5F));
+                if (randomFloat() < 0.20F) {
                     player.addStatusEffect(effect(StatusEffects.LUCK, 100, 0));
                 }
             });
             case STONE_CRACK -> every(age, 100, () -> {
                 play(player, world, SoundEvents.BLOCK_ANVIL_LAND, 1.1F, 0.6F);
                 world.spawnParticles(new BlockStateParticleEffect(ParticleTypes.FALLING_DUST, Blocks.STONE.getDefaultState()), player.getX(), player.getY() + 2.2D, player.getZ(), 24, 2.4D, 0.3D, 2.4D, 0.08D);
-                if (player.getRandom().nextFloat() < 0.35F) {
+                if (randomFloat() < 0.35F) {
                     player.damage(world.getDamageSources().fallingAnvil(player), 2.0F);
                 }
             });
@@ -250,7 +251,7 @@ public enum AfterdarkCaveEventType {
             case MOTHER_MOUNTAIN_HUM -> every(age, 100, () -> {
                 player.addStatusEffect(effect(StatusEffects.HASTE, 140, 1));
                 player.addStatusEffect(effect(StatusEffects.DARKNESS, 60, 0));
-                if (player.getRandom().nextFloat() < 0.25F) {
+                if (randomFloat() < 0.25F) {
                     spawnZombie(world, player, false);
                 }
             });
@@ -274,7 +275,7 @@ public enum AfterdarkCaveEventType {
     public void finish(ServerPlayerEntity player, ServerWorld world, AfterdarkPlayerEventState state) {
         switch (this) {
             case DEEP_RAGE -> player.addStatusEffect(effect(StatusEffects.RESISTANCE, 20 * 20, 0));
-            case BONE_DUST -> player.addExperience(4 + player.getRandom().nextInt(6));
+            case BONE_DUST -> player.addExperience(4 + randomInt(6));
             case ORE_SONG -> player.addStatusEffect(effect(StatusEffects.LUCK, 20 * 25, 0));
             case FALSE_SAFETY -> {
                 player.addStatusEffect(effect(StatusEffects.DARKNESS, 120, 0));
@@ -300,7 +301,7 @@ public enum AfterdarkCaveEventType {
     }
 
     private static float randomPitch(ServerPlayerEntity player, float min, float max) {
-        return min + player.getRandom().nextFloat() * (max - min);
+        return min + randomFloat() * (max - min);
     }
 
     private static void play(ServerPlayerEntity player, ServerWorld world, SoundEvent sound, float volume, float pitch) {
@@ -315,8 +316,8 @@ public enum AfterdarkCaveEventType {
     }
 
     private static void playOffset(ServerPlayerEntity player, ServerWorld world, SoundEvent sound, double radius, float volume, float pitch) {
-        double angle = player.getRandom().nextDouble() * Math.PI * 2.0D;
-        double distance = 3.0D + player.getRandom().nextDouble() * radius;
+        double angle = randomDouble() * Math.PI * 2.0D;
+        double distance = 3.0D + randomDouble() * radius;
         double x = player.getX() + Math.cos(angle) * distance;
         double z = player.getZ() + Math.sin(angle) * distance;
         world.playSound(null, x, player.getY(), z, sound, SoundCategory.AMBIENT, volume, pitch);
@@ -331,7 +332,7 @@ public enum AfterdarkCaveEventType {
             BatEntity bat = new BatEntity(EntityType.BAT, world);
             BlockPos pos = randomNearbyAir(world, player, 7, 3);
             if (pos != null) {
-                bat.refreshPositionAndAngles(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, player.getRandom().nextFloat() * 360.0F, 0.0F);
+                bat.refreshPositionAndAngles(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, randomFloat() * 360.0F, 0.0F);
                 world.spawnEntity(bat);
             }
         }
@@ -383,9 +384,9 @@ public enum AfterdarkCaveEventType {
     private static BlockPos randomNearbyAir(ServerWorld world, ServerPlayerEntity player, int radius, int vertical) {
         BlockPos origin = player.getBlockPos();
         for (int i = 0; i < 18; i++) {
-            int x = origin.getX() + player.getRandom().nextBetween(-radius, radius);
-            int y = origin.getY() + player.getRandom().nextBetween(-vertical, vertical);
-            int z = origin.getZ() + player.getRandom().nextBetween(-radius, radius);
+            int x = origin.getX() + randomBetweenInclusive(-radius, radius);
+            int y = origin.getY() + randomBetweenInclusive(-vertical, vertical);
+            int z = origin.getZ() + randomBetweenInclusive(-radius, radius);
             BlockPos pos = new BlockPos(x, y, z);
             if (world.isAir(pos) && world.isAir(pos.up()) && !world.isAir(pos.down())) {
                 return pos;
@@ -401,5 +402,24 @@ public enum AfterdarkCaveEventType {
             }
         }
         return false;
+    }
+    private static int randomInt(int bound) {
+        return ThreadLocalRandom.current().nextInt(bound);
+    }
+
+    private static int randomBetweenInclusive(int min, int max) {
+        return ThreadLocalRandom.current().nextInt(min, max + 1);
+    }
+
+    private static float randomFloat() {
+        return ThreadLocalRandom.current().nextFloat();
+    }
+
+    private static double randomDouble() {
+        return ThreadLocalRandom.current().nextDouble();
+    }
+
+    private static boolean randomBoolean() {
+        return ThreadLocalRandom.current().nextBoolean();
     }
 }

@@ -30,7 +30,7 @@ public class CaveKelpFeature extends Feature<DefaultFeatureConfig> {
             for(int l = 0; l <= k; ++l) {
                 if (worldgenlevel.getBlockState(blockpos1).isOf(Blocks.WATER) && worldgenlevel.getBlockState(blockpos1.up()).isOf(Blocks.WATER) && blockstate1.canPlaceAt(worldgenlevel, blockpos1)) {
                     if (l == k) {
-                        worldgenlevel.setBlockState(blockpos1, blockstate.with(KelpBlock.AGE, Integer.valueOf(random.nextInt(4) + 20)), 2);
+                        worldgenlevel.setBlockState(blockpos1, blockstate.with(KelpBlock.AGE, random.nextInt(4) + 20), 2);
                         ++i;
                     } else {
                         worldgenlevel.setBlockState(blockpos1, blockstate1, 2);
@@ -38,7 +38,7 @@ public class CaveKelpFeature extends Feature<DefaultFeatureConfig> {
                 } else if (l > 0) {
                     BlockPos blockpos2 = blockpos1.down();
                     if (blockstate.canPlaceAt(worldgenlevel, blockpos2) && !worldgenlevel.getBlockState(blockpos2.down()).isOf(Blocks.KELP)) {
-                        worldgenlevel.setBlockState(blockpos2, blockstate.with(KelpBlock.AGE, Integer.valueOf(random.nextInt(4) + 20)), 2);
+                        worldgenlevel.setBlockState(blockpos2, blockstate.with(KelpBlock.AGE, random.nextInt(4) + 20), 2);
                         ++i;
                     }
                     break;

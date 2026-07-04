@@ -20,7 +20,7 @@ public class CavePickleFeature extends Feature<DefaultFeatureConfig> {
         StructureWorldAccess worldgenlevel = pContext.getWorld();
         BlockPos blockpos = pContext.getOrigin();
         BlockPos blockpos1 = new BlockPos(blockpos.getX(), blockpos.up().getY(), blockpos.getZ());
-        BlockState blockstate = Blocks.SEA_PICKLE.getDefaultState().with(SeaPickleBlock.PICKLES, Integer.valueOf(random.nextInt(4) + 1));
+        BlockState blockstate = Blocks.SEA_PICKLE.getDefaultState().with(SeaPickleBlock.PICKLES, random.nextInt(4) + 1);
 
         if (worldgenlevel.getBlockState(blockpos1).isOf(Blocks.WATER) && blockstate.canPlaceAt(worldgenlevel, blockpos1)) {
             worldgenlevel.setBlockState(blockpos1, blockstate, 2);

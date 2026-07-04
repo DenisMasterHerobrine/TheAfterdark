@@ -8,6 +8,7 @@ import net.minecraft.server.world.ServerWorld;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ThreadLocalRandom;
 
 public final class AfterdarkCaveEventManager {
     private static final Map<UUID, AfterdarkPlayerEventState> STATES = new HashMap<>();
@@ -20,6 +21,10 @@ public final class AfterdarkCaveEventManager {
     }
 
     public static void tick(ServerPlayerEntity player) {
+        if (player.getServer() == null || !player.getServer().isOnThread()) {
+            return;
+        }
+
         if (!Config.INSTANCE.afterdarkEventsEnabled) {
             STATES.remove(player.getUuid());
             return;
@@ -33,7 +38,7 @@ public final class AfterdarkCaveEventManager {
             return;
         }
 
-        AfterdarkPlayerEventState state = STATES.computeIfAbsent(player.getUuid(), uuid -> new AfterdarkPlayerEventState(randomCooldown(player)));
+        AfterdarkPlayerEventState state = STATES.computeIfAbsent(player.getUuid(), uuid -> new AfterdarkPlayerEventState(randomCooldown()));
 
         if (state.hasActiveEvent()) {
             AfterdarkCaveEventType event = state.getActiveEvent();
@@ -43,8 +48,8 @@ public final class AfterdarkCaveEventManager {
             if (state.getActiveTicks() <= 0) {
                 event.finish(player, world, state);
                 state.clearActiveEvent();
-                state.setCooldownTicks(randomCooldown(player));
-                state.resetCheckTicks(randomCheckDelay(player));
+                state.setCooldownTicks(randomCooldown());
+                state.resetCheckTicks(randomCheckDelay());
             }
             return;
         }
@@ -55,23 +60,23 @@ public final class AfterdarkCaveEventManager {
             return;
         }
 
-        state.resetCheckTicks(randomCheckDelay(player));
-        if (player.getRandom().nextFloat() > Config.INSTANCE.afterdarkEventChancePerCheck) {
+        state.resetCheckTicks(randomCheckDelay());
+        if (ThreadLocalRandom.current().nextFloat() > Config.INSTANCE.afterdarkEventChancePerCheck) {
             return;
         }
 
-        AfterdarkCaveEventType event = pickEvent(player);
+        AfterdarkCaveEventType event = pickEvent();
         state.start(event);
         event.begin(player, world);
     }
 
-    private static AfterdarkCaveEventType pickEvent(ServerPlayerEntity player) {
+    private static AfterdarkCaveEventType pickEvent() {
         int totalWeight = 0;
         for (AfterdarkCaveEventType event : AfterdarkCaveEventType.values()) {
             totalWeight += event.getWeight();
         }
 
-        int value = player.getRandom().nextInt(totalWeight);
+        int value = ThreadLocalRandom.current().nextInt(totalWeight);
         for (AfterdarkCaveEventType event : AfterdarkCaveEventType.values()) {
             value -= event.getWeight();
             if (value < 0) {
@@ -82,11 +87,15 @@ public final class AfterdarkCaveEventManager {
         return AfterdarkCaveEventType.WALL_WHISPERS;
     }
 
-    private static int randomCooldown(ServerPlayerEntity player) {
-        return player.getRandom().nextBetween(MIN_COOLDOWN_TICKS, MAX_COOLDOWN_TICKS);
+    private static int randomCooldown() {
+        return nextBetweenInclusive(MIN_COOLDOWN_TICKS, MAX_COOLDOWN_TICKS);
     }
 
-    private static int randomCheckDelay(ServerPlayerEntity player) {
-        return player.getRandom().nextBetween(MIN_CHECK_TICKS, MAX_CHECK_TICKS);
+    private static int randomCheckDelay() {
+        return nextBetweenInclusive(MIN_CHECK_TICKS, MAX_CHECK_TICKS);
+    }
+
+    private static int nextBetweenInclusive(int min, int max) {
+        return ThreadLocalRandom.current().nextInt(min, max + 1);
     }
 }

@@ -19,7 +19,8 @@ public class BlackHoneySurfacePatchFeature extends Feature<DefaultFeatureConfig>
     public boolean generate(FeatureContext<DefaultFeatureConfig> context) {
         StructureWorldAccess world = context.getWorld();
         Random random = context.getRandom();
-        BlockPos center = BlackHoneyFeatureUtil.findFloor(world, context.getOrigin(), 5, 16);
+        BlockPos origin = context.getOrigin();
+        BlockPos center = BlackHoneyFeatureUtil.findFloor(world, origin, 5, 16);
         if (center == null) {
             return false;
         }
@@ -44,8 +45,7 @@ public class BlackHoneySurfacePatchFeature extends Feature<DefaultFeatureConfig>
                     continue;
                 }
 
-                world.setBlockState(air.down(), gradientState(air, distance), 2);
-                placed = true;
+                placed |= BlackHoneyFeatureUtil.placeSurfaceBlockInOriginChunk(world, origin, air, gradientState(air, distance));
             }
         }
 

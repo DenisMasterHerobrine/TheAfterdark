@@ -19,10 +19,10 @@ public class AnvilRockFeature extends Feature<AnvilRockConfiguration> {
         BlockPos blockpos = new BlockPos((int) pContext.getOrigin().toCenterPos().getX(), pContext.getOrigin().getY(), (int) pContext.getOrigin().toCenterPos().getZ());
         Random random = pContext.getRandom();
         AnvilRockConfiguration config = pContext.getConfig();
-        Integer radius = config.getRadius().get(random);
-        Integer height = config.getHeight().get(random);
-        Integer stretch = config.getStretch().get(random);
-        Integer maxHeight = height-1;
+        int radius = config.getRadius().get(random);
+        int height = config.getHeight().get(random);
+        int stretch = config.getStretch().get(random);
+        int maxHeight = height-1;
 
         if (worldgenlevel.isAir(blockpos.down())) {
             return false;

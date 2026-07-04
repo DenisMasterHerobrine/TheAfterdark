@@ -56,9 +56,9 @@ public class BlackHoneyRootArchFeature extends Feature<DefaultFeatureConfig> {
     private boolean placeRootSegment(StructureWorldAccess world, Random random, BlockPos from, BlockPos to, Direction side, boolean thick) {
         boolean placed = false;
         BlockPos cursor = from;
-        int stepX = Integer.compare(to.getX(), from.getX());
-        int stepY = Integer.compare(to.getY(), from.getY());
-        int stepZ = Integer.compare(to.getZ(), from.getZ());
+        int stepX = BlackHoneyFeatureUtil.stepToward(from.getX(), to.getX());
+        int stepY = BlackHoneyFeatureUtil.stepToward(from.getY(), to.getY());
+        int stepZ = BlackHoneyFeatureUtil.stepToward(from.getZ(), to.getZ());
 
         while (cursor.getX() != to.getX() || cursor.getZ() != to.getZ()) {
             cursor = new BlockPos(cursor.getX() + stepX, cursor.getY(), cursor.getZ() + stepZ);

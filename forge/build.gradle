@@ -59,8 +59,8 @@ dependencies {
     shadowBundle project(path: ':common', configuration: 'transformProductionForge')
 
     modCompileOnly "curse.maven:lostcities-${rootProject.lostcities_curse_project_id}:${rootProject.lostcities_curse_file_id}"
-    modLocalRuntime "curse.maven:lostcities-${rootProject.lostcities_curse_project_id}:${rootProject.lostcities_curse_file_id}"
-    modLocalRuntime "curse.maven:lostworlds-${rootProject.lostworlds_curse_project_id}:${rootProject.lostworlds_curse_file_id}"
+    // modLocalRuntime "curse.maven:lostcities-${rootProject.lostcities_curse_project_id}:${rootProject.lostcities_curse_file_id}"
+    // modLocalRuntime "curse.maven:lostworlds-${rootProject.lostworlds_curse_project_id}:${rootProject.lostworlds_curse_file_id}"
 }
 
 processResources {

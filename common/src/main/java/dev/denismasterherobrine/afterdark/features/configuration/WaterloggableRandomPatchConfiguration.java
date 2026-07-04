@@ -20,12 +20,12 @@ public class WaterloggableRandomPatchConfiguration implements FeatureConfig {
                     .forGetter((v) -> v.to_place))
                     .apply(fields, WaterloggableRandomPatchConfiguration::new));
 
-    public final Integer tries;
-    public final Integer xz_spread;
-    public final Integer y_spread;
+    public final int tries;
+    public final int xz_spread;
+    public final int y_spread;
     public final BlockStateProvider to_place;
 
-    public WaterloggableRandomPatchConfiguration(Integer tries, Integer xz_spread, Integer y_spread, BlockStateProvider to_place) {
+    public WaterloggableRandomPatchConfiguration(int tries, int xz_spread, int y_spread, BlockStateProvider to_place) {
         this.tries = tries;
         this.xz_spread = xz_spread;
         this.y_spread = y_spread;

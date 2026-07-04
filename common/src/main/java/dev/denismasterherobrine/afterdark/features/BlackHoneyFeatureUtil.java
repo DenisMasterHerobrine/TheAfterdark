@@ -4,6 +4,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkSectionPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.world.StructureWorldAccess;
@@ -20,6 +21,11 @@ final class BlackHoneyFeatureUtil {
 
     static boolean inWorld(StructureWorldAccess world, BlockPos pos) {
         return pos.getY() >= world.getBottomY() && pos.getY() < world.getTopY();
+    }
+
+    static boolean inOriginChunk(BlockPos origin, BlockPos pos) {
+        return ChunkSectionPos.getSectionCoord(pos.getX()) == ChunkSectionPos.getSectionCoord(origin.getX())
+                && ChunkSectionPos.getSectionCoord(pos.getZ()) == ChunkSectionPos.getSectionCoord(origin.getZ());
     }
 
     static boolean canReplace(StructureWorldAccess world, BlockPos pos) {
@@ -62,6 +68,23 @@ final class BlackHoneyFeatureUtil {
         if (canReplace(world, pos)) {
             world.setBlockState(pos, state, 2);
         }
+    }
+
+    static boolean placeIfReplaceableInOriginChunk(StructureWorldAccess world, BlockPos origin, BlockPos pos, BlockState state) {
+        if (!inOriginChunk(origin, pos) || !canReplace(world, pos)) {
+            return false;
+        }
+        world.setBlockState(pos, state, 2);
+        return true;
+    }
+
+    static boolean placeSurfaceBlockInOriginChunk(StructureWorldAccess world, BlockPos origin, BlockPos airPos, BlockState state) {
+        BlockPos surface = airPos.down();
+        if (!inOriginChunk(origin, surface) || !inWorld(world, surface) || !isSolid(world, surface)) {
+            return false;
+        }
+        world.setBlockState(surface, state, 2);
+        return true;
     }
 
     static void placeSurfaceBlock(StructureWorldAccess world, BlockPos airPos, BlockState state) {
@@ -107,5 +130,12 @@ final class BlackHoneyFeatureUtil {
 
     static int signed(Random random, int boundInclusive) {
         return random.nextInt(boundInclusive * 2 + 1) - boundInclusive;
+    }
+
+    static int stepToward(int from, int to) {
+        if (from < to) {
+            return 1;
+        }
+        return from > to ? -1 : 0;
     }
 }
