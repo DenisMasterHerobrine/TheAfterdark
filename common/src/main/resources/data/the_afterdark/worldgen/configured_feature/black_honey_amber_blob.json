@@ -1,0 +1,35 @@
+{
+  "type": "the_afterdark:additive_ground_blob",
+  "config": {
+    "blockOn": {
+      "Name": "minecraft:rooted_dirt"
+    },
+    "blockOn2": {
+      "Name": "minecraft:mud"
+    },
+    "blobMaterial": {
+      "Name": "minecraft:honeycomb_block"
+    },
+    "blobMass": {
+      "type": "minecraft:uniform",
+      "value": {
+        "min_inclusive": 24,
+        "max_inclusive": 52
+      }
+    },
+    "blobWidth": {
+      "type": "minecraft:uniform",
+      "value": {
+        "min_inclusive": 2,
+        "max_inclusive": 4
+      }
+    },
+    "blobHeight": {
+      "type": "minecraft:uniform",
+      "value": {
+        "min_inclusive": 2,
+        "max_inclusive": 5
+      }
+    }
+  }
+}

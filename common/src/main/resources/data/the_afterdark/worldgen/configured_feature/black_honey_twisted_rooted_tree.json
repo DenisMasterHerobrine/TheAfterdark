@@ -1,0 +1,127 @@
+{
+  "type": "minecraft:root_system",
+  "config": {
+    "required_vertical_space_for_tree": 15,
+    "root_radius": 4,
+    "root_placement_attempts": 28,
+    "root_column_max_height": 7,
+    "hanging_root_radius": 5,
+    "hanging_roots_vertical_span": 5,
+    "hanging_root_placement_attempts": 36,
+    "allowed_vertical_water_for_tree": 2,
+    "root_replaceable": "#minecraft:azalea_root_replaceable",
+    "root_state_provider": {
+      "type": "minecraft:weighted_state_provider",
+      "entries": [
+        {
+          "weight": 7,
+          "data": {
+            "Name": "minecraft:rooted_dirt"
+          }
+        },
+        {
+          "weight": 2,
+          "data": {
+            "Name": "minecraft:muddy_mangrove_roots",
+            "Properties": {
+              "axis": "y"
+            }
+          }
+        },
+        {
+          "weight": 1,
+          "data": {
+            "Name": "minecraft:mud"
+          }
+        }
+      ]
+    },
+    "hanging_root_state_provider": {
+      "type": "minecraft:weighted_state_provider",
+      "entries": [
+        {
+          "weight": 10,
+          "data": {
+            "Name": "minecraft:weeping_vines_plant"
+          }
+        },
+        {
+          "weight": 4,
+          "data": {
+            "Name": "minecraft:mangrove_roots",
+            "Properties": {
+              "waterlogged": "false"
+            }
+          }
+        },
+        {
+          "weight": 1,
+          "data": {
+            "Name": "minecraft:honey_block"
+          }
+        }
+      ]
+    },
+    "allowed_tree_position": {
+      "type": "minecraft:all_of",
+      "predicates": [
+        {
+          "type": "minecraft:any_of",
+          "predicates": [
+            {
+              "type": "minecraft:matching_blocks",
+              "blocks": [
+                "minecraft:air",
+                "minecraft:cave_air",
+                "minecraft:void_air",
+                "minecraft:water"
+              ]
+            },
+            {
+              "type": "minecraft:matching_block_tag",
+              "tag": "minecraft:leaves"
+            },
+            {
+              "type": "minecraft:matching_block_tag",
+              "tag": "minecraft:replaceable_plants"
+            }
+          ]
+        },
+        {
+          "type": "minecraft:any_of",
+          "predicates": [
+            {
+              "type": "minecraft:matching_block_tag",
+              "offset": [
+                0,
+                -1,
+                0
+              ],
+              "tag": "minecraft:azalea_grows_on"
+            },
+            {
+              "type": "minecraft:matching_blocks",
+              "offset": [
+                0,
+                -1,
+                0
+              ],
+              "blocks": [
+                "minecraft:stone",
+                "minecraft:deepslate",
+                "minecraft:mud",
+                "minecraft:packed_mud",
+                "minecraft:rooted_dirt",
+                "minecraft:clay"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "feature": {
+      "feature": "the_afterdark:black_honey_twisted_tree",
+      "placement": []
+    }
+  }
+}

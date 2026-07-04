@@ -1,0 +1,33 @@
+{
+  "feature": "the_afterdark:dark_prismarine_water_fall",
+  "placement": [
+    {
+      "type": "minecraft:count",
+      "count": {
+        "type": "minecraft:uniform",
+        "value": {
+          "min_inclusive": 18,
+          "max_inclusive": 36
+        }
+      }
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "type": "minecraft:height_range",
+      "height": {
+        "type": "minecraft:uniform",
+        "min_inclusive": {
+          "absolute": -122
+        },
+        "max_inclusive": {
+          "absolute": 250
+        }
+      }
+    },
+    {
+      "type": "minecraft:biome"
+    }
+  ]
+}

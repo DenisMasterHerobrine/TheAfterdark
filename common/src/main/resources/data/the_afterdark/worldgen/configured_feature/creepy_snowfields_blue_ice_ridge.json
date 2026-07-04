@@ -1,0 +1,35 @@
+{
+  "type": "the_afterdark:additive_ground_blob",
+  "config": {
+    "blockOn": {
+      "Name": "minecraft:snow_block"
+    },
+    "blockOn2": {
+      "Name": "minecraft:packed_ice"
+    },
+    "blobMaterial": {
+      "Name": "minecraft:blue_ice"
+    },
+    "blobMass": {
+      "type": "minecraft:uniform",
+      "value": {
+        "min_inclusive": 38,
+        "max_inclusive": 86
+      }
+    },
+    "blobWidth": {
+      "type": "minecraft:uniform",
+      "value": {
+        "min_inclusive": 3,
+        "max_inclusive": 5
+      }
+    },
+    "blobHeight": {
+      "type": "minecraft:uniform",
+      "value": {
+        "min_inclusive": 2,
+        "max_inclusive": 4
+      }
+    }
+  }
+}

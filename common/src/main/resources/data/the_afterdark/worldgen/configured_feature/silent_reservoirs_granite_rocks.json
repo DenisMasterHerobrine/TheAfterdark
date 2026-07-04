@@ -1,0 +1,53 @@
+{
+  "type": "the_afterdark:supported_disk",
+  "config": {
+    "state_provider": {
+      "fallback": {
+        "type": "minecraft:weighted_state_provider",
+        "entries": [
+          {
+            "weight": 3,
+            "data": {
+              "Name": "minecraft:dark_prismarine"
+            }
+          },
+          {
+            "weight": 2,
+            "data": {
+              "Name": "minecraft:prismarine"
+            }
+          },
+          {
+            "weight": 2,
+            "data": {
+              "Name": "minecraft:calcite"
+            }
+          },
+          {
+            "weight": 1,
+            "data": {
+              "Name": "minecraft:sea_lantern"
+            }
+          }
+        ]
+      },
+      "rules": []
+    },
+    "target": {
+      "type": "minecraft:inside_world_bounds",
+      "offset": [
+        0,
+        1,
+        0
+      ]
+    },
+    "radius": {
+      "type": "minecraft:uniform",
+      "value": {
+        "min_inclusive": 2,
+        "max_inclusive": 4
+      }
+    },
+    "half_height": 4
+  }
+}

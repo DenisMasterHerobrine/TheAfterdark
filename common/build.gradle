@@ -1,3 +1,7 @@
+import groovy.io.FileType
+import groovy.json.JsonOutput
+import groovy.json.JsonSlurper
+
 architectury {
     common rootProject.enabled_platforms.split(',')
 }
@@ -14,4 +18,250 @@ dependencies {
     // which get remapped to the correct annotations on each platform.
     // Do NOT use other classes from Fabric Loader.
     modImplementation "net.fabricmc:fabric-loader:$rootProject.fabric_loader_version"
+}
+
+def worldgenDataDir = layout.projectDirectory.dir("src/main/resources/data/the_afterdark/worldgen")
+
+def readJsonFile = { File file ->
+    new JsonSlurper().parse(file)
+}
+
+def writeJsonFile = { File file, Object json ->
+    String prettyJson = JsonOutput.prettyPrint(JsonOutput.toJson(json))
+            .readLines()
+            .collect { it.replaceAll(/\s+$/, "") }
+            .join(System.lineSeparator())
+    file.setText(prettyJson + System.lineSeparator(), "UTF-8")
+}
+
+def jsonFilesIn = { File dir ->
+    if (!dir.exists()) {
+        return []
+    }
+    return dir.listFiles({ File ignored, String name -> name.endsWith(".json") } as FilenameFilter).toList().sort { it.name }
+}
+
+def detectFeatureCycle = { Map<String, List<String>> sources ->
+    Map<String, Set<String>> graph = new LinkedHashMap<>()
+
+    sources.each { String source, List<String> features ->
+        features.each { String feature ->
+            graph.computeIfAbsent(feature) { new LinkedHashSet<>() }
+        }
+        for (int i = 0; i < features.size() - 1; i++) {
+            String from = features[i]
+            String to = features[i + 1]
+            if (from != to) {
+                graph.computeIfAbsent(from) { new LinkedHashSet<>() }.add(to)
+                graph.computeIfAbsent(to) { new LinkedHashSet<>() }
+            }
+        }
+    }
+
+    Set<String> visiting = new LinkedHashSet<>()
+    Set<String> visited = new LinkedHashSet<>()
+    List<String> stack = []
+    List<String> cycle = null
+
+    Closure<Boolean> visit
+    visit = { String node ->
+        if (cycle != null) {
+            return true
+        }
+        if (visiting.contains(node)) {
+            int start = stack.indexOf(node)
+            cycle = new ArrayList<>(stack.subList(start, stack.size()))
+            cycle.add(node)
+            return true
+        }
+        if (visited.contains(node)) {
+            return false
+        }
+
+        visiting.add(node)
+        stack.add(node)
+        graph.getOrDefault(node, Collections.emptySet()).each { String next ->
+            if (visit(next)) {
+                return true
+            }
+        }
+        stack.remove(stack.size() - 1)
+        visiting.remove(node)
+        visited.add(node)
+        return false
+    }
+
+    graph.keySet().each { String node ->
+        if (cycle == null) {
+            visit(node)
+        }
+    }
+
+    return cycle
+}
+
+tasks.register("fixWorldgenData") {
+    group = "verification"
+    description = "Auto-fixes known worldgen JSON issues before resource processing."
+
+    doLast {
+        File worldgenDir = worldgenDataDir.asFile
+        File configuredDir = new File(worldgenDir, "configured_feature")
+        File biomeDir = new File(worldgenDir, "biome")
+        Set<File> changedFiles = new LinkedHashSet<>()
+
+        worldgenDir.eachFileRecurse(FileType.FILES) { File file ->
+            if (file.name.endsWith(".json")) {
+                String original = file.getText("UTF-8")
+                String cleaned = original.readLines().collect { it.replaceAll(/\s+$/, "") }.join(System.lineSeparator()) + System.lineSeparator()
+                if (cleaned != original) {
+                    file.setText(cleaned, "UTF-8")
+                    changedFiles.add(file)
+                }
+            }
+        }
+
+        jsonFilesIn(configuredDir).each { File file ->
+            def json = readJsonFile(file)
+            if (json instanceof Map && json.type == "the_afterdark:supported_disk") {
+                def stateProvider = json.config?.state_provider
+                if (stateProvider instanceof Map && (!stateProvider.containsKey("fallback") || !stateProvider.containsKey("rules"))) {
+                    json.config.state_provider = [
+                            fallback: stateProvider,
+                            rules   : []
+                    ]
+                    writeJsonFile(file, json)
+                    changedFiles.add(file)
+                }
+            }
+        }
+
+        List<File> biomeFiles = jsonFilesIn(biomeDir)
+        Map<File, Object> biomes = biomeFiles.collectEntries { File file -> [(file): readJsonFile(file)] }
+        int maxSteps = biomes.values().collect { it.features instanceof List ? it.features.size() : 0 }.max() ?: 0
+
+        for (int step = 0; step < maxSteps; step++) {
+            Map<String, Integer> canonicalOrder = new LinkedHashMap<>()
+
+            biomeFiles.each { File file ->
+                def features = biomes[file].features
+                if (features instanceof List && step < features.size() && features[step] instanceof List) {
+                    features[step].each { Object feature ->
+                        if (feature instanceof String && !canonicalOrder.containsKey(feature)) {
+                            canonicalOrder[feature] = canonicalOrder.size()
+                        }
+                    }
+                }
+            }
+
+            biomeFiles.each { File file ->
+                def features = biomes[file].features
+                if (features instanceof List && step < features.size() && features[step] instanceof List) {
+                    List original = new ArrayList(features[step])
+                    List sorted = new ArrayList(original)
+                    sorted.sort { Object left, Object right ->
+                        int leftIndex = canonicalOrder.containsKey(left) ? canonicalOrder[left] : Integer.MAX_VALUE
+                        int rightIndex = canonicalOrder.containsKey(right) ? canonicalOrder[right] : Integer.MAX_VALUE
+                        return leftIndex != rightIndex ? leftIndex <=> rightIndex : left.toString() <=> right.toString()
+                    }
+
+                    if (sorted != original) {
+                        features[step] = sorted
+                        changedFiles.add(file)
+                    }
+                }
+            }
+        }
+
+        changedFiles.findAll { it.parentFile == biomeDir }.each { File file ->
+            writeJsonFile(file, biomes[file])
+        }
+
+        if (!changedFiles.isEmpty()) {
+            println "Auto-fixed worldgen data: " + changedFiles.collect { it.name }.sort().join(", ")
+        }
+    }
+}
+
+tasks.register("checkWorldgenData") {
+    group = "verification"
+    description = "Validates worldgen JSON schemas, references, and feature ordering."
+    dependsOn(tasks.named("fixWorldgenData"))
+
+    doLast {
+        File worldgenDir = worldgenDataDir.asFile
+        File configuredDir = new File(worldgenDir, "configured_feature")
+        File placedDir = new File(worldgenDir, "placed_feature")
+        File biomeDir = new File(worldgenDir, "biome")
+
+        Set<String> configuredFeatures = jsonFilesIn(configuredDir).collect { ("the_afterdark:" + (it.name - ".json")).toString() } as Set
+        Set<String> placedFeatures = jsonFilesIn(placedDir).collect { ("the_afterdark:" + (it.name - ".json")).toString() } as Set
+
+        jsonFilesIn(configuredDir).each { File file ->
+            def json = readJsonFile(file)
+            if (json instanceof Map && json.type == "the_afterdark:supported_disk") {
+                def stateProvider = json.config?.state_provider
+                if (!(stateProvider instanceof Map) || !stateProvider.containsKey("fallback") || !stateProvider.containsKey("rules")) {
+                    throw new GradleException("${file} uses the_afterdark:supported_disk, but state_provider must be a rule provider with fallback and rules keys.")
+                }
+            }
+        }
+
+        jsonFilesIn(placedDir).each { File file ->
+            def json = readJsonFile(file)
+            String feature = json.feature
+            if (feature?.startsWith("the_afterdark:") && !configuredFeatures.contains(feature)) {
+                throw new GradleException("${file} references missing configured feature ${feature}.")
+            }
+
+            (json.placement ?: []).each { Object modifier ->
+                if (modifier instanceof Map && modifier.type == "minecraft:environment_scan") {
+                    def maxSteps = modifier.max_steps
+                    if (!(maxSteps instanceof Number) || maxSteps < 1 || maxSteps > 32) {
+                        throw new GradleException("${file} has minecraft:environment_scan.max_steps=${maxSteps}; Minecraft 1.20.1 requires 1..32.")
+                    }
+                }
+            }
+        }
+
+        List<File> biomeFiles = jsonFilesIn(biomeDir)
+        Map<File, Object> biomes = biomeFiles.collectEntries { File file -> [(file): readJsonFile(file)] }
+
+        biomes.each { File file, Object json ->
+            if (!(json.features instanceof List) || json.features.size() != 11) {
+                throw new GradleException("${file} must contain exactly 11 biome generation feature steps.")
+            }
+
+            json.features.eachWithIndex { Object stepFeatures, int step ->
+                if (!(stepFeatures instanceof List)) {
+                    throw new GradleException("${file} feature step ${step} is not a list.")
+                }
+                stepFeatures.each { Object feature ->
+                    if (feature instanceof String && feature.startsWith("the_afterdark:") && !placedFeatures.contains(feature)) {
+                        throw new GradleException("${file} step ${step} references missing placed feature ${feature}.")
+                    }
+                }
+            }
+        }
+
+        for (int step = 0; step < 11; step++) {
+            Map<String, List<String>> stepSources = new LinkedHashMap<>()
+            biomes.each { File file, Object json ->
+                stepSources[file.name - ".json"] = json.features[step].findAll { it instanceof String }
+            }
+
+            List<String> cycle = detectFeatureCycle(stepSources)
+            if (cycle != null) {
+                throw new GradleException("Feature order cycle found in biome generation step ${step}: ${cycle.join(' -> ')}. Run :common:fixWorldgenData to normalize feature order.")
+            }
+        }
+    }
+}
+
+tasks.named("processResources") {
+    dependsOn(tasks.named("checkWorldgenData"))
+}
+
+tasks.matching { it.name == "check" }.configureEach {
+    dependsOn(tasks.named("checkWorldgenData"))
 }

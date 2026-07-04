@@ -1,0 +1,102 @@
+{
+  "type": "minecraft:block_column",
+  "config": {
+    "direction": "down",
+    "allowed_placement": {
+      "type": "minecraft:matching_blocks",
+      "blocks": [
+        "minecraft:air",
+        "minecraft:cave_air"
+      ]
+    },
+    "prioritize_tip": true,
+    "layers": [
+      {
+        "height": {
+          "type": "minecraft:weighted_list",
+          "distribution": [
+            {
+              "weight": 5,
+              "data": {
+                "type": "minecraft:uniform",
+                "value": {
+                  "min_inclusive": 2,
+                  "max_inclusive": 9
+                }
+              }
+            },
+            {
+              "weight": 3,
+              "data": {
+                "type": "minecraft:uniform",
+                "value": {
+                  "min_inclusive": 8,
+                  "max_inclusive": 20
+                }
+              }
+            },
+            {
+              "weight": 1,
+              "data": {
+                "type": "minecraft:uniform",
+                "value": {
+                  "min_inclusive": 18,
+                  "max_inclusive": 34
+                }
+              }
+            }
+          ]
+        },
+        "provider": {
+          "type": "minecraft:weighted_state_provider",
+          "entries": [
+            {
+              "weight": 11,
+              "data": {
+                "Name": "minecraft:weeping_vines_plant"
+              }
+            },
+            {
+              "weight": 4,
+              "data": {
+                "Name": "minecraft:mangrove_roots",
+                "Properties": {
+                  "waterlogged": "false"
+                }
+              }
+            },
+            {
+              "weight": 1,
+              "data": {
+                "Name": "minecraft:honey_block"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "height": 1,
+        "provider": {
+          "type": "minecraft:weighted_state_provider",
+          "entries": [
+            {
+              "weight": 8,
+              "data": {
+                "Name": "minecraft:weeping_vines"
+              }
+            },
+            {
+              "weight": 1,
+              "data": {
+                "Name": "minecraft:ochre_froglight",
+                "Properties": {
+                  "axis": "y"
+                }
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

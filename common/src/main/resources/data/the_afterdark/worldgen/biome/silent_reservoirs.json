@@ -1,0 +1,217 @@
+{
+    "temperature": -0.15,
+    "downfall": 0.9,
+    "has_precipitation": true,
+    "effects": {
+        "sky_color": 9806079,
+        "fog_color": 10329988,
+        "water_color": 5536117,
+        "water_fog_color": 2364174,
+        "mood_sound": {
+            "sound": "minecraft:ambient.cave",
+            "tick_delay": 6000,
+            "block_search_extent": 8,
+            "offset": 2
+        },
+        "music": {
+            "sound": "minecraft:music.overworld.dripstone_caves",
+            "min_delay": 12000,
+            "max_delay": 24000,
+            "replace_current_music": false
+        }
+    },
+    "spawners": {
+        "ambient": [
+            {
+                "type": "minecraft:bat",
+                "weight": 10,
+                "minCount": 8,
+                "maxCount": 8
+            }
+        ],
+        "axolotls": [
+
+        ],
+        "creature": [
+
+        ],
+        "misc": [
+
+        ],
+        "monster": [
+            {
+                "type": "minecraft:spider",
+                "weight": 90,
+                "minCount": 4,
+                "maxCount": 4
+            },
+            {
+                "type": "minecraft:zombie",
+                "weight": 85,
+                "minCount": 4,
+                "maxCount": 4
+            },
+            {
+                "type": "minecraft:skeleton",
+                "weight": 85,
+                "minCount": 4,
+                "maxCount": 4
+            },
+            {
+                "type": "minecraft:creeper",
+                "weight": 85,
+                "minCount": 4,
+                "maxCount": 4
+            },
+            {
+                "type": "minecraft:slime",
+                "weight": 60,
+                "minCount": 4,
+                "maxCount": 4
+            },
+            {
+                "type": "minecraft:enderman",
+                "weight": 8,
+                "minCount": 1,
+                "maxCount": 2
+            },
+            {
+                "type": "minecraft:drowned",
+                "weight": 10,
+                "minCount": 1,
+                "maxCount": 2
+            },
+            {
+                "type": "minecraft:witch",
+                "weight": 4,
+                "minCount": 1,
+                "maxCount": 1
+            }
+        ],
+        "underground_water_creature": [
+            {
+                "type": "minecraft:glow_squid",
+                "weight": 12,
+                "minCount": 4,
+                "maxCount": 6
+            }
+        ],
+        "water_ambient": [
+            {
+                "type": "minecraft:cod",
+                "weight": 10,
+                "minCount": 3,
+                "maxCount": 6
+            },
+            {
+                "type": "minecraft:tropical_fish",
+                "weight": 6,
+                "minCount": 4,
+                "maxCount": 8
+            }
+        ],
+        "water_creature": [
+            {
+                "type": "minecraft:squid",
+                "weight": 6,
+                "minCount": 1,
+                "maxCount": 3
+            }
+        ]
+    },
+    "spawn_costs": {
+
+    },
+    "carvers": {
+        "air": [
+            "minecraft:cave",
+            "minecraft:cave_extra_underground",
+            "minecraft:canyon"
+        ]
+    },
+    "features": [
+        [
+            "the_afterdark:silent_reservoirs_underwater_packed_mud",
+            "the_afterdark:silent_reservoirs_granite_rocks"
+        ],
+        [
+
+        ],
+        [
+            "minecraft:amethyst_geode",
+            "the_afterdark:copper_pillar",
+            "the_afterdark:sparse_prismarine_pillar",
+            "the_afterdark:sparse_dark_prismarine_pillar",
+            "the_afterdark:silent_reservoirs_stone_rib"
+        ],
+        [
+            "minecraft:monster_room",
+            "minecraft:monster_room_deep"
+        ],
+        [
+            "the_afterdark:dense_dark_prismarine_water_fall"
+        ],
+        [
+
+        ],
+        [
+            "minecraft:ore_dirt",
+            "minecraft:ore_gravel",
+            "minecraft:ore_granite_upper",
+            "minecraft:ore_granite_lower",
+            "minecraft:ore_diorite_upper",
+            "minecraft:ore_diorite_lower",
+            "minecraft:ore_andesite_upper",
+            "minecraft:ore_andesite_lower",
+            "minecraft:ore_tuff",
+            "minecraft:ore_coal_upper",
+            "minecraft:ore_coal_lower",
+            "minecraft:ore_iron_upper",
+            "minecraft:ore_iron_middle",
+            "minecraft:ore_iron_small",
+            "minecraft:ore_gold",
+            "minecraft:ore_gold_lower",
+            "minecraft:ore_redstone",
+            "minecraft:ore_redstone_lower",
+            "minecraft:ore_diamond",
+            "minecraft:ore_diamond_large",
+            "minecraft:ore_diamond_buried",
+            "minecraft:ore_lapis",
+            "minecraft:ore_lapis_buried",
+            "minecraft:ore_copper",
+            "minecraft:underwater_magma",
+            "minecraft:disk_clay",
+            "minecraft:disk_gravel",
+            "minecraft:disk_sand"
+        ],
+        [
+            "the_afterdark:ceiling_dripstone"
+        ],
+        [
+            "minecraft:spring_water",
+            "the_afterdark:afterdark_water_glow_node",
+            "the_afterdark:silent_reservoirs_light_vein"
+        ],
+        [
+            "minecraft:brown_mushroom_normal",
+            "minecraft:red_mushroom_normal",
+            "the_afterdark:afterdark_floor_glow_node",
+            "the_afterdark:afterdark_ceiling_lantern",
+            "the_afterdark:afterdark_scattered_microdecor",
+            "minecraft:glow_lichen",
+            "the_afterdark:sparse_aquatic_vines",
+            "the_afterdark:hanging_sea_lantern",
+            "the_afterdark:cave_brain_coral",
+            "the_afterdark:cave_bubble_coral",
+            "the_afterdark:cave_tube_coral",
+            "the_afterdark:cave_fire_coral",
+            "the_afterdark:prismarine_pool_with_dripleaves",
+            "the_afterdark:cave_seagrass_warm",
+            "the_afterdark:cave_kelp_warm",
+            "the_afterdark:cave_pickle"
+        ],
+        [
+            "minecraft:freeze_top_layer"
+        ]
+    ]
+}

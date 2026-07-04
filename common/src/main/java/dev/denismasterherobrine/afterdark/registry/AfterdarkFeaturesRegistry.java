@@ -60,4 +60,33 @@ public class AfterdarkFeaturesRegistry {
             new ConfigurableDripstoneStylePillarFeature(PillarFeatureConfiguration.CODEC, PillarPlacementRules.simpleStoneOnlyStop(Blocks.REDSTONE_ORE));
     public static final Feature<PillarFeatureConfiguration> LARGE_COAL_ORE_PILLAR =
             new ConfigurableDripstoneStylePillarFeature(PillarFeatureConfiguration.CODEC, PillarPlacementRules.simpleStoneOnlyStop(Blocks.COAL_ORE));
+
+    public static final Feature<DefaultFeatureConfig> BLACK_HONEY_POOL =
+            new BlackHoneyPoolFeature(DefaultFeatureConfig.CODEC);
+    public static final Feature<DefaultFeatureConfig> BLACK_HONEY_SURFACE_PATCH =
+            new BlackHoneySurfacePatchFeature(DefaultFeatureConfig.CODEC);
+    public static final Feature<DefaultFeatureConfig> BLACK_HONEY_RESIN_FALL =
+            new BlackHoneyResinFallFeature(DefaultFeatureConfig.CODEC);
+    public static final Feature<DefaultFeatureConfig> BLACK_HONEY_COCOON_CLUSTER =
+            new BlackHoneyCocoonClusterFeature(DefaultFeatureConfig.CODEC);
+    public static final Feature<DefaultFeatureConfig> BLACK_HONEY_HIVE_CYST =
+            new BlackHoneyHiveCystFeature(DefaultFeatureConfig.CODEC);
+    public static final Feature<DefaultFeatureConfig> BLACK_HONEY_ROOT_ARCH =
+            new BlackHoneyRootArchFeature(DefaultFeatureConfig.CODEC);
+    public static final Feature<DefaultFeatureConfig> BLACK_HONEY_MOURNING_FLOWER =
+            new BlackHoneyMourningFlowerFeature(DefaultFeatureConfig.CODEC);
+    public static final Feature<DefaultFeatureConfig> BLACK_HONEY_QUEEN_HEART =
+            new BlackHoneyQueenHeartFeature(DefaultFeatureConfig.CODEC);
+    public static final Feature<StoneRibConfiguration> STONE_RIB =
+            new StoneRibFeature(StoneRibConfiguration.CODEC);
+    public static final Feature<LightVeinConfiguration> LIGHT_VEIN =
+            new LightVeinFeature(LightVeinConfiguration.CODEC);
+    public static final Feature<DarkTarConfiguration> DARK_TAR =
+            new DarkTarFeature(DarkTarConfiguration.CODEC);
+    public static final Feature<DefaultFeatureConfig> GOTHIC_COPPER_RUIN =
+            new GothicCopperRuinFeature(DefaultFeatureConfig.CODEC);
+    public static final Feature<DefaultFeatureConfig> DEEP_AFTERDARK_STRUCTURE =
+            new DeepAfterdarkStructureFeature(DefaultFeatureConfig.CODEC);
+    public static final Feature<DefaultFeatureConfig> AFTERDARK_MICRODECOR =
+            new AfterdarkMicrodecorFeature(DefaultFeatureConfig.CODEC);
 }

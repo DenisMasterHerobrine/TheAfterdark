@@ -8,19 +8,19 @@
         "distribution": [
           {
             "weight": 3,
-            "data": 10
+            "data": 22
           },
           {
             "weight": 2,
-            "data": 16
+            "data": 34
           },
           {
             "weight": 7,
-            "data": 7
+            "data": 15
           },
           {
             "weight": 8,
-            "data": 3
+            "data": 6
           }
         ]
       }
@@ -31,9 +31,12 @@
     {
       "type": "minecraft:height_range",
       "height": {
-        "type": "minecraft:constant",
-        "value": {
-          "absolute": -35
+        "type": "minecraft:uniform",
+        "min_inclusive": {
+          "absolute": -122
+        },
+        "max_inclusive": {
+          "absolute": 250
         }
       }
     },
@@ -48,7 +51,8 @@
         "type": "minecraft:matching_blocks",
         "blocks": [
           "minecraft:water",
-          "minecraft:air"
+          "minecraft:air",
+          "minecraft:cave_air"
         ]
       }
     },

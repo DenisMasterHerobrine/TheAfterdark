@@ -1,0 +1,112 @@
+{
+  "type": "the_afterdark:supported_disk",
+  "config": {
+    "state_provider": {
+      "fallback": {
+        "type": "minecraft:weighted_state_provider",
+        "entries": [
+          {
+            "weight": 16,
+            "data": {
+              "Name": "minecraft:terracotta"
+            }
+          },
+          {
+            "weight": 12,
+            "data": {
+              "Name": "minecraft:brown_terracotta"
+            }
+          },
+          {
+            "weight": 10,
+            "data": {
+              "Name": "minecraft:packed_mud"
+            }
+          },
+          {
+            "weight": 8,
+            "data": {
+              "Name": "minecraft:dripstone_block"
+            }
+          },
+          {
+            "weight": 4,
+            "data": {
+              "Name": "minecraft:ochre_froglight",
+              "Properties": {
+                "axis": "y"
+              }
+            }
+          },
+          {
+            "weight": 3,
+            "data": {
+              "Name": "minecraft:shroomlight"
+            }
+          },
+          {
+            "weight": 2,
+            "data": {
+              "Name": "minecraft:magma_block"
+            }
+          },
+          {
+            "weight": 1,
+            "data": {
+              "Name": "minecraft:glowstone"
+            }
+          }
+        ]
+      },
+      "rules": []
+    },
+    "target": {
+      "type": "minecraft:matching_blocks",
+      "offset": [
+        0,
+        0,
+        0
+      ],
+      "blocks": [
+        "minecraft:stone",
+        "minecraft:deepslate",
+        "minecraft:tuff",
+        "minecraft:cobbled_deepslate",
+        "minecraft:grass_block",
+        "minecraft:dirt",
+        "minecraft:coarse_dirt",
+        "minecraft:rooted_dirt",
+        "minecraft:moss_block",
+        "minecraft:mud",
+        "minecraft:packed_mud",
+        "minecraft:clay",
+        "minecraft:terracotta",
+        "minecraft:brown_terracotta",
+        "minecraft:orange_terracotta",
+        "minecraft:yellow_terracotta",
+        "minecraft:dripstone_block",
+        "minecraft:calcite",
+        "minecraft:smooth_basalt",
+        "minecraft:amethyst_block",
+        "minecraft:prismarine",
+        "minecraft:dark_prismarine",
+        "minecraft:prismarine_bricks",
+        "minecraft:ice",
+        "minecraft:packed_ice",
+        "minecraft:blue_ice",
+        "minecraft:snow_block",
+        "minecraft:sculk",
+        "minecraft:sculk_catalyst",
+        "minecraft:crying_obsidian"
+      ]
+    },
+    "radius": {
+      "type": "minecraft:uniform",
+      "value": {
+        "min_inclusive": 1,
+        "max_inclusive": 3
+      }
+    },
+    "half_height": 0
+  }
+}

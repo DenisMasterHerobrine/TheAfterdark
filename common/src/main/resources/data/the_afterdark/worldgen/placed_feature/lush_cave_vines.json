@@ -3,7 +3,7 @@
   "placement": [
     {
       "type": "minecraft:noise_based_count",
-      "noise_to_count_ratio": 110,
+      "noise_to_count_ratio": 92,
       "noise_factor": 1,
       "noise_offset": 0.33
     },
@@ -15,17 +15,17 @@
       "height": {
         "type": "minecraft:uniform",
         "min_inclusive": {
-          "absolute": -48
+          "absolute": -122
         },
         "max_inclusive": {
-          "absolute": 62
+          "absolute": 250
         }
       }
     },
     {
       "type": "minecraft:environment_scan",
       "direction_of_search": "up",
-      "max_steps": 1,
+      "max_steps": 32,
       "target_condition": {
         "type": "minecraft:has_sturdy_face",
         "direction": "down"
@@ -33,7 +33,8 @@
       "allowed_search_condition": {
         "type": "minecraft:matching_blocks",
         "blocks": [
-          "minecraft:air"
+          "minecraft:air",
+          "minecraft:cave_air"
         ]
       }
     },

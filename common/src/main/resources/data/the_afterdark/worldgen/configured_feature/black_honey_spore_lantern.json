@@ -1,0 +1,65 @@
+{
+  "type": "minecraft:block_column",
+  "config": {
+    "direction": "down",
+    "allowed_placement": {
+      "type": "minecraft:matching_blocks",
+      "blocks": [
+        "minecraft:air",
+        "minecraft:cave_air"
+      ]
+    },
+    "prioritize_tip": true,
+    "layers": [
+      {
+        "height": {
+          "type": "minecraft:uniform",
+          "value": {
+            "min_inclusive": 0,
+            "max_inclusive": 8
+          }
+        },
+        "provider": {
+          "type": "minecraft:weighted_state_provider",
+          "entries": [
+            {
+              "weight": 9,
+              "data": {
+                "Name": "minecraft:weeping_vines_plant"
+              }
+            },
+            {
+              "weight": 1,
+              "data": {
+                "Name": "minecraft:honey_block"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "height": 1,
+        "provider": {
+          "type": "minecraft:weighted_state_provider",
+          "entries": [
+            {
+              "weight": 7,
+              "data": {
+                "Name": "minecraft:ochre_froglight",
+                "Properties": {
+                  "axis": "y"
+                }
+              }
+            },
+            {
+              "weight": 3,
+              "data": {
+                "Name": "minecraft:weeping_vines"
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

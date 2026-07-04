@@ -3,8 +3,8 @@
   "placement": [
     {
       "type": "minecraft:noise_based_count",
-      "noise_to_count_ratio": 80,
-      "noise_factor": 80,
+      "noise_to_count_ratio": 68,
+      "noise_factor": 68,
       "noise_offset": 2
     },
     {
@@ -15,10 +15,10 @@
       "height": {
         "type": "minecraft:uniform",
         "min_inclusive": {
-          "absolute": -48
+          "absolute": -122
         },
         "max_inclusive": {
-          "absolute": 60
+          "absolute": 250
         }
       }
     },

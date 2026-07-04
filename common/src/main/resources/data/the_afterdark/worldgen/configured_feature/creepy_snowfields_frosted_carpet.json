@@ -1,0 +1,90 @@
+{
+  "type": "minecraft:random_patch",
+  "config": {
+    "tries": 96,
+    "xz_spread": 6,
+    "y_spread": 2,
+    "feature": {
+      "feature": {
+        "type": "minecraft:simple_block",
+        "config": {
+          "to_place": {
+            "type": "minecraft:weighted_state_provider",
+            "entries": [
+              {
+                "weight": 18,
+                "data": {
+                  "Name": "minecraft:snow",
+                  "Properties": {
+                    "layers": "1"
+                  }
+                }
+              },
+              {
+                "weight": 10,
+                "data": {
+                  "Name": "minecraft:snow",
+                  "Properties": {
+                    "layers": "2"
+                  }
+                }
+              },
+              {
+                "weight": 5,
+                "data": {
+                  "Name": "minecraft:snow",
+                  "Properties": {
+                    "layers": "3"
+                  }
+                }
+              },
+              {
+                "weight": 2,
+                "data": {
+                  "Name": "minecraft:snow",
+                  "Properties": {
+                    "layers": "4"
+                  }
+                }
+              }
+            ]
+          }
+        }
+      },
+      "placement": [
+        {
+          "type": "minecraft:block_predicate_filter",
+          "predicate": {
+            "type": "minecraft:all_of",
+            "predicates": [
+              {
+                "type": "minecraft:matching_blocks",
+                "blocks": [
+                  "minecraft:air",
+                  "minecraft:cave_air"
+                ]
+              },
+              {
+                "type": "minecraft:matching_blocks",
+                "offset": [
+                  0,
+                  -1,
+                  0
+                ],
+                "blocks": [
+                  "minecraft:snow_block",
+                  "minecraft:powder_snow",
+                  "minecraft:ice",
+                  "minecraft:packed_ice",
+                  "minecraft:blue_ice",
+                  "minecraft:calcite",
+                  "minecraft:smooth_basalt"
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}

@@ -64,6 +64,8 @@ dependencies {
 }
 
 processResources {
+    dependsOn project(":common").tasks.named("checkWorldgenData")
+
     inputs.property 'version', project.version
     inputs.property 'mod_id', project.archives_name
     inputs.property 'mod_name', project.mod_name

@@ -1,0 +1,31 @@
+{
+  "type": "minecraft:simple_block",
+  "config": {
+    "to_place": {
+      "type": "minecraft:weighted_state_provider",
+      "entries": [
+        {
+          "weight": 6,
+          "data": {
+            "Name": "minecraft:sea_lantern"
+          }
+        },
+        {
+          "weight": 4,
+          "data": {
+            "Name": "minecraft:pearlescent_froglight",
+            "Properties": {
+              "axis": "y"
+            }
+          }
+        },
+        {
+          "weight": 1,
+          "data": {
+            "Name": "minecraft:glowstone"
+          }
+        }
+      ]
+    }
+  }
+}

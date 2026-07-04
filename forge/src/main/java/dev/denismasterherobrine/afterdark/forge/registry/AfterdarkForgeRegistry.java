@@ -95,6 +95,35 @@ public class AfterdarkForgeRegistry {
     public static final RegistryObject<Feature<PillarFeatureConfiguration>> LARGE_COAL_ORE_PILLAR =
             FEATURES.register("coal_ore_pillar", () -> AfterdarkFeaturesRegistry.LARGE_COAL_ORE_PILLAR);
 
+    public static final RegistryObject<Feature<DefaultFeatureConfig>> BLACK_HONEY_POOL =
+            FEATURES.register("black_honey_pool", () -> AfterdarkFeaturesRegistry.BLACK_HONEY_POOL);
+    public static final RegistryObject<Feature<DefaultFeatureConfig>> BLACK_HONEY_SURFACE_PATCH =
+            FEATURES.register("black_honey_surface_patch", () -> AfterdarkFeaturesRegistry.BLACK_HONEY_SURFACE_PATCH);
+    public static final RegistryObject<Feature<DefaultFeatureConfig>> BLACK_HONEY_RESIN_FALL =
+            FEATURES.register("black_honey_resin_fall", () -> AfterdarkFeaturesRegistry.BLACK_HONEY_RESIN_FALL);
+    public static final RegistryObject<Feature<DefaultFeatureConfig>> BLACK_HONEY_COCOON_CLUSTER =
+            FEATURES.register("black_honey_cocoon_cluster", () -> AfterdarkFeaturesRegistry.BLACK_HONEY_COCOON_CLUSTER);
+    public static final RegistryObject<Feature<DefaultFeatureConfig>> BLACK_HONEY_HIVE_CYST =
+            FEATURES.register("black_honey_hive_cyst", () -> AfterdarkFeaturesRegistry.BLACK_HONEY_HIVE_CYST);
+    public static final RegistryObject<Feature<DefaultFeatureConfig>> BLACK_HONEY_ROOT_ARCH =
+            FEATURES.register("black_honey_root_arch", () -> AfterdarkFeaturesRegistry.BLACK_HONEY_ROOT_ARCH);
+    public static final RegistryObject<Feature<DefaultFeatureConfig>> BLACK_HONEY_MOURNING_FLOWER =
+            FEATURES.register("black_honey_mourning_flower", () -> AfterdarkFeaturesRegistry.BLACK_HONEY_MOURNING_FLOWER);
+    public static final RegistryObject<Feature<DefaultFeatureConfig>> BLACK_HONEY_QUEEN_HEART =
+            FEATURES.register("black_honey_queen_heart", () -> AfterdarkFeaturesRegistry.BLACK_HONEY_QUEEN_HEART);
+    public static final RegistryObject<Feature<StoneRibConfiguration>> STONE_RIB =
+            FEATURES.register("stone_rib", () -> AfterdarkFeaturesRegistry.STONE_RIB);
+    public static final RegistryObject<Feature<LightVeinConfiguration>> LIGHT_VEIN =
+            FEATURES.register("light_vein", () -> AfterdarkFeaturesRegistry.LIGHT_VEIN);
+    public static final RegistryObject<Feature<DarkTarConfiguration>> DARK_TAR =
+            FEATURES.register("dark_tar", () -> AfterdarkFeaturesRegistry.DARK_TAR);
+    public static final RegistryObject<Feature<DefaultFeatureConfig>> GOTHIC_COPPER_RUIN =
+            FEATURES.register("gothic_copper_ruin", () -> AfterdarkFeaturesRegistry.GOTHIC_COPPER_RUIN);
+    public static final RegistryObject<Feature<DefaultFeatureConfig>> DEEP_AFTERDARK_STRUCTURE =
+            FEATURES.register("deep_afterdark_structure", () -> AfterdarkFeaturesRegistry.DEEP_AFTERDARK_STRUCTURE);
+    public static final RegistryObject<Feature<DefaultFeatureConfig>> AFTERDARK_MICRODECOR =
+            FEATURES.register("afterdark_microdecor", () -> AfterdarkFeaturesRegistry.AFTERDARK_MICRODECOR);
+
     private static <T extends Structure> StructureType<T> explicitStructureTypeTyping(Codec<T> structureCodec) {
         return () -> structureCodec;
     }

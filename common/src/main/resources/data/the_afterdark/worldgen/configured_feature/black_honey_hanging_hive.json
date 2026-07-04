@@ -1,0 +1,139 @@
+{
+  "type": "minecraft:block_column",
+  "config": {
+    "direction": "down",
+    "allowed_placement": {
+      "type": "minecraft:matching_blocks",
+      "blocks": [
+        "minecraft:air",
+        "minecraft:cave_air"
+      ]
+    },
+    "prioritize_tip": true,
+    "layers": [
+      {
+        "height": {
+          "type": "minecraft:weighted_list",
+          "distribution": [
+            {
+              "weight": 5,
+              "data": {
+                "type": "minecraft:uniform",
+                "value": {
+                  "min_inclusive": 1,
+                  "max_inclusive": 6
+                }
+              }
+            },
+            {
+              "weight": 3,
+              "data": {
+                "type": "minecraft:uniform",
+                "value": {
+                  "min_inclusive": 6,
+                  "max_inclusive": 13
+                }
+              }
+            },
+            {
+              "weight": 1,
+              "data": {
+                "type": "minecraft:uniform",
+                "value": {
+                  "min_inclusive": 12,
+                  "max_inclusive": 20
+                }
+              }
+            }
+          ]
+        },
+        "provider": {
+          "type": "minecraft:weighted_state_provider",
+          "entries": [
+            {
+              "weight": 8,
+              "data": {
+                "Name": "minecraft:honey_block"
+              }
+            },
+            {
+              "weight": 6,
+              "data": {
+                "Name": "minecraft:honeycomb_block"
+              }
+            },
+            {
+              "weight": 1,
+              "data": {
+                "Name": "minecraft:yellow_terracotta"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "height": 1,
+        "provider": {
+          "type": "minecraft:weighted_state_provider",
+          "entries": [
+            {
+              "weight": 3,
+              "data": {
+                "Name": "minecraft:honeycomb_block"
+              }
+            },
+            {
+              "weight": 2,
+              "data": {
+                "Name": "minecraft:bee_nest",
+                "Properties": {
+                  "facing": "south",
+                  "honey_level": "5"
+                }
+              }
+            },
+            {
+              "weight": 1,
+              "data": {
+                "Name": "minecraft:beehive",
+                "Properties": {
+                  "facing": "north",
+                  "honey_level": "5"
+                }
+              }
+            }
+          ]
+        }
+      },
+      {
+        "height": 1,
+        "provider": {
+          "type": "minecraft:weighted_state_provider",
+          "entries": [
+            {
+              "weight": 8,
+              "data": {
+                "Name": "minecraft:weeping_vines"
+              }
+            },
+            {
+              "weight": 2,
+              "data": {
+                "Name": "minecraft:ochre_froglight",
+                "Properties": {
+                  "axis": "y"
+                }
+              }
+            },
+            {
+              "weight": 1,
+              "data": {
+                "Name": "minecraft:air"
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

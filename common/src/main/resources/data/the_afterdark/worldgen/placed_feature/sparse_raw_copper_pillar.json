@@ -2,12 +2,16 @@
   "feature": "the_afterdark:raw_copper_pillar",
   "placement": [
     {
+      "type": "minecraft:rarity_filter",
+      "chance": 5
+    },
+    {
       "type": "minecraft:count",
       "count": {
         "type": "minecraft:uniform",
         "value": {
           "min_inclusive": 0,
-          "max_inclusive": 2
+          "max_inclusive": 1
         }
       }
     },
@@ -19,10 +23,10 @@
       "height": {
         "type": "minecraft:uniform",
         "min_inclusive": {
-          "absolute": -96
+          "absolute": -122
         },
         "max_inclusive": {
-          "absolute": 240
+          "absolute": 250
         }
       }
     },

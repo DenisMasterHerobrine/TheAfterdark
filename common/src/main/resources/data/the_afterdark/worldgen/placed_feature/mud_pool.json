@@ -1,48 +1,48 @@
 {
-    "feature": "the_afterdark:mud_pool",
-    "placement": [
-      {
-        "type": "minecraft:count",
-        "count": 2
-      },
-      {
-        "type": "minecraft:in_square"
-      },
-      {
-        "type": "minecraft:height_range",
-        "height": {
-          "type": "minecraft:uniform",
-          "min_inclusive": {
-            "above_bottom": 0
-          },
-          "max_inclusive": {
-            "absolute": 256
-          }
-        }
-      },
-      {
-        "type": "minecraft:environment_scan",
-        "direction_of_search": "down",
-        "max_steps": 12,
-        "target_condition": {
-          "type": "minecraft:solid"
+  "feature": "the_afterdark:mud_pool",
+  "placement": [
+    {
+      "type": "minecraft:count",
+      "count": 4
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "type": "minecraft:height_range",
+      "height": {
+        "type": "minecraft:uniform",
+        "min_inclusive": {
+          "absolute": -122
         },
-        "allowed_search_condition": {
-          "type": "minecraft:matching_blocks",
-          "blocks": [
-            "minecraft:air",
-            "minecraft:water"
-          ]
+        "max_inclusive": {
+          "absolute": 250
         }
-      },
-      {
-        "type": "minecraft:random_offset",
-        "xz_spread": 0,
-        "y_spread": 1
-      },
-      {
-        "type": "minecraft:biome"
       }
-    ]
-  }
-  
+    },
+    {
+      "type": "minecraft:environment_scan",
+      "direction_of_search": "down",
+      "max_steps": 32,
+      "target_condition": {
+        "type": "minecraft:solid"
+      },
+      "allowed_search_condition": {
+        "type": "minecraft:matching_blocks",
+        "blocks": [
+          "minecraft:air",
+          "minecraft:cave_air",
+          "minecraft:water"
+        ]
+      }
+    },
+    {
+      "type": "minecraft:random_offset",
+      "xz_spread": 0,
+      "y_spread": 1
+    },
+    {
+      "type": "minecraft:biome"
+    }
+  ]
+}

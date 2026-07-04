@@ -7,99 +7,333 @@
       "type": "minecraft:multi_noise",
       "biomes": [
         {
-          "biome": "the_afterdark:creepy_snowfields",
+          "biome": "the_afterdark:black_honey_grove",
           "parameters": {
-            "temperature": 0.0993,
-            "humidity": 0.15,
-            "continentalness": 0.07,
-            "erosion": 0.716,
-            "weirdness": 0.49,
-            "depth": -0.35,
-            "offset": 0.41
+            "temperature": {
+              "min": -0.38,
+              "max": -0.22
+            },
+            "humidity": {
+              "min": -0.38,
+              "max": -0.22
+            },
+            "continentalness": {
+              "min": -1.0,
+              "max": 1.0
+            },
+            "erosion": {
+              "min": -0.36,
+              "max": -0.2
+            },
+            "weirdness": {
+              "min": -0.26,
+              "max": -0.1
+            },
+            "depth": {
+              "min": -0.2,
+              "max": 0.2
+            },
+            "offset": 0.0
           }
         },
         {
-          "biome": "the_afterdark:dying_drylands",
+          "biome": "the_afterdark:creepy_snowfields",
           "parameters": {
-            "temperature": 0.093,
-            "humidity": 0.15,
-            "continentalness": 0.07,
-            "erosion": 0.8,
-            "weirdness": 0.49,
-            "depth": 0.1,
-            "offset": 0.41
+            "temperature": {
+              "min": -0.38,
+              "max": -0.22
+            },
+            "humidity": {
+              "min": -0.08,
+              "max": 0.08
+            },
+            "continentalness": {
+              "min": -1.0,
+              "max": 1.0
+            },
+            "erosion": {
+              "min": -0.08,
+              "max": 0.08
+            },
+            "weirdness": {
+              "min": -0.42,
+              "max": -0.26
+            },
+            "depth": {
+              "min": -0.2,
+              "max": 0.2
+            },
+            "offset": 0.01
           }
         },
         {
           "biome": "the_afterdark:calcite_fields",
           "parameters": {
-            "temperature": -0.34,
-            "humidity": 0.14,
-            "continentalness": 0.37,
-            "erosion": 0.8,
-            "weirdness": 0.49,
-            "depth": 0.43,
-            "offset": 0
+            "temperature": {
+              "min": -0.38,
+              "max": -0.22
+            },
+            "humidity": {
+              "min": 0.22,
+              "max": 0.38
+            },
+            "continentalness": {
+              "min": -1.0,
+              "max": 1.0
+            },
+            "erosion": {
+              "min": 0.2,
+              "max": 0.36
+            },
+            "weirdness": {
+              "min": -0.16,
+              "max": 0.0
+            },
+            "depth": {
+              "min": -0.2,
+              "max": 0.2
+            },
+            "offset": 0.01
+          }
+        },
+        {
+          "biome": "the_afterdark:silent_reservoirs",
+          "parameters": {
+            "temperature": {
+              "min": -0.08,
+              "max": 0.08
+            },
+            "humidity": {
+              "min": -0.38,
+              "max": -0.22
+            },
+            "continentalness": {
+              "min": -1.0,
+              "max": 1.0
+            },
+            "erosion": {
+              "min": 0.2,
+              "max": 0.36
+            },
+            "weirdness": {
+              "min": 0.02,
+              "max": 0.18
+            },
+            "depth": {
+              "min": -0.2,
+              "max": 0.2
+            },
+            "offset": 0.01
           }
         },
         {
           "biome": "the_afterdark:prismarine_peaks",
           "parameters": {
-            "temperature": 0.12,
-            "humidity": 0.17,
-            "continentalness": 0.33,
-            "erosion": 0.12,
-            "weirdness": 0.42,
-            "depth": 0.19,
-            "offset": 0
+            "temperature": {
+              "min": -0.08,
+              "max": 0.08
+            },
+            "humidity": {
+              "min": -0.08,
+              "max": 0.08
+            },
+            "continentalness": {
+              "min": -1.0,
+              "max": 1.0
+            },
+            "erosion": {
+              "min": -0.36,
+              "max": -0.2
+            },
+            "weirdness": {
+              "min": 0.26,
+              "max": 0.42
+            },
+            "depth": {
+              "min": -0.2,
+              "max": 0.2
+            },
+            "offset": 0.01
           }
         },
         {
           "biome": "the_afterdark:prismarine_ponds",
           "parameters": {
-            "temperature": 0.35,
-            "humidity": 0.04,
-            "continentalness": 0.12,
-            "erosion": 0.33,
-            "weirdness": 0.54,
-            "depth": 0.16,
-            "offset": 0.11
+            "temperature": {
+              "min": -0.08,
+              "max": 0.08
+            },
+            "humidity": {
+              "min": 0.22,
+              "max": 0.38
+            },
+            "continentalness": {
+              "min": -1.0,
+              "max": 1.0
+            },
+            "erosion": {
+              "min": -0.08,
+              "max": 0.08
+            },
+            "weirdness": {
+              "min": -0.06,
+              "max": 0.1
+            },
+            "depth": {
+              "min": -0.2,
+              "max": 0.2
+            },
+            "offset": 0.0
           }
         },
         {
           "biome": "the_afterdark:dripstone_deltas",
           "parameters": {
-            "temperature": 0.307,
-            "humidity": 0.13,
-            "continentalness": 0.13,
-            "erosion": 0.11,
-            "weirdness": 0.41,
-            "depth": 0.47,
-            "offset": 0.22
-          }
-        },
-        {
-          "biome": "the_afterdark:deep_afterdark",
-          "parameters": {
-            "temperature": 0.33,
-            "humidity": 0.74,
-            "continentalness": 0.03,
-            "erosion": 0.14,
-            "weirdness": 0.4,
-            "depth": 0.12,
+            "temperature": {
+              "min": 0.22,
+              "max": 0.38
+            },
+            "humidity": {
+              "min": -0.38,
+              "max": -0.22
+            },
+            "continentalness": {
+              "min": -1.0,
+              "max": 1.0
+            },
+            "erosion": {
+              "min": -0.08,
+              "max": 0.08
+            },
+            "weirdness": {
+              "min": -0.42,
+              "max": -0.26
+            },
+            "depth": {
+              "min": -0.2,
+              "max": 0.2
+            },
             "offset": 0.01
           }
         },
         {
           "biome": "the_afterdark:lush_gardens",
           "parameters": {
-            "temperature": 0.02,
-            "humidity": 0.4,
-            "continentalness": 0.07,
-            "erosion": 0.46,
-            "weirdness": 0.11,
-            "depth": -0.47,
-            "offset": 0.77
+            "temperature": {
+              "min": 0.22,
+              "max": 0.38
+            },
+            "humidity": {
+              "min": -0.08,
+              "max": 0.08
+            },
+            "continentalness": {
+              "min": -1.0,
+              "max": 1.0
+            },
+            "erosion": {
+              "min": 0.2,
+              "max": 0.36
+            },
+            "weirdness": {
+              "min": 0.2,
+              "max": 0.36
+            },
+            "depth": {
+              "min": -0.2,
+              "max": 0.2
+            },
+            "offset": 0.01
+          }
+        },
+        {
+          "biome": "the_afterdark:dying_drylands",
+          "parameters": {
+            "temperature": {
+              "min": 0.22,
+              "max": 0.38
+            },
+            "humidity": {
+              "min": 0.22,
+              "max": 0.38
+            },
+            "continentalness": {
+              "min": -1.0,
+              "max": 1.0
+            },
+            "erosion": {
+              "min": -0.36,
+              "max": -0.2
+            },
+            "weirdness": {
+              "min": -0.16,
+              "max": 0.0
+            },
+            "depth": {
+              "min": -0.2,
+              "max": 0.2
+            },
+            "offset": 0.01
+          }
+        },
+        {
+          "biome": "the_afterdark:deep_afterdark",
+          "parameters": {
+            "temperature": {
+              "min": -0.2,
+              "max": -0.04
+            },
+            "humidity": {
+              "min": 0.08,
+              "max": 0.24
+            },
+            "continentalness": {
+              "min": -1.0,
+              "max": 1.0
+            },
+            "erosion": {
+              "min": -0.2,
+              "max": -0.04
+            },
+            "weirdness": {
+              "min": 0.16,
+              "max": 0.32
+            },
+            "depth": {
+              "min": -0.2,
+              "max": 0.2
+            },
+            "offset": 0.0
+          }
+        },
+        {
+          "biome": "the_afterdark:copper_necropolis",
+          "parameters": {
+            "temperature": {
+              "min": 0.08,
+              "max": 0.24
+            },
+            "humidity": {
+              "min": -0.2,
+              "max": -0.04
+            },
+            "continentalness": {
+              "min": -1.0,
+              "max": 1.0
+            },
+            "erosion": {
+              "min": 0.04,
+              "max": 0.2
+            },
+            "weirdness": {
+              "min": -0.28,
+              "max": -0.12
+            },
+            "depth": {
+              "min": -0.2,
+              "max": 0.2
+            },
+            "offset": 0.0
           }
         }
       ]

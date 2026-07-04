@@ -1,0 +1,97 @@
+{
+  "type": "the_afterdark:raw_copper_pillar",
+  "config": {
+    "floor_to_ceiling_search_range": 34,
+    "column_radius": {
+      "type": "minecraft:uniform",
+      "value": {
+        "min_inclusive": 3,
+        "max_inclusive": 10
+      }
+    },
+    "height_scale": {
+      "type": "minecraft:uniform",
+      "value": {
+        "min_inclusive": 0.45,
+        "max_exclusive": 1.9
+      }
+    },
+    "max_column_radius_to_cave_height_ratio": 0.26,
+    "stalactite_bluntness": {
+      "type": "minecraft:uniform",
+      "value": {
+        "min_inclusive": 0.28,
+        "max_exclusive": 0.82
+      }
+    },
+    "stalagmite_bluntness": {
+      "type": "minecraft:uniform",
+      "value": {
+        "min_inclusive": 0.35,
+        "max_exclusive": 0.96
+      }
+    },
+    "wind_speed": {
+      "type": "minecraft:uniform",
+      "value": {
+        "min_inclusive": 0.02,
+        "max_exclusive": 0.22
+      }
+    },
+    "min_radius_for_wind": 4,
+    "min_bluntness_for_wind": 0.55,
+    "pillar_provider": {
+      "type": "minecraft:weighted_state_provider",
+      "entries": [
+        {
+          "weight": 2,
+          "data": {
+            "Name": "minecraft:oxidized_copper"
+          }
+        },
+        {
+          "weight": 2,
+          "data": {
+            "Name": "minecraft:weathered_copper"
+          }
+        },
+        {
+          "weight": 1,
+          "data": {
+            "Name": "minecraft:oxidized_cut_copper"
+          }
+        },
+        {
+          "weight": 1,
+          "data": {
+            "Name": "minecraft:cut_copper"
+          }
+        },
+        {
+          "weight": 8,
+          "data": {
+            "Name": "minecraft:tuff"
+          }
+        },
+        {
+          "weight": 6,
+          "data": {
+            "Name": "minecraft:deepslate"
+          }
+        },
+        {
+          "weight": 3,
+          "data": {
+            "Name": "minecraft:polished_deepslate"
+          }
+        },
+        {
+          "weight": 2,
+          "data": {
+            "Name": "minecraft:calcite"
+          }
+        }
+      ]
+    }
+  }
+}

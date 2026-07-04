@@ -1,0 +1,37 @@
+{
+  "feature": "the_afterdark:deep_afterdark_structures",
+  "placement": [
+    {
+      "type": "minecraft:rarity_filter",
+      "chance": 4
+    },
+    {
+      "type": "minecraft:count",
+      "count": {
+        "type": "minecraft:uniform",
+        "value": {
+          "min_inclusive": 1,
+          "max_inclusive": 2
+        }
+      }
+    },
+    {
+      "type": "minecraft:in_square"
+    },
+    {
+      "type": "minecraft:height_range",
+      "height": {
+        "type": "minecraft:uniform",
+        "min_inclusive": {
+          "absolute": -122
+        },
+        "max_inclusive": {
+          "absolute": 250
+        }
+      }
+    },
+    {
+      "type": "minecraft:biome"
+    }
+  ]
+}

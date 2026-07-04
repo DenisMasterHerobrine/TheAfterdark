@@ -1,0 +1,57 @@
+{
+  "type": "the_afterdark:stone_rib",
+  "config": {
+    "spine_provider": {
+      "type": "minecraft:weighted_state_provider",
+      "entries": [
+        {
+          "weight": 4,
+          "data": {
+            "Name": "minecraft:dark_prismarine"
+          }
+        },
+        {
+          "weight": 3,
+          "data": {
+            "Name": "minecraft:prismarine"
+          }
+        },
+        {
+          "weight": 2,
+          "data": {
+            "Name": "minecraft:calcite"
+          }
+        }
+      ]
+    },
+    "accent_provider": {
+      "type": "minecraft:simple_state_provider",
+      "state": {
+        "Name": "minecraft:sea_lantern"
+      }
+    },
+    "span": {
+      "type": "minecraft:uniform",
+      "value": {
+        "min_inclusive": 6,
+        "max_inclusive": 12
+      }
+    },
+    "height": {
+      "type": "minecraft:uniform",
+      "value": {
+        "min_inclusive": 4,
+        "max_inclusive": 10
+      }
+    },
+    "thickness": {
+      "type": "minecraft:uniform",
+      "value": {
+        "min_inclusive": 1,
+        "max_inclusive": 3
+      }
+    },
+    "accent_chance": 0.12,
+    "side_thickness_chance": 0.38
+  }
+}

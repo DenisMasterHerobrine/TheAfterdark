@@ -54,6 +54,22 @@ public class AfterdarkFabricRegistry {
         Registry.register(Registries.FEATURE, Identifier.of(TheAfterdark.MOD_ID, "lapis_ore_pillar"), AfterdarkFeaturesRegistry.LARGE_LAPIS_ORE_PILLAR);
         Registry.register(Registries.FEATURE, Identifier.of(TheAfterdark.MOD_ID, "redstone_ore_pillar"), AfterdarkFeaturesRegistry.LARGE_REDSTONE_ORE_PILLAR);
         Registry.register(Registries.FEATURE, Identifier.of(TheAfterdark.MOD_ID, "coal_ore_pillar"), AfterdarkFeaturesRegistry.LARGE_COAL_ORE_PILLAR);
+
+        // Black Honey Grove
+        Registry.register(Registries.FEATURE, Identifier.of(TheAfterdark.MOD_ID, "black_honey_pool"), AfterdarkFeaturesRegistry.BLACK_HONEY_POOL);
+        Registry.register(Registries.FEATURE, Identifier.of(TheAfterdark.MOD_ID, "black_honey_surface_patch"), AfterdarkFeaturesRegistry.BLACK_HONEY_SURFACE_PATCH);
+        Registry.register(Registries.FEATURE, Identifier.of(TheAfterdark.MOD_ID, "black_honey_resin_fall"), AfterdarkFeaturesRegistry.BLACK_HONEY_RESIN_FALL);
+        Registry.register(Registries.FEATURE, Identifier.of(TheAfterdark.MOD_ID, "black_honey_cocoon_cluster"), AfterdarkFeaturesRegistry.BLACK_HONEY_COCOON_CLUSTER);
+        Registry.register(Registries.FEATURE, Identifier.of(TheAfterdark.MOD_ID, "black_honey_hive_cyst"), AfterdarkFeaturesRegistry.BLACK_HONEY_HIVE_CYST);
+        Registry.register(Registries.FEATURE, Identifier.of(TheAfterdark.MOD_ID, "black_honey_root_arch"), AfterdarkFeaturesRegistry.BLACK_HONEY_ROOT_ARCH);
+        Registry.register(Registries.FEATURE, Identifier.of(TheAfterdark.MOD_ID, "black_honey_mourning_flower"), AfterdarkFeaturesRegistry.BLACK_HONEY_MOURNING_FLOWER);
+        Registry.register(Registries.FEATURE, Identifier.of(TheAfterdark.MOD_ID, "black_honey_queen_heart"), AfterdarkFeaturesRegistry.BLACK_HONEY_QUEEN_HEART);
+        Registry.register(Registries.FEATURE, Identifier.of(TheAfterdark.MOD_ID, "stone_rib"), AfterdarkFeaturesRegistry.STONE_RIB);
+        Registry.register(Registries.FEATURE, Identifier.of(TheAfterdark.MOD_ID, "light_vein"), AfterdarkFeaturesRegistry.LIGHT_VEIN);
+        Registry.register(Registries.FEATURE, Identifier.of(TheAfterdark.MOD_ID, "dark_tar"), AfterdarkFeaturesRegistry.DARK_TAR);
+        Registry.register(Registries.FEATURE, Identifier.of(TheAfterdark.MOD_ID, "gothic_copper_ruin"), AfterdarkFeaturesRegistry.GOTHIC_COPPER_RUIN);
+        Registry.register(Registries.FEATURE, Identifier.of(TheAfterdark.MOD_ID, "deep_afterdark_structure"), AfterdarkFeaturesRegistry.DEEP_AFTERDARK_STRUCTURE);
+        Registry.register(Registries.FEATURE, Identifier.of(TheAfterdark.MOD_ID, "afterdark_microdecor"), AfterdarkFeaturesRegistry.AFTERDARK_MICRODECOR);
     }
 
     public static void register() {

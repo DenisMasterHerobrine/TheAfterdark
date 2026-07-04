@@ -6,6 +6,7 @@
   "plugin": "dev.denismasterherobrine.afterdark.forge.mixin.compat.lostcities.LostCitiesCompatMixinPlugin",
   "mixins": [
     "LostCityFeatureCompatMixin",
+    "LostCitiesSectionCacheBoundsMixin",
     "PlacedFeatureInsideLostSphereMixin"
   ],
   "injectors": {

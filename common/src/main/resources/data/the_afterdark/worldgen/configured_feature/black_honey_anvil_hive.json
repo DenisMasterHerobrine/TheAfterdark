@@ -1,0 +1,68 @@
+{
+  "type": "the_afterdark:anvil_rock",
+  "config": {
+    "material": {
+      "fallback": {
+        "type": "minecraft:weighted_state_provider",
+        "entries": [
+          {
+            "weight": 7,
+            "data": {
+              "Name": "minecraft:honeycomb_block"
+            }
+          },
+          {
+            "weight": 4,
+            "data": {
+              "Name": "minecraft:honey_block"
+            }
+          },
+          {
+            "weight": 2,
+            "data": {
+              "Name": "minecraft:bee_nest",
+              "Properties": {
+                "facing": "south",
+                "honey_level": "5"
+              }
+            }
+          },
+          {
+            "weight": 3,
+            "data": {
+              "Name": "minecraft:brown_terracotta"
+            }
+          },
+          {
+            "weight": 1,
+            "data": {
+              "Name": "minecraft:air"
+            }
+          }
+        ]
+      },
+      "rules": []
+    },
+    "radius": {
+      "type": "minecraft:uniform",
+      "value": {
+        "min_inclusive": 1,
+        "max_inclusive": 2
+      }
+    },
+    "height": {
+      "type": "minecraft:uniform",
+      "value": {
+        "min_inclusive": 3,
+        "max_inclusive": 13
+      }
+    },
+    "stretch": {
+      "type": "minecraft:uniform",
+      "value": {
+        "min_inclusive": 0,
+        "max_inclusive": 2
+      }
+    }
+  }
+}

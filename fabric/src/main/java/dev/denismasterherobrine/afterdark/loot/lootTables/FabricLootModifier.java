@@ -10,6 +10,10 @@ public class FabricLootModifier {
                 LootPool.Builder poolBuilder = CommonLootModifier.createLootPool();
                 tableBuilder.pool(poolBuilder.build());
             }
+            if (CommonLootModifier.isAbandonedMineshaftLootTable(id)) {
+                LootPool.Builder poolBuilder = CommonLootModifier.createAfterdarkMineshaftTreasurePool();
+                tableBuilder.pool(poolBuilder.build());
+            }
         });
     }
 }

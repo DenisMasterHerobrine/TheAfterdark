@@ -23,31 +23,30 @@ public class WaterloggableRandomPatchFeature extends Feature<WaterloggableRandom
         BlockPos blockpos = pContext.getOrigin();
         Random random = pContext.getRandom();
         WaterloggableRandomPatchConfiguration randomPatchConfiguration = pContext.getConfig();
-        int i = 0;
+        int placed = 0;
         BlockPos.Mutable mutableBlockPos = new BlockPos.Mutable();
         int j = randomPatchConfiguration.xz_spread + 1;
         int k = randomPatchConfiguration.y_spread + 1;
         for (int l = 0; l < randomPatchConfiguration.tries; ++l) {
             mutableBlockPos.set(blockpos, random.nextInt(j) - random.nextInt(j), random.nextInt(k) - random.nextInt(k), random.nextInt(j) - random.nextInt(j));
-            if (worldgenlevel.getBlockState(mutableBlockPos).equals(Blocks.WATER)) {
-                placeBlock(worldgenlevel, mutableBlockPos, randomPatchConfiguration.to_place.get(random, mutableBlockPos));
-            } else {
-
+            BlockState currentState = worldgenlevel.getBlockState(mutableBlockPos);
+            if ((currentState.isAir() || currentState.isOf(Blocks.WATER))
+                    && placeBlock(worldgenlevel, mutableBlockPos, randomPatchConfiguration.to_place.get(random, mutableBlockPos), currentState)) {
+                ++placed;
             }
-            ++i;
         }
-        return i > 0;
+        return placed > 0;
     }
 
-    private boolean placeBlock(StructureWorldAccess worldGenLevel, BlockPos blockPos, BlockState blockState) {
+    private boolean placeBlock(StructureWorldAccess worldGenLevel, BlockPos blockPos, BlockState blockState, BlockState currentState) {
         if (!blockState.canPlaceAt(worldGenLevel, blockPos)) return false;
         if (blockState.getBlock() instanceof TallPlantBlock) {
             if (!worldGenLevel.isAir(blockPos.up())) return false;
             TallPlantBlock.placeAt(worldGenLevel, blockState, blockPos, 2);
             return true;
         } else {
-            if (blockState.getProperties().contains(Properties.WATERLOGGED) && worldGenLevel.getBlockState(blockPos).isOf(Blocks.WATER)) {
-                worldGenLevel.setBlockState(blockPos, blockState.with(Properties.WATERLOGGED, true), 2);
+            if (blockState.getProperties().contains(Properties.WATERLOGGED) && currentState.isOf(Blocks.WATER)) {
+                blockState = blockState.with(Properties.WATERLOGGED, true);
             }
             worldGenLevel.setBlockState(blockPos, blockState, 2);
         }

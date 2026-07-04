@@ -1,0 +1,101 @@
+{
+  "type": "the_afterdark:stone_rib",
+  "config": {
+    "spine_provider": {
+      "type": "minecraft:weighted_state_provider",
+      "entries": [
+        {
+          "weight": 7,
+          "data": {
+            "Name": "minecraft:tuff"
+          }
+        },
+        {
+          "weight": 6,
+          "data": {
+            "Name": "minecraft:deepslate"
+          }
+        },
+        {
+          "weight": 3,
+          "data": {
+            "Name": "minecraft:polished_deepslate"
+          }
+        },
+        {
+          "weight": 2,
+          "data": {
+            "Name": "minecraft:calcite"
+          }
+        },
+        {
+          "weight": 1,
+          "data": {
+            "Name": "minecraft:oxidized_copper"
+          }
+        },
+        {
+          "weight": 1,
+          "data": {
+            "Name": "minecraft:cut_copper"
+          }
+        }
+      ]
+    },
+    "accent_provider": {
+      "type": "minecraft:weighted_state_provider",
+      "entries": [
+        {
+          "weight": 1,
+          "data": {
+            "Name": "minecraft:oxidized_cut_copper"
+          }
+        },
+        {
+          "weight": 1,
+          "data": {
+            "Name": "minecraft:weathered_copper"
+          }
+        },
+        {
+          "weight": 3,
+          "data": {
+            "Name": "minecraft:chiseled_deepslate"
+          }
+        },
+        {
+          "weight": 1,
+          "data": {
+            "Name": "minecraft:ochre_froglight",
+            "Properties": {
+              "axis": "y"
+            }
+          }
+        }
+      ]
+    },
+    "span": {
+      "type": "minecraft:uniform",
+      "value": {
+        "min_inclusive": 7,
+        "max_inclusive": 15
+      }
+    },
+    "height": {
+      "type": "minecraft:uniform",
+      "value": {
+        "min_inclusive": 5,
+        "max_inclusive": 12
+      }
+    },
+    "thickness": {
+      "type": "minecraft:uniform",
+      "value": {
+        "min_inclusive": 2,
+        "max_inclusive": 4
+      }
+    },
+    "accent_chance": 0.16,
+    "side_thickness_chance": 0.46
+  }
+}

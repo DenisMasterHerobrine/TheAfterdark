@@ -1,0 +1,61 @@
+{
+  "type": "the_afterdark:light_vein",
+  "config": {
+    "vein_provider": {
+      "type": "minecraft:weighted_state_provider",
+      "entries": [
+        {
+          "weight": 5,
+          "data": {
+            "Name": "minecraft:sea_lantern"
+          }
+        },
+        {
+          "weight": 2,
+          "data": {
+            "Name": "minecraft:prismarine"
+          }
+        }
+      ]
+    },
+    "accent_provider": {
+      "type": "minecraft:weighted_state_provider",
+      "entries": [
+        {
+          "weight": 3,
+          "data": {
+            "Name": "minecraft:prismarine_bricks"
+          }
+        },
+        {
+          "weight": 2,
+          "data": {
+            "Name": "minecraft:sea_lantern"
+          }
+        }
+      ]
+    },
+    "length": {
+      "type": "minecraft:uniform",
+      "value": {
+        "min_inclusive": 12,
+        "max_inclusive": 24
+      }
+    },
+    "radius": {
+      "type": "minecraft:uniform",
+      "value": {
+        "min_inclusive": 1,
+        "max_inclusive": 3
+      }
+    },
+    "vertical_range": {
+      "type": "minecraft:uniform",
+      "value": {
+        "min_inclusive": 6,
+        "max_inclusive": 18
+      }
+    },
+    "accent_chance": 0.22
+  }
+}

@@ -48,7 +48,7 @@ public class AfterdarkRegistry {
                 320, // logicalHeight
                 BlockTags.INFINIBURN_OVERWORLD, // infiniburn
                 DimensionTypes.OVERWORLD_ID, // effectsLocation
-                0.0f, // ambientLight
+                0.1f, // ambientLight
                 new DimensionType.MonsterSettings(false, false, UniformIntProvider.create(0, 7), 0) // monsterSettings
         ));
     }

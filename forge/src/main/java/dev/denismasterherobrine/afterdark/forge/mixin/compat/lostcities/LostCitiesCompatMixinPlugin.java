@@ -34,6 +34,7 @@ public final class LostCitiesCompatMixinPlugin implements IMixinConfigPlugin {
 
         return List.of(
                 "LostCityFeatureCompatMixin",
+                "LostCitiesSectionCacheBoundsMixin",
                 "PlacedFeatureInsideLostSphereMixin"
         );
     }

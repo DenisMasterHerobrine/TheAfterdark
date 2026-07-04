@@ -1,6 +1,18 @@
 {
   "itemGroup.afterdark": "The Afterdark",
-  "item.the_afterdark.teleport_catalyst": "순간이동 촉매",
-  "block.the_afterdark.teleport_block": "순간이동 블록",
-  "chat.the_afterdark.teleport_missing_catalyst": "§3이 제단은 당신의 제물을 거부합니다..."
+  "item.the_afterdark.teleport_catalyst": "공간이동 촉매",
+  "block.the_afterdark.teleport_block": "공간이동 블록",
+  "dimension.the_afterdark.afterdark": "The Afterdark",
+  "chat.the_afterdark.teleport_missing_catalyst": "§3이 제단은 당신의 제물을 거부합니다...",
+  "biome.the_afterdark.black_honey_grove": "검은 꿀 숲",
+  "biome.the_afterdark.calcite_fields": "방해석 들판",
+  "biome.the_afterdark.copper_necropolis": "구리 네크로폴리스",
+  "biome.the_afterdark.creepy_snowfields": "오싹한 설원",
+  "biome.the_afterdark.deep_afterdark": "깊은 애프터다크",
+  "biome.the_afterdark.dripstone_deltas": "점적석 삼각주",
+  "biome.the_afterdark.dying_drylands": "죽어가는 건조지대",
+  "biome.the_afterdark.lush_gardens": "무성한 정원",
+  "biome.the_afterdark.prismarine_peaks": "프리즈마린 봉우리",
+  "biome.the_afterdark.prismarine_ponds": "프리즈마린 연못",
+  "biome.the_afterdark.silent_reservoirs": "고요한 저수지"
 }

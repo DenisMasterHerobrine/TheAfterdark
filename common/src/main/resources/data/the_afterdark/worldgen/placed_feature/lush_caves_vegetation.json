@@ -15,23 +15,26 @@
       "height": {
         "type": "minecraft:uniform",
         "min_inclusive": {
-          "above_bottom": -46
+          "absolute": -122
         },
         "max_inclusive": {
-          "absolute": 60
+          "absolute": 250
         }
       }
     },
     {
       "type": "minecraft:environment_scan",
       "direction_of_search": "down",
-      "max_steps": 12,
+      "max_steps": 32,
       "target_condition": {
         "type": "minecraft:solid"
       },
       "allowed_search_condition": {
         "type": "minecraft:matching_blocks",
-        "blocks": "minecraft:air"
+        "blocks": [
+          "minecraft:air",
+          "minecraft:cave_air"
+        ]
       }
     },
     {

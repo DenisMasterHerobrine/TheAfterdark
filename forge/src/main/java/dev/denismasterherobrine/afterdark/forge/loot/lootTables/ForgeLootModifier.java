@@ -17,6 +17,10 @@ public class ForgeLootModifier {
                 LootPool.Builder poolBuilder = CommonLootModifier.createLootPool();
                 event.getTable().addPool(poolBuilder.build());
             }
+            if (CommonLootModifier.isAbandonedMineshaftLootTable(event.getName())) {
+                LootPool.Builder poolBuilder = CommonLootModifier.createAfterdarkMineshaftTreasurePool();
+                event.getTable().addPool(poolBuilder.build());
+            }
         }
     }
 }

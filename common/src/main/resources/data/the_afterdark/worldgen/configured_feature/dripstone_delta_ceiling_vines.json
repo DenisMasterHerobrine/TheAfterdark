@@ -1,0 +1,133 @@
+{
+  "type": "minecraft:block_column",
+  "config": {
+    "direction": "down",
+    "allowed_placement": {
+      "type": "minecraft:matching_blocks",
+      "blocks": [
+        "minecraft:air",
+        "minecraft:cave_air"
+      ]
+    },
+    "prioritize_tip": true,
+    "layers": [
+      {
+        "height": {
+          "type": "minecraft:weighted_list",
+          "distribution": [
+            {
+              "weight": 6,
+              "data": {
+                "type": "minecraft:uniform",
+                "value": {
+                  "min_inclusive": 1,
+                  "max_inclusive": 4
+                }
+              }
+            },
+            {
+              "weight": 4,
+              "data": {
+                "type": "minecraft:uniform",
+                "value": {
+                  "min_inclusive": 2,
+                  "max_inclusive": 8
+                }
+              }
+            },
+            {
+              "weight": 1,
+              "data": {
+                "type": "minecraft:uniform",
+                "value": {
+                  "min_inclusive": 7,
+                  "max_inclusive": 16
+                }
+              }
+            }
+          ]
+        },
+        "provider": {
+          "type": "minecraft:weighted_state_provider",
+          "entries": [
+            {
+              "weight": 9,
+              "data": {
+                "Name": "minecraft:cave_vines_plant",
+                "Properties": {
+                  "berries": "false"
+                }
+              }
+            },
+            {
+              "weight": 2,
+              "data": {
+                "Name": "minecraft:cave_vines_plant",
+                "Properties": {
+                  "berries": "true"
+                }
+              }
+            },
+            {
+              "weight": 4,
+              "data": {
+                "Name": "minecraft:azalea_leaves",
+                "Properties": {
+                  "distance": "7",
+                  "persistent": "true"
+                }
+              }
+            },
+            {
+              "weight": 1,
+              "data": {
+                "Name": "minecraft:flowering_azalea_leaves",
+                "Properties": {
+                  "distance": "7",
+                  "persistent": "true"
+                }
+              }
+            }
+          ]
+        }
+      },
+      {
+        "height": 1,
+        "provider": {
+          "type": "minecraft:weighted_state_provider",
+          "entries": [
+            {
+              "weight": 8,
+              "data": {
+                "Name": "minecraft:cave_vines",
+                "Properties": {
+                  "berries": "false",
+                  "age": "0"
+                }
+              }
+            },
+            {
+              "weight": 2,
+              "data": {
+                "Name": "minecraft:cave_vines",
+                "Properties": {
+                  "berries": "true",
+                  "age": "0"
+                }
+              }
+            },
+            {
+              "weight": 3,
+              "data": {
+                "Name": "minecraft:hanging_roots",
+                "Properties": {
+                  "waterlogged": "false"
+                }
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

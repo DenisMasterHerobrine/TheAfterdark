@@ -1,0 +1,102 @@
+{
+  "type": "the_afterdark:dark_tar",
+  "config": {
+    "column_provider": {
+      "type": "minecraft:weighted_state_provider",
+      "entries": [
+        {
+          "weight": 4,
+          "data": {
+            "Name": "minecraft:honey_block"
+          }
+        },
+        {
+          "weight": 3,
+          "data": {
+            "Name": "minecraft:mud"
+          }
+        },
+        {
+          "weight": 2,
+          "data": {
+            "Name": "minecraft:soul_soil"
+          }
+        },
+        {
+          "weight": 1,
+          "data": {
+            "Name": "minecraft:obsidian"
+          }
+        }
+      ]
+    },
+    "side_provider": {
+      "type": "minecraft:weighted_state_provider",
+      "entries": [
+        {
+          "weight": 3,
+          "data": {
+            "Name": "minecraft:blackstone"
+          }
+        },
+        {
+          "weight": 2,
+          "data": {
+            "Name": "minecraft:mud"
+          }
+        },
+        {
+          "weight": 1,
+          "data": {
+            "Name": "minecraft:honey_block"
+          }
+        }
+      ]
+    },
+    "pool_provider": {
+      "type": "minecraft:weighted_state_provider",
+      "entries": [
+        {
+          "weight": 4,
+          "data": {
+            "Name": "minecraft:mud"
+          }
+        },
+        {
+          "weight": 3,
+          "data": {
+            "Name": "minecraft:blackstone"
+          }
+        },
+        {
+          "weight": 2,
+          "data": {
+            "Name": "minecraft:soul_soil"
+          }
+        },
+        {
+          "weight": 1,
+          "data": {
+            "Name": "minecraft:obsidian"
+          }
+        }
+      ]
+    },
+    "length": {
+      "type": "minecraft:uniform",
+      "value": {
+        "min_inclusive": 6,
+        "max_inclusive": 15
+      }
+    },
+    "pool_radius": {
+      "type": "minecraft:uniform",
+      "value": {
+        "min_inclusive": 1,
+        "max_inclusive": 3
+      }
+    },
+    "side_chance": 0.34,
+    "pool_chance": 0.78
+  }
+}

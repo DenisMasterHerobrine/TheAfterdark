@@ -3,7 +3,7 @@
   "placement": [
     {
       "type": "minecraft:count",
-      "count": 10
+      "count": 46
     },
     {
       "type": "minecraft:in_square"
@@ -13,10 +13,10 @@
       "height": {
         "type": "minecraft:uniform",
         "min_inclusive": {
-          "absolute": -48
+          "absolute": -122
         },
         "max_inclusive": {
-          "absolute": 30
+          "absolute": 250
         }
       }
     },
@@ -30,7 +30,8 @@
       "allowed_search_condition": {
         "type": "minecraft:matching_blocks",
         "blocks": [
-          "minecraft:air"
+          "minecraft:air",
+          "minecraft:cave_air"
         ]
       }
     },

@@ -1,0 +1,69 @@
+{
+  "type": "the_afterdark:supported_disk",
+  "config": {
+    "state_provider": {
+      "fallback": {
+        "type": "minecraft:weighted_state_provider",
+        "entries": [
+          {
+            "weight": 8,
+            "data": {
+              "Name": "minecraft:clay"
+            }
+          },
+          {
+            "weight": 6,
+            "data": {
+              "Name": "minecraft:packed_mud"
+            }
+          },
+          {
+            "weight": 3,
+            "data": {
+              "Name": "minecraft:mud"
+            }
+          },
+          {
+            "weight": 2,
+            "data": {
+              "Name": "minecraft:terracotta"
+            }
+          },
+          {
+            "weight": 1,
+            "data": {
+              "Name": "minecraft:dripstone_block"
+            }
+          }
+        ]
+      },
+      "rules": []
+    },
+    "target": {
+      "type": "minecraft:matching_blocks",
+      "offset": [
+        0,
+        0,
+        0
+      ],
+      "blocks": [
+        "minecraft:stone",
+        "minecraft:deepslate",
+        "minecraft:tuff",
+        "minecraft:dripstone_block",
+        "minecraft:terracotta",
+        "minecraft:clay",
+        "minecraft:packed_mud",
+        "minecraft:mud"
+      ]
+    },
+    "radius": {
+      "type": "minecraft:uniform",
+      "value": {
+        "min_inclusive": 3,
+        "max_inclusive": 7
+      }
+    },
+    "half_height": 1
+  }
+}

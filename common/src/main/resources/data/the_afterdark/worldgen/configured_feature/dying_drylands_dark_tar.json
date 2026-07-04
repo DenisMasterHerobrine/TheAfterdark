@@ -1,0 +1,96 @@
+{
+  "type": "the_afterdark:dark_tar",
+  "config": {
+    "column_provider": {
+      "type": "minecraft:weighted_state_provider",
+      "entries": [
+        {
+          "weight": 4,
+          "data": {
+            "Name": "minecraft:honey_block"
+          }
+        },
+        {
+          "weight": 3,
+          "data": {
+            "Name": "minecraft:soul_soil"
+          }
+        },
+        {
+          "weight": 2,
+          "data": {
+            "Name": "minecraft:blackstone"
+          }
+        },
+        {
+          "weight": 1,
+          "data": {
+            "Name": "minecraft:mud"
+          }
+        }
+      ]
+    },
+    "side_provider": {
+      "type": "minecraft:weighted_state_provider",
+      "entries": [
+        {
+          "weight": 3,
+          "data": {
+            "Name": "minecraft:blackstone"
+          }
+        },
+        {
+          "weight": 2,
+          "data": {
+            "Name": "minecraft:soul_soil"
+          }
+        },
+        {
+          "weight": 1,
+          "data": {
+            "Name": "minecraft:honey_block"
+          }
+        }
+      ]
+    },
+    "pool_provider": {
+      "type": "minecraft:weighted_state_provider",
+      "entries": [
+        {
+          "weight": 4,
+          "data": {
+            "Name": "minecraft:blackstone"
+          }
+        },
+        {
+          "weight": 3,
+          "data": {
+            "Name": "minecraft:soul_soil"
+          }
+        },
+        {
+          "weight": 2,
+          "data": {
+            "Name": "minecraft:mud"
+          }
+        }
+      ]
+    },
+    "length": {
+      "type": "minecraft:uniform",
+      "value": {
+        "min_inclusive": 4,
+        "max_inclusive": 10
+      }
+    },
+    "pool_radius": {
+      "type": "minecraft:uniform",
+      "value": {
+        "min_inclusive": 1,
+        "max_inclusive": 2
+      }
+    },
+    "side_chance": 0.22,
+    "pool_chance": 0.6
+  }
+}
