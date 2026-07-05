@@ -134,11 +134,13 @@
     "spawn_costs": {
 
     },
-    "carvers": [
-        "minecraft:cave",
-        "minecraft:cave_extra_underground",
-        "minecraft:canyon"
-    ],
+    "carvers": {
+        "air": [
+            "minecraft:cave",
+            "minecraft:cave_extra_underground",
+            "minecraft:canyon"
+        ]
+    },
     "features": [
         [
             "the_afterdark:underwater_packed_mud",
