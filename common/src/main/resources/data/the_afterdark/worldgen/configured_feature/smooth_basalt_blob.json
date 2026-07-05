@@ -12,24 +12,18 @@
     },
     "blobMass": {
       "type": "minecraft:uniform",
-      "value": {
-        "min_inclusive": 54,
-        "max_inclusive": 69
-      }
+      "min_inclusive": 54,
+      "max_inclusive": 69
     },
     "blobWidth": {
       "type": "minecraft:uniform",
-      "value": {
-        "min_inclusive": 3,
-        "max_inclusive": 5
-      }
+      "min_inclusive": 3,
+      "max_inclusive": 5
     },
     "blobHeight": {
       "type": "minecraft:uniform",
-      "value": {
-        "min_inclusive": 3,
-        "max_inclusive": 5
-      }
+      "min_inclusive": 3,
+      "max_inclusive": 5
     }
   }
 }

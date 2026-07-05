@@ -37,24 +37,18 @@
     },
     "length": {
       "type": "minecraft:uniform",
-      "value": {
-        "min_inclusive": 12,
-        "max_inclusive": 24
-      }
+      "min_inclusive": 12,
+      "max_inclusive": 24
     },
     "radius": {
       "type": "minecraft:uniform",
-      "value": {
-        "min_inclusive": 1,
-        "max_inclusive": 3
-      }
+      "min_inclusive": 1,
+      "max_inclusive": 3
     },
     "vertical_range": {
       "type": "minecraft:uniform",
-      "value": {
-        "min_inclusive": 6,
-        "max_inclusive": 18
-      }
+      "min_inclusive": 6,
+      "max_inclusive": 18
     },
     "accent_chance": 0.22
   }

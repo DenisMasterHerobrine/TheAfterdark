@@ -18,60 +18,48 @@
               "weight": 2,
               "data": {
                 "type": "minecraft:uniform",
-                "value": {
-                  "min_inclusive": 0,
-                  "max_inclusive": 15
-                }
+                "min_inclusive": 0,
+                "max_inclusive": 15
               }
             },
             {
               "weight": 3,
               "data": {
                 "type": "minecraft:uniform",
-                "value": {
-                  "min_inclusive": 0,
-                  "max_inclusive": 12
-                }
+                "min_inclusive": 0,
+                "max_inclusive": 12
               }
             },
             {
               "weight": 6,
               "data": {
                 "type": "minecraft:uniform",
-                "value": {
-                  "min_inclusive": 0,
-                  "max_inclusive": 17
-                }
+                "min_inclusive": 0,
+                "max_inclusive": 17
               }
             },
             {
               "weight": 5,
               "data": {
                 "type": "minecraft:uniform",
-                "value": {
-                  "min_inclusive": 0,
-                  "max_inclusive": 42
-                }
+                "min_inclusive": 0,
+                "max_inclusive": 42
               }
             },
             {
               "weight": 3,
               "data": {
                 "type": "minecraft:uniform",
-                "value": {
-                  "min_inclusive": 0,
-                  "max_inclusive": 43
-                }
+                "min_inclusive": 0,
+                "max_inclusive": 43
               }
             },
             {
               "weight": 3,
               "data": {
                 "type": "minecraft:uniform",
-                "value": {
-                  "min_inclusive": 0,
-                  "max_inclusive": 46
-                }
+                "min_inclusive": 0,
+                "max_inclusive": 46
               }
             }
           ]

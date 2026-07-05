@@ -18,50 +18,40 @@
               "weight": 2,
               "data": {
                 "type": "minecraft:uniform",
-                "value": {
-                  "min_inclusive": 0,
-                  "max_inclusive": 11
-                }
+                "min_inclusive": 0,
+                "max_inclusive": 11
               }
             },
             {
               "weight": 6,
               "data": {
                 "type": "minecraft:uniform",
-                "value": {
-                  "min_inclusive": 0,
-                  "max_inclusive": 10
-                }
+                "min_inclusive": 0,
+                "max_inclusive": 10
               }
             },
             {
               "weight": 5,
               "data": {
                 "type": "minecraft:uniform",
-                "value": {
-                  "min_inclusive": 0,
-                  "max_inclusive": 14
-                }
+                "min_inclusive": 0,
+                "max_inclusive": 14
               }
             },
             {
               "weight": 3,
               "data": {
                 "type": "minecraft:uniform",
-                "value": {
-                  "min_inclusive": 0,
-                  "max_inclusive": 16
-                }
+                "min_inclusive": 0,
+                "max_inclusive": 16
               }
             },
             {
               "weight": 3,
               "data": {
                 "type": "minecraft:uniform",
-                "value": {
-                  "min_inclusive": 0,
-                  "max_inclusive": 18
-                }
+                "min_inclusive": 0,
+                "max_inclusive": 18
               }
             }
           ]

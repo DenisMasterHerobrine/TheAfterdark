@@ -18,60 +18,48 @@
               "weight": 2,
               "data": {
                 "type": "minecraft:uniform",
-                "value": {
-                  "min_inclusive": 0,
-                  "max_inclusive": 19
-                }
+                "min_inclusive": 0,
+                "max_inclusive": 19
               }
             },
             {
               "weight": 3,
               "data": {
                 "type": "minecraft:uniform",
-                "value": {
-                  "min_inclusive": 0,
-                  "max_inclusive": 2
-                }
+                "min_inclusive": 0,
+                "max_inclusive": 2
               }
             },
             {
               "weight": 6,
               "data": {
                 "type": "minecraft:uniform",
-                "value": {
-                  "min_inclusive": 0,
-                  "max_inclusive": 6
-                }
+                "min_inclusive": 0,
+                "max_inclusive": 6
               }
             },
             {
               "weight": 5,
               "data": {
                 "type": "minecraft:uniform",
-                "value": {
-                  "min_inclusive": 0,
-                  "max_inclusive": 49
-                }
+                "min_inclusive": 0,
+                "max_inclusive": 49
               }
             },
             {
               "weight": 3,
               "data": {
                 "type": "minecraft:uniform",
-                "value": {
-                  "min_inclusive": 0,
-                  "max_inclusive": 46
-                }
+                "min_inclusive": 0,
+                "max_inclusive": 46
               }
             },
             {
               "weight": 3,
               "data": {
                 "type": "minecraft:uniform",
-                "value": {
-                  "min_inclusive": 0,
-                  "max_inclusive": 52
-                }
+                "min_inclusive": 0,
+                "max_inclusive": 52
               }
             }
           ]
@@ -107,10 +95,8 @@
           "property": "age",
           "values": {
             "type": "minecraft:uniform",
-            "value": {
-              "min_inclusive": 12,
-              "max_inclusive": 25
-            }
+            "min_inclusive": 12,
+            "max_inclusive": 25
           },
           "source": {
             "type": "minecraft:weighted_state_provider",

@@ -43,24 +43,18 @@
     },
     "span": {
       "type": "minecraft:uniform",
-      "value": {
-        "min_inclusive": 8,
-        "max_inclusive": 16
-      }
+      "min_inclusive": 8,
+      "max_inclusive": 16
     },
     "height": {
       "type": "minecraft:uniform",
-      "value": {
-        "min_inclusive": 6,
-        "max_inclusive": 14
-      }
+      "min_inclusive": 6,
+      "max_inclusive": 14
     },
     "thickness": {
       "type": "minecraft:uniform",
-      "value": {
-        "min_inclusive": 2,
-        "max_inclusive": 4
-      }
+      "min_inclusive": 2,
+      "max_inclusive": 4
     },
     "accent_chance": 0.18,
     "side_thickness_chance": 0.52

@@ -78,17 +78,13 @@
     },
     "length": {
       "type": "minecraft:uniform",
-      "value": {
-        "min_inclusive": 5,
-        "max_inclusive": 11
-      }
+      "min_inclusive": 5,
+      "max_inclusive": 11
     },
     "pool_radius": {
       "type": "minecraft:uniform",
-      "value": {
-        "min_inclusive": 1,
-        "max_inclusive": 2
-      }
+      "min_inclusive": 1,
+      "max_inclusive": 2
     },
     "side_chance": 0.24,
     "pool_chance": 0.65
