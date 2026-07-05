@@ -252,7 +252,12 @@ tasks.register("checkWorldgenData") {
                 if (!(stepFeatures instanceof List)) {
                     throw new GradleException("${file} feature step ${step} is not a list.")
                 }
+
+                Set<Object> seenFeatures = new LinkedHashSet<>()
                 stepFeatures.each { Object feature ->
+                    if (!seenFeatures.add(feature)) {
+                        throw new GradleException("${file} step ${step} contains duplicate feature ${feature}; duplicate placed features can create runtime feature-order cycles.")
+                    }
                     if (feature instanceof String && feature.startsWith("the_afterdark:") && !placedFeatures.contains(feature)) {
                         throw new GradleException("${file} step ${step} references missing placed feature ${feature}.")
                     }
