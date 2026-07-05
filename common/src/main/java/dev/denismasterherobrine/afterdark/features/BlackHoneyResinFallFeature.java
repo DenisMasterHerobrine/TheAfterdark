@@ -1,40 +1,40 @@
 package dev.denismasterherobrine.afterdark.features;
 
 import com.mojang.serialization.Codec;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.random.Random;
-import net.minecraft.world.StructureWorldAccess;
-import net.minecraft.world.gen.feature.DefaultFeatureConfig;
-import net.minecraft.world.gen.feature.Feature;
-import net.minecraft.world.gen.feature.util.FeatureContext;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
+import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 
-public class BlackHoneyResinFallFeature extends Feature<DefaultFeatureConfig> {
-    public BlackHoneyResinFallFeature(Codec<DefaultFeatureConfig> codec) {
+public class BlackHoneyResinFallFeature extends Feature<NoneFeatureConfiguration> {
+    public BlackHoneyResinFallFeature(Codec<NoneFeatureConfiguration> codec) {
         super(codec);
     }
 
     @Override
-    public boolean generate(FeatureContext<DefaultFeatureConfig> context) {
-        StructureWorldAccess world = context.getWorld();
-        Random random = context.getRandom();
-        BlockPos ceiling = BlackHoneyFeatureUtil.findCeiling(world, context.getOrigin(), 24);
+    public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> context) {
+        WorldGenLevel world = context.level();
+        RandomSource random = context.random();
+        BlockPos ceiling = BlackHoneyFeatureUtil.findCeiling(world, context.origin(), 24);
         if (ceiling == null) {
             return false;
         }
 
-        BlockPos cursor = ceiling.down();
+        BlockPos cursor = ceiling.below();
         int length = 5 + random.nextInt(14);
         boolean placed = false;
         BlockPos lastAir = cursor;
 
         for (int i = 0; i < length && BlackHoneyFeatureUtil.canReplace(world, cursor); ++i) {
             BlockState state = random.nextInt(7) == 0
-                    ? Blocks.HONEYCOMB_BLOCK.getDefaultState()
-                    : Blocks.HONEY_BLOCK.getDefaultState();
-            world.setBlockState(cursor, state, 2);
+                    ? Blocks.HONEYCOMB_BLOCK.defaultBlockState()
+                    : Blocks.HONEY_BLOCK.defaultBlockState();
+            world.setBlock(cursor, state, 2);
             placed = true;
             lastAir = cursor;
 
@@ -43,10 +43,10 @@ public class BlackHoneyResinFallFeature extends Feature<DefaultFeatureConfig> {
             }
             if (i > 2 && random.nextInt(9) == 0) {
                 Direction side = BlackHoneyFeatureUtil.randomHorizontal(random);
-                BlackHoneyFeatureUtil.placeIfReplaceable(world, cursor.offset(side), Blocks.HONEY_BLOCK.getDefaultState());
+                BlackHoneyFeatureUtil.placeIfReplaceable(world, cursor.relative(side), Blocks.HONEY_BLOCK.defaultBlockState());
             }
 
-            cursor = cursor.down();
+            cursor = cursor.below();
         }
 
         if (placed) {
@@ -55,13 +55,13 @@ public class BlackHoneyResinFallFeature extends Feature<DefaultFeatureConfig> {
         return placed;
     }
 
-    private void placeCeilingNodule(StructureWorldAccess world, Random random, BlockPos pos) {
+    private void placeCeilingNodule(WorldGenLevel world, RandomSource random, BlockPos pos) {
         Direction side = BlackHoneyFeatureUtil.randomHorizontal(random);
-        BlockState state = random.nextBoolean() ? Blocks.HONEYCOMB_BLOCK.getDefaultState() : Blocks.MANGROVE_ROOTS.getDefaultState();
-        BlackHoneyFeatureUtil.placeIfReplaceable(world, pos.offset(side), state);
+        BlockState state = random.nextBoolean() ? Blocks.HONEYCOMB_BLOCK.defaultBlockState() : Blocks.MANGROVE_ROOTS.defaultBlockState();
+        BlackHoneyFeatureUtil.placeIfReplaceable(world, pos.relative(side), state);
     }
 
-    private void spreadLandingPool(StructureWorldAccess world, Random random, BlockPos base) {
+    private void spreadLandingPool(WorldGenLevel world, RandomSource random, BlockPos base) {
         BlockPos floor = BlackHoneyFeatureUtil.findFloor(world, base, 1, 8);
         if (floor == null) {
             return;
@@ -72,10 +72,10 @@ public class BlackHoneyResinFallFeature extends Feature<DefaultFeatureConfig> {
                 if (x * x + z * z > radius * radius + random.nextInt(2)) {
                     continue;
                 }
-                BlockPos air = floor.add(x, 0, z);
-                if (BlackHoneyFeatureUtil.canReplace(world, air) && BlackHoneyFeatureUtil.isSolid(world, air.down())) {
-                    BlockState state = random.nextInt(4) == 0 ? Blocks.MUD.getDefaultState() : Blocks.HONEY_BLOCK.getDefaultState();
-                    world.setBlockState(air.down(), state, 2);
+                BlockPos air = floor.offset(x, 0, z);
+                if (BlackHoneyFeatureUtil.canReplace(world, air) && BlackHoneyFeatureUtil.isSolid(world, air.below())) {
+                    BlockState state = random.nextInt(4) == 0 ? Blocks.MUD.defaultBlockState() : Blocks.HONEY_BLOCK.defaultBlockState();
+                    world.setBlock(air.below(), state, 2);
                 }
             }
         }

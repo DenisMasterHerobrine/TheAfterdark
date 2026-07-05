@@ -2,13 +2,12 @@ package dev.denismasterherobrine.afterdark.events;
 
 import dev.denismasterherobrine.afterdark.Config;
 import dev.denismasterherobrine.afterdark.registry.AfterdarkRegistry;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.server.world.ServerWorld;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 
 public final class AfterdarkCaveEventManager {
     private static final Map<UUID, AfterdarkPlayerEventState> STATES = new HashMap<>();
@@ -20,25 +19,25 @@ public final class AfterdarkCaveEventManager {
     private AfterdarkCaveEventManager() {
     }
 
-    public static void tick(ServerPlayerEntity player) {
-        if (player.getServer() == null || !player.getServer().isOnThread()) {
+    public static void tick(ServerPlayer player) {
+        if (player.getServer() == null || !player.getServer().isSameThread()) {
             return;
         }
 
         if (!Config.INSTANCE.afterdarkEventsEnabled) {
-            STATES.remove(player.getUuid());
+            STATES.remove(player.getUUID());
             return;
         }
 
-        if (!(player.getWorld() instanceof ServerWorld world) || !world.getRegistryKey().equals(AfterdarkRegistry.AFTERDARK_LEVEL) || player.isSpectator() || player.isCreative()) {
-            AfterdarkPlayerEventState removed = STATES.remove(player.getUuid());
-            if (removed != null && removed.hasActiveEvent() && player.getWorld() instanceof ServerWorld oldWorld) {
+        if (!(player.level() instanceof ServerLevel world) || !world.dimension().equals(AfterdarkRegistry.AFTERDARK_LEVEL) || player.isSpectator() || player.isCreative()) {
+            AfterdarkPlayerEventState removed = STATES.remove(player.getUUID());
+            if (removed != null && removed.hasActiveEvent() && player.level() instanceof ServerLevel oldWorld) {
                 removed.getActiveEvent().finish(player, oldWorld, removed);
             }
             return;
         }
 
-        AfterdarkPlayerEventState state = STATES.computeIfAbsent(player.getUuid(), uuid -> new AfterdarkPlayerEventState(randomCooldown()));
+        AfterdarkPlayerEventState state = STATES.computeIfAbsent(player.getUUID(), uuid -> new AfterdarkPlayerEventState(randomCooldown()));
 
         if (state.hasActiveEvent()) {
             AfterdarkCaveEventType event = state.getActiveEvent();

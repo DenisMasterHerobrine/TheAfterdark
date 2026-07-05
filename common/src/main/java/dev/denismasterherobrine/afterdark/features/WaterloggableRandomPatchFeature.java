@@ -2,53 +2,52 @@ package dev.denismasterherobrine.afterdark.features;
 
 import com.mojang.serialization.Codec;
 import dev.denismasterherobrine.afterdark.features.configuration.WaterloggableRandomPatchConfiguration;
-
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.TallPlantBlock;
-import net.minecraft.state.property.Properties;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.random.Random;
-import net.minecraft.world.StructureWorldAccess;
-import net.minecraft.world.gen.feature.Feature;
-import net.minecraft.world.gen.feature.util.FeatureContext;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.DoublePlantBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 
 public class WaterloggableRandomPatchFeature extends Feature<WaterloggableRandomPatchConfiguration> {
     public WaterloggableRandomPatchFeature(Codec<WaterloggableRandomPatchConfiguration> pContext) {
         super(pContext);
     }
 
-    public boolean generate(FeatureContext<WaterloggableRandomPatchConfiguration> pContext) {
-        StructureWorldAccess worldgenlevel = pContext.getWorld();
-        BlockPos blockpos = pContext.getOrigin();
-        Random random = pContext.getRandom();
-        WaterloggableRandomPatchConfiguration randomPatchConfiguration = pContext.getConfig();
+    public boolean place(FeaturePlaceContext<WaterloggableRandomPatchConfiguration> pContext) {
+        WorldGenLevel worldgenlevel = pContext.level();
+        BlockPos blockpos = pContext.origin();
+        RandomSource random = pContext.random();
+        WaterloggableRandomPatchConfiguration randomPatchConfiguration = pContext.config();
         int placed = 0;
-        BlockPos.Mutable mutableBlockPos = new BlockPos.Mutable();
+        BlockPos.MutableBlockPos mutableBlockPos = new BlockPos.MutableBlockPos();
         int j = randomPatchConfiguration.xz_spread + 1;
         int k = randomPatchConfiguration.y_spread + 1;
         for (int l = 0; l < randomPatchConfiguration.tries; ++l) {
-            mutableBlockPos.set(blockpos, random.nextInt(j) - random.nextInt(j), random.nextInt(k) - random.nextInt(k), random.nextInt(j) - random.nextInt(j));
+            mutableBlockPos.setWithOffset(blockpos, random.nextInt(j) - random.nextInt(j), random.nextInt(k) - random.nextInt(k), random.nextInt(j) - random.nextInt(j));
             BlockState currentState = worldgenlevel.getBlockState(mutableBlockPos);
-            if ((currentState.isAir() || currentState.isOf(Blocks.WATER))
-                    && placeBlock(worldgenlevel, mutableBlockPos, randomPatchConfiguration.to_place.get(random, mutableBlockPos), currentState)) {
+            if ((currentState.isAir() || currentState.is(Blocks.WATER))
+                    && placeBlock(worldgenlevel, mutableBlockPos, randomPatchConfiguration.to_place.getState(random, mutableBlockPos), currentState)) {
                 ++placed;
             }
         }
         return placed > 0;
     }
 
-    private boolean placeBlock(StructureWorldAccess worldGenLevel, BlockPos blockPos, BlockState blockState, BlockState currentState) {
-        if (!blockState.canPlaceAt(worldGenLevel, blockPos)) return false;
-        if (blockState.getBlock() instanceof TallPlantBlock) {
-            if (!worldGenLevel.isAir(blockPos.up())) return false;
-            TallPlantBlock.placeAt(worldGenLevel, blockState, blockPos, 2);
+    private boolean placeBlock(WorldGenLevel worldGenLevel, BlockPos blockPos, BlockState blockState, BlockState currentState) {
+        if (!blockState.canSurvive(worldGenLevel, blockPos)) return false;
+        if (blockState.getBlock() instanceof DoublePlantBlock) {
+            if (!worldGenLevel.isEmptyBlock(blockPos.above())) return false;
+            DoublePlantBlock.placeAt(worldGenLevel, blockState, blockPos, 2);
             return true;
         } else {
-            if (blockState.getProperties().contains(Properties.WATERLOGGED) && currentState.isOf(Blocks.WATER)) {
-                blockState = blockState.with(Properties.WATERLOGGED, true);
+            if (blockState.getProperties().contains(BlockStateProperties.WATERLOGGED) && currentState.is(Blocks.WATER)) {
+                blockState = blockState.setValue(BlockStateProperties.WATERLOGGED, true);
             }
-            worldGenLevel.setBlockState(blockPos, blockState, 2);
+            worldGenLevel.setBlock(blockPos, blockState, 2);
         }
         return true;
     }

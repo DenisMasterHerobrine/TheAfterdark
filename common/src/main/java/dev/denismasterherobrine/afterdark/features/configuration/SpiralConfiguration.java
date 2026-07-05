@@ -5,25 +5,25 @@ import com.google.common.collect.ImmutableSet;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import java.util.Set;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.registry.Registries;
-import net.minecraft.util.math.intprovider.IntProvider;
-import net.minecraft.world.gen.feature.FeatureConfig;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.util.valueproviders.IntProvider;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 
-public class SpiralConfiguration implements FeatureConfig {
+public class SpiralConfiguration implements FeatureConfiguration {
     public static final Codec<SpiralConfiguration> CODEC = RecordCodecBuilder.create(
-            (fields) -> fields.group(Registries.BLOCK.getCodec().listOf()
+            (fields) -> fields.group(BuiltInRegistries.BLOCK.byNameCodec().listOf()
                     .fieldOf("validBlocks").xmap(ImmutableSet::copyOf, ImmutableList::copyOf)
                     .forGetter((v) -> (ImmutableSet<Block>)v.validBlocks), BlockState.CODEC
                     .fieldOf("stemMaterial")
                     .forGetter((v) -> v.stemMaterial), BlockState.CODEC
                     .fieldOf("leafMaterial")
-                    .forGetter((v) -> v.leafMaterial), IntProvider.createValidatingCodec(1, 1024)
+                    .forGetter((v) -> v.leafMaterial), IntProvider.codec(1, 1024)
                     .fieldOf("blobMass")
-                    .forGetter((v) -> v.blobMass), IntProvider.createValidatingCodec(1, 32)
+                    .forGetter((v) -> v.blobMass), IntProvider.codec(1, 32)
                     .fieldOf("blobWidth")
-                    .forGetter((v) -> v.blobWidth), IntProvider.createValidatingCodec(1, 128)
+                    .forGetter((v) -> v.blobWidth), IntProvider.codec(1, 128)
                     .fieldOf("blobHeight")
                     .forGetter((v) -> v.blobHeight))
                     .apply(fields, SpiralConfiguration::new));

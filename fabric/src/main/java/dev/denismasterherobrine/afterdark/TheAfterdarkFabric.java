@@ -10,6 +10,6 @@ public final class TheAfterdarkFabric implements ModInitializer {
     public void onInitialize() {
         TheAfterdark.init();
         AfterdarkFabricRegistry.register();
-        ServerTickEvents.END_SERVER_TICK.register(server -> server.getPlayerManager().getPlayerList().forEach(AfterdarkCaveEventManager::tick));
+        ServerTickEvents.END_SERVER_TICK.register(server -> server.getPlayerList().getPlayers().forEach(AfterdarkCaveEventManager::tick));
     }
 }

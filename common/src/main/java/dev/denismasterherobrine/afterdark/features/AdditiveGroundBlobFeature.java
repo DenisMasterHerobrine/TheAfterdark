@@ -2,45 +2,45 @@ package dev.denismasterherobrine.afterdark.features;
 
 import com.mojang.serialization.Codec;
 import dev.denismasterherobrine.afterdark.features.configuration.VerticalBlobConfiguration;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.random.Random;
-import net.minecraft.world.StructureWorldAccess;
-import net.minecraft.world.gen.feature.Feature;
-import net.minecraft.world.gen.feature.util.FeatureContext;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 
 public class AdditiveGroundBlobFeature extends Feature<VerticalBlobConfiguration> {
     public AdditiveGroundBlobFeature(Codec<VerticalBlobConfiguration> pContext) {
         super(pContext);
     }
 
-    public boolean generate(FeatureContext<VerticalBlobConfiguration> pContext) {
-        StructureWorldAccess worldgenlevel = pContext.getWorld();
-        BlockPos blockpos = pContext.getOrigin();
-        Random random = pContext.getRandom();
-        VerticalBlobConfiguration config = pContext.getConfig();
+    public boolean place(FeaturePlaceContext<VerticalBlobConfiguration> pContext) {
+        WorldGenLevel worldgenlevel = pContext.level();
+        BlockPos blockpos = pContext.origin();
+        RandomSource random = pContext.random();
+        VerticalBlobConfiguration config = pContext.config();
         Block standOn = config.blockOn.getBlock();
         Block standOn2 = config.blockOn2.getBlock();
         Block blobMaterial = config.blobMaterial.getBlock();
-        int blobMass = config.getBlobMass().get(random);
-        int blobWidth = config.getBlobWidth().get(random);
-        int blobHeight = config.getBlobHeight().get(random);
+        int blobMass = config.getBlobMass().sample(random);
+        int blobWidth = config.getBlobWidth().sample(random);
+        int blobHeight = config.getBlobHeight().sample(random);
 
-        if (worldgenlevel.isAir(blockpos)) {
+        if (worldgenlevel.isEmptyBlock(blockpos)) {
             return false;
         } else {
-            BlockState blockstate = worldgenlevel.getBlockState(blockpos.down());
+            BlockState blockstate = worldgenlevel.getBlockState(blockpos.below());
 
-            if (!blockstate.isOf(standOn) && !blockstate.isOf(standOn2) && !blockstate.isOf(blobMaterial)) {
+            if (!blockstate.is(standOn) && !blockstate.is(standOn2) && !blockstate.is(blobMaterial)) {
                 return false;
             } else {
-                worldgenlevel.setBlockState(blockpos, blobMaterial.getDefaultState(), 2);
+                worldgenlevel.setBlock(blockpos, blobMaterial.defaultBlockState(), 2);
                 for(int i = 0; i < blobMass; ++i) {
-                    BlockPos blockpos1 = blockpos.add(random.nextInt(blobWidth) - random.nextInt(blobWidth), random.nextInt(blobHeight), random.nextInt(blobWidth) - random.nextInt(blobWidth));
-                    BlockState blockBelow = worldgenlevel.getBlockState(blockpos1.down());
-                    if (blockBelow.isOf(standOn) || blockBelow.isOf(standOn2) || blockBelow.isOf(blobMaterial)) {
-                        worldgenlevel.setBlockState(blockpos1, blobMaterial.getDefaultState(), 2);
+                    BlockPos blockpos1 = blockpos.offset(random.nextInt(blobWidth) - random.nextInt(blobWidth), random.nextInt(blobHeight), random.nextInt(blobWidth) - random.nextInt(blobWidth));
+                    BlockState blockBelow = worldgenlevel.getBlockState(blockpos1.below());
+                    if (blockBelow.is(standOn) || blockBelow.is(standOn2) || blockBelow.is(blobMaterial)) {
+                        worldgenlevel.setBlock(blockpos1, blobMaterial.defaultBlockState(), 2);
                     }
                 }
 

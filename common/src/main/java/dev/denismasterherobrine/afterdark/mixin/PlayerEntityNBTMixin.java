@@ -1,28 +1,28 @@
 package dev.denismasterherobrine.afterdark.mixin;
 
 import dev.denismasterherobrine.afterdark.util.PlayerEntityAccess;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.entity.player.Player;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(PlayerEntity.class)
+@Mixin(Player.class)
 public class PlayerEntityNBTMixin implements PlayerEntityAccess {
     @Unique
     private String the_afterdark$lastWorld;
 
-    @Inject(method = "writeCustomDataToNbt", at = @At("HEAD"))
-    private void writeCustomDataToNbt(NbtCompound nbt, CallbackInfo ci) {
+    @Inject(method = "addAdditionalSaveData", at = @At("HEAD"))
+    private void writeCustomDataToNbt(CompoundTag nbt, CallbackInfo ci) {
         if (the_afterdark$lastWorld != null) {
             nbt.putString("lastWorld", the_afterdark$lastWorld);
         }
     }
 
-    @Inject(method = "readCustomDataFromNbt", at = @At("HEAD"))
-    private void readCustomDataFromNbt(NbtCompound nbt, CallbackInfo ci) {
+    @Inject(method = "readAdditionalSaveData", at = @At("HEAD"))
+    private void readCustomDataFromNbt(CompoundTag nbt, CallbackInfo ci) {
         the_afterdark$lastWorld = nbt.getString("lastWorld");
     }
 

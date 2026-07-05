@@ -2,31 +2,34 @@ package dev.denismasterherobrine.afterdark.features;
 
 import com.mojang.serialization.Codec;
 import dev.denismasterherobrine.afterdark.TheAfterdark;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.ChestBlock;
-import net.minecraft.block.entity.ChestBlockEntity;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.random.Random;
-import net.minecraft.world.StructureWorldAccess;
-import net.minecraft.world.gen.feature.DefaultFeatureConfig;
-import net.minecraft.world.gen.feature.Feature;
-import net.minecraft.world.gen.feature.util.FeatureContext;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.ChestBlock;
+import net.minecraft.world.level.block.entity.ChestBlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
+import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
+import net.minecraft.world.level.storage.loot.LootTable;
 
-public class GothicCopperRuinFeature extends Feature<DefaultFeatureConfig> {
-    private static final Identifier COPPER_NECROPOLIS_RUIN_LOOT_TABLE = new Identifier(TheAfterdark.MOD_ID, "chests/copper_necropolis_ruin");
+public class GothicCopperRuinFeature extends Feature<NoneFeatureConfiguration> {
+    private static final ResourceKey<LootTable> COPPER_NECROPOLIS_RUIN_LOOT_TABLE = ResourceKey.create(Registries.LOOT_TABLE, ResourceLocation.fromNamespaceAndPath(TheAfterdark.MOD_ID, "chests/copper_necropolis_ruin"));
 
-    public GothicCopperRuinFeature(Codec<DefaultFeatureConfig> codec) {
+    public GothicCopperRuinFeature(Codec<NoneFeatureConfiguration> codec) {
         super(codec);
     }
 
     @Override
-    public boolean generate(FeatureContext<DefaultFeatureConfig> context) {
-        StructureWorldAccess world = context.getWorld();
-        Random random = context.getRandom();
-        BlockPos base = BlackHoneyFeatureUtil.findFloor(world, context.getOrigin(), 10, 24);
+    public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> context) {
+        WorldGenLevel world = context.level();
+        RandomSource random = context.random();
+        BlockPos base = BlackHoneyFeatureUtil.findFloor(world, context.origin(), 10, 24);
         if (base == null || !hasRoom(world, base, 4, 8)) {
             return false;
         }
@@ -47,20 +50,20 @@ public class GothicCopperRuinFeature extends Feature<DefaultFeatureConfig> {
         return placed;
     }
 
-    private boolean hasRoom(StructureWorldAccess world, BlockPos base, int radius, int height) {
+    private boolean hasRoom(WorldGenLevel world, BlockPos base, int radius, int height) {
         for (int y = 1; y <= height; y += 2) {
-            if (!BlackHoneyFeatureUtil.canReplace(world, base.up(y))) {
+            if (!BlackHoneyFeatureUtil.canReplace(world, base.above(y))) {
                 return false;
             }
         }
-        return BlackHoneyFeatureUtil.isSolid(world, base.down())
-                && BlackHoneyFeatureUtil.canReplace(world, base.add(radius, 1, 0))
-                && BlackHoneyFeatureUtil.canReplace(world, base.add(-radius, 1, 0))
-                && BlackHoneyFeatureUtil.canReplace(world, base.add(0, 1, radius))
-                && BlackHoneyFeatureUtil.canReplace(world, base.add(0, 1, -radius));
+        return BlackHoneyFeatureUtil.isSolid(world, base.below())
+                && BlackHoneyFeatureUtil.canReplace(world, base.offset(radius, 1, 0))
+                && BlackHoneyFeatureUtil.canReplace(world, base.offset(-radius, 1, 0))
+                && BlackHoneyFeatureUtil.canReplace(world, base.offset(0, 1, radius))
+                && BlackHoneyFeatureUtil.canReplace(world, base.offset(0, 1, -radius));
     }
 
-    private boolean tryPlaceLootChest(StructureWorldAccess world, Random random, BlockPos base, Direction forward, int variant) {
+    private boolean tryPlaceLootChest(WorldGenLevel world, RandomSource random, BlockPos base, Direction forward, int variant) {
         if (random.nextFloat() >= 0.2F) {
             return false;
         }
@@ -86,19 +89,19 @@ public class GothicCopperRuinFeature extends Feature<DefaultFeatureConfig> {
         };
     }
 
-    private boolean placeLootChest(StructureWorldAccess world, Random random, BlockPos pos, Direction forward) {
-        if (!BlackHoneyFeatureUtil.canReplace(world, pos) || !BlackHoneyFeatureUtil.isSolid(world, pos.down())) {
+    private boolean placeLootChest(WorldGenLevel world, RandomSource random, BlockPos pos, Direction forward) {
+        if (!BlackHoneyFeatureUtil.canReplace(world, pos) || !BlackHoneyFeatureUtil.isSolid(world, pos.below())) {
             return false;
         }
 
-        world.setBlockState(pos, Blocks.CHEST.getDefaultState().with(ChestBlock.FACING, forward.getOpposite()), 2);
+        world.setBlock(pos, Blocks.CHEST.defaultBlockState().setValue(ChestBlock.FACING, forward.getOpposite()), 2);
         if (world.getBlockEntity(pos) instanceof ChestBlockEntity chest) {
             chest.setLootTable(COPPER_NECROPOLIS_RUIN_LOOT_TABLE, random.nextLong());
         }
         return true;
     }
 
-    private boolean generateTower(StructureWorldAccess world, Random random, BlockPos base, Direction forward, int variant) {
+    private boolean generateTower(WorldGenLevel world, RandomSource random, BlockPos base, Direction forward, int variant) {
         int radius = 2 + variant / 10;
         int height = 8 + variant / 5 + random.nextInt(3);
         boolean placed = placeFloor(world, random, base, forward, radius, radius, -radius, radius);
@@ -125,7 +128,7 @@ public class GothicCopperRuinFeature extends Feature<DefaultFeatureConfig> {
         return placed;
     }
 
-    private boolean generateChapel(StructureWorldAccess world, Random random, BlockPos base, Direction forward, int variant) {
+    private boolean generateChapel(WorldGenLevel world, RandomSource random, BlockPos base, Direction forward, int variant) {
         int halfWidth = 3 + variant / 10;
         int length = 8 + variant / 5 + random.nextInt(3);
         int height = 5 + variant / 10 + random.nextInt(2);
@@ -167,7 +170,7 @@ public class GothicCopperRuinFeature extends Feature<DefaultFeatureConfig> {
         return placed;
     }
 
-    private boolean generateArchHall(StructureWorldAccess world, Random random, BlockPos base, Direction forward, int variant) {
+    private boolean generateArchHall(WorldGenLevel world, RandomSource random, BlockPos base, Direction forward, int variant) {
         int halfWidth = 4;
         int arches = 3 + variant / 5;
         int height = 6 + random.nextInt(3);
@@ -182,7 +185,7 @@ public class GothicCopperRuinFeature extends Feature<DefaultFeatureConfig> {
         return placed;
     }
 
-    private boolean generateGate(StructureWorldAccess world, Random random, BlockPos base, Direction forward, int variant) {
+    private boolean generateGate(WorldGenLevel world, RandomSource random, BlockPos base, Direction forward, int variant) {
         int halfWidth = 4 + variant / 10;
         int height = 7 + variant / 5;
         boolean placed = placeFloor(world, random, base, forward, halfWidth + 2, halfWidth + 2, -2, 2);
@@ -194,7 +197,7 @@ public class GothicCopperRuinFeature extends Feature<DefaultFeatureConfig> {
         return placed;
     }
 
-    private boolean generateBrokenSpire(StructureWorldAccess world, Random random, BlockPos base, Direction forward, int variant) {
+    private boolean generateBrokenSpire(WorldGenLevel world, RandomSource random, BlockPos base, Direction forward, int variant) {
         int radius = 2 + variant / 10;
         int height = 10 + variant / 5 + random.nextInt(5);
         boolean placed = placeFloor(world, random, base, forward, radius + 1, radius + 1, -radius - 1, radius + 1);
@@ -220,7 +223,7 @@ public class GothicCopperRuinFeature extends Feature<DefaultFeatureConfig> {
         return placed;
     }
 
-    private boolean placePointedArch(StructureWorldAccess world, Random random, BlockPos base, Direction forward, int z, int halfWidth, int height) {
+    private boolean placePointedArch(WorldGenLevel world, RandomSource random, BlockPos base, Direction forward, int z, int halfWidth, int height) {
         boolean placed = false;
         for (int y = 0; y <= height; ++y) {
             int inset = Math.max(0, (y - 2) / 2);
@@ -234,7 +237,7 @@ public class GothicCopperRuinFeature extends Feature<DefaultFeatureConfig> {
         return placed;
     }
 
-    private boolean placeSpire(StructureWorldAccess world, Random random, BlockPos base, Direction forward, int centerX, int centerZ, int startY, int height) {
+    private boolean placeSpire(WorldGenLevel world, RandomSource random, BlockPos base, Direction forward, int centerX, int centerZ, int startY, int height) {
         boolean placed = false;
         for (int y = 0; y <= height; ++y) {
             int radius = Math.max(0, (height - y) / 2);
@@ -249,7 +252,7 @@ public class GothicCopperRuinFeature extends Feature<DefaultFeatureConfig> {
         return placed;
     }
 
-    private boolean placeColumn(StructureWorldAccess world, Random random, BlockPos base, Direction forward, int x, int z, int height, boolean copperAccent) {
+    private boolean placeColumn(WorldGenLevel world, RandomSource random, BlockPos base, Direction forward, int x, int z, int height, boolean copperAccent) {
         boolean placed = false;
         for (int y = 0; y <= height; ++y) {
             BlockState state = copperAccent && (y == height || y % 4 == 0) ? trim(random) : wall(random);
@@ -258,7 +261,7 @@ public class GothicCopperRuinFeature extends Feature<DefaultFeatureConfig> {
         return placed;
     }
 
-    private boolean placeFloor(StructureWorldAccess world, Random random, BlockPos base, Direction forward, int minX, int maxX, int minZ, int maxZ) {
+    private boolean placeFloor(WorldGenLevel world, RandomSource random, BlockPos base, Direction forward, int minX, int maxX, int minZ, int maxZ) {
         boolean placed = false;
         for (int x = -minX; x <= maxX; ++x) {
             for (int z = minZ; z <= maxZ; ++z) {
@@ -271,91 +274,91 @@ public class GothicCopperRuinFeature extends Feature<DefaultFeatureConfig> {
     }
 
     private BlockPos local(BlockPos base, Direction forward, int x, int y, int z) {
-        Direction right = forward.rotateYClockwise();
-        return base.offset(right, x).offset(forward, z).up(y);
+        Direction right = forward.getClockWise();
+        return base.relative(right, x).relative(forward, z).above(y);
     }
 
-    private boolean placeAirBlock(StructureWorldAccess world, BlockPos pos, BlockState state) {
+    private boolean placeAirBlock(WorldGenLevel world, BlockPos pos, BlockState state) {
         if (!BlackHoneyFeatureUtil.canReplace(world, pos)) {
             return false;
         }
-        world.setBlockState(pos, state, 2);
+        world.setBlock(pos, state, 2);
         return true;
     }
 
-    private boolean placeSolidBlock(StructureWorldAccess world, BlockPos pos, BlockState state) {
+    private boolean placeSolidBlock(WorldGenLevel world, BlockPos pos, BlockState state) {
         if (!BlackHoneyFeatureUtil.inWorld(world, pos)) {
             return false;
         }
-        world.setBlockState(pos, state, 2);
+        world.setBlock(pos, state, 2);
         return true;
     }
 
-    private BlockState floor(Random random) {
+    private BlockState floor(RandomSource random) {
         int pick = random.nextInt(18);
         if (pick < 5) {
-            return Blocks.POLISHED_DEEPSLATE.getDefaultState();
+            return Blocks.POLISHED_DEEPSLATE.defaultBlockState();
         }
         if (pick < 10) {
-            return Blocks.TUFF.getDefaultState();
+            return Blocks.TUFF.defaultBlockState();
         }
         if (pick < 14) {
-            return Blocks.DEEPSLATE_TILES.getDefaultState();
+            return Blocks.DEEPSLATE_TILES.defaultBlockState();
         }
         if (pick < 17) {
-            return Blocks.CALCITE.getDefaultState();
+            return Blocks.CALCITE.defaultBlockState();
         }
-        return Blocks.OXIDIZED_CUT_COPPER.getDefaultState();
+        return Blocks.OXIDIZED_CUT_COPPER.defaultBlockState();
     }
 
-    private BlockState wall(Random random) {
+    private BlockState wall(RandomSource random) {
         int pick = random.nextInt(24);
         if (pick < 7) {
-            return Blocks.DEEPSLATE.getDefaultState();
+            return Blocks.DEEPSLATE.defaultBlockState();
         }
         if (pick < 13) {
-            return Blocks.TUFF.getDefaultState();
+            return Blocks.TUFF.defaultBlockState();
         }
         if (pick < 17) {
-            return Blocks.POLISHED_DEEPSLATE.getDefaultState();
+            return Blocks.POLISHED_DEEPSLATE.defaultBlockState();
         }
         if (pick < 20) {
-            return Blocks.DEEPSLATE_BRICKS.getDefaultState();
+            return Blocks.DEEPSLATE_BRICKS.defaultBlockState();
         }
         if (pick < 22) {
-            return Blocks.CALCITE.getDefaultState();
+            return Blocks.CALCITE.defaultBlockState();
         }
         if (pick == 22) {
-            return Blocks.OXIDIZED_COPPER.getDefaultState();
+            return Blocks.OXIDIZED_COPPER.defaultBlockState();
         }
-        return Blocks.WEATHERED_COPPER.getDefaultState();
+        return Blocks.WEATHERED_COPPER.defaultBlockState();
     }
 
-    private BlockState trim(Random random) {
+    private BlockState trim(RandomSource random) {
         int pick = random.nextInt(10);
         if (pick < 3) {
-            return Blocks.OXIDIZED_CUT_COPPER.getDefaultState();
+            return Blocks.OXIDIZED_CUT_COPPER.defaultBlockState();
         }
         if (pick < 5) {
-            return Blocks.WEATHERED_CUT_COPPER.getDefaultState();
+            return Blocks.WEATHERED_CUT_COPPER.defaultBlockState();
         }
         if (pick < 8) {
-            return Blocks.CHISELED_DEEPSLATE.getDefaultState();
+            return Blocks.CHISELED_DEEPSLATE.defaultBlockState();
         }
-        return Blocks.OCHRE_FROGLIGHT.getDefaultState();
+        return Blocks.OCHRE_FROGLIGHT.defaultBlockState();
     }
 
-    private BlockState roof(Random random) {
+    private BlockState roof(RandomSource random) {
         int pick = random.nextInt(12);
         if (pick < 5) {
-            return Blocks.DEEPSLATE_TILES.getDefaultState();
+            return Blocks.DEEPSLATE_TILES.defaultBlockState();
         }
         if (pick < 9) {
-            return Blocks.CRACKED_DEEPSLATE_TILES.getDefaultState();
+            return Blocks.CRACKED_DEEPSLATE_TILES.defaultBlockState();
         }
         if (pick < 11) {
-            return Blocks.TUFF.getDefaultState();
+            return Blocks.TUFF.defaultBlockState();
         }
-        return Blocks.WEATHERED_CUT_COPPER.getDefaultState();
+        return Blocks.WEATHERED_CUT_COPPER.defaultBlockState();
     }
 }

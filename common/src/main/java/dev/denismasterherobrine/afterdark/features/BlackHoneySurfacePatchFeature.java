@@ -1,25 +1,25 @@
 package dev.denismasterherobrine.afterdark.features;
 
 import com.mojang.serialization.Codec;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.random.Random;
-import net.minecraft.world.StructureWorldAccess;
-import net.minecraft.world.gen.feature.DefaultFeatureConfig;
-import net.minecraft.world.gen.feature.Feature;
-import net.minecraft.world.gen.feature.util.FeatureContext;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
+import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 
-public class BlackHoneySurfacePatchFeature extends Feature<DefaultFeatureConfig> {
-    public BlackHoneySurfacePatchFeature(Codec<DefaultFeatureConfig> codec) {
+public class BlackHoneySurfacePatchFeature extends Feature<NoneFeatureConfiguration> {
+    public BlackHoneySurfacePatchFeature(Codec<NoneFeatureConfiguration> codec) {
         super(codec);
     }
 
     @Override
-    public boolean generate(FeatureContext<DefaultFeatureConfig> context) {
-        StructureWorldAccess world = context.getWorld();
-        Random random = context.getRandom();
-        BlockPos origin = context.getOrigin();
+    public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> context) {
+        WorldGenLevel world = context.level();
+        RandomSource random = context.random();
+        BlockPos origin = context.origin();
         BlockPos center = BlackHoneyFeatureUtil.findFloor(world, origin, 5, 16);
         if (center == null) {
             return false;
@@ -40,8 +40,8 @@ public class BlackHoneySurfacePatchFeature extends Feature<DefaultFeatureConfig>
                     continue;
                 }
 
-                BlockPos air = center.add(x, 0, z);
-                if (!BlackHoneyFeatureUtil.canReplace(world, air) || !BlackHoneyFeatureUtil.isSolid(world, air.down())) {
+                BlockPos air = center.offset(x, 0, z);
+                if (!BlackHoneyFeatureUtil.canReplace(world, air) || !BlackHoneyFeatureUtil.isSolid(world, air.below())) {
                     continue;
                 }
 
@@ -69,58 +69,58 @@ public class BlackHoneySurfacePatchFeature extends Feature<DefaultFeatureConfig>
         }
         if (tone < 0.4D) {
             if (dither < 46) {
-                return Blocks.COARSE_DIRT.getDefaultState();
+                return Blocks.COARSE_DIRT.defaultBlockState();
             }
             if (dither < 74) {
-                return Blocks.ROOTED_DIRT.getDefaultState();
+                return Blocks.ROOTED_DIRT.defaultBlockState();
             }
-            return Blocks.PACKED_MUD.getDefaultState();
+            return Blocks.PACKED_MUD.defaultBlockState();
         }
         if (tone < 0.56D) {
             if (dither < 70) {
-                return Blocks.YELLOW_TERRACOTTA.getDefaultState();
+                return Blocks.YELLOW_TERRACOTTA.defaultBlockState();
             }
             if (dither < 88) {
-                return Blocks.COARSE_DIRT.getDefaultState();
+                return Blocks.COARSE_DIRT.defaultBlockState();
             }
-            return Blocks.GRASS_BLOCK.getDefaultState();
+            return Blocks.GRASS_BLOCK.defaultBlockState();
         }
         if (tone < 0.72D) {
             if (dither < 68) {
-                return Blocks.ORANGE_TERRACOTTA.getDefaultState();
+                return Blocks.ORANGE_TERRACOTTA.defaultBlockState();
             }
             if (dither < 88) {
-                return Blocks.TERRACOTTA.getDefaultState();
+                return Blocks.TERRACOTTA.defaultBlockState();
             }
-            return Blocks.ROOTED_DIRT.getDefaultState();
+            return Blocks.ROOTED_DIRT.defaultBlockState();
         }
         if (tone < 0.88D) {
             if (dither < 58) {
-                return Blocks.TERRACOTTA.getDefaultState();
+                return Blocks.TERRACOTTA.defaultBlockState();
             }
             if (dither < 82) {
-                return Blocks.RED_TERRACOTTA.getDefaultState();
+                return Blocks.RED_TERRACOTTA.defaultBlockState();
             }
-            return Blocks.BROWN_TERRACOTTA.getDefaultState();
+            return Blocks.BROWN_TERRACOTTA.defaultBlockState();
         }
 
         if (dither < 72) {
-            return Blocks.BROWN_TERRACOTTA.getDefaultState();
+            return Blocks.BROWN_TERRACOTTA.defaultBlockState();
         }
-        return Blocks.COARSE_DIRT.getDefaultState();
+        return Blocks.COARSE_DIRT.defaultBlockState();
     }
 
     private BlockState savannaGround(int dither) {
         if (dither < 62) {
-            return Blocks.GRASS_BLOCK.getDefaultState();
+            return Blocks.GRASS_BLOCK.defaultBlockState();
         }
         if (dither < 82) {
-            return Blocks.COARSE_DIRT.getDefaultState();
+            return Blocks.COARSE_DIRT.defaultBlockState();
         }
         if (dither < 94) {
-            return Blocks.ROOTED_DIRT.getDefaultState();
+            return Blocks.ROOTED_DIRT.defaultBlockState();
         }
-        return Blocks.PACKED_MUD.getDefaultState();
+        return Blocks.PACKED_MUD.defaultBlockState();
     }
 
     private int cell(BlockPos pos, int salt) {

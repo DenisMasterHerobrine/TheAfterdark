@@ -2,20 +2,20 @@ package dev.denismasterherobrine.afterdark.features.configuration;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.util.dynamic.Codecs;
-import net.minecraft.world.gen.feature.FeatureConfig;
-import net.minecraft.world.gen.stateprovider.BlockStateProvider;
+import net.minecraft.util.ExtraCodecs;
+import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
+import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 
-public class WaterloggableRandomPatchConfiguration implements FeatureConfig {
+public class WaterloggableRandomPatchConfiguration implements FeatureConfiguration {
     public static final Codec<WaterloggableRandomPatchConfiguration> CODEC = RecordCodecBuilder.create(
-            (fields) -> fields.group(Codecs.POSITIVE_INT
+            (fields) -> fields.group(ExtraCodecs.POSITIVE_INT
                     .fieldOf("tries")
                     .orElse(128)
-                    .forGetter((v) -> v.tries), Codecs.POSITIVE_INT
+                    .forGetter((v) -> v.tries), ExtraCodecs.POSITIVE_INT
                     .fieldOf("xz_spread").orElse(7)
-                    .forGetter((v) -> v.xz_spread), Codecs.POSITIVE_INT
+                    .forGetter((v) -> v.xz_spread), ExtraCodecs.POSITIVE_INT
                     .fieldOf("y_spread").orElse(3)
-                    .forGetter((v) -> v.y_spread), BlockStateProvider.TYPE_CODEC
+                    .forGetter((v) -> v.y_spread), BlockStateProvider.CODEC
                     .fieldOf("to_place")
                     .forGetter((v) -> v.to_place))
                     .apply(fields, WaterloggableRandomPatchConfiguration::new));

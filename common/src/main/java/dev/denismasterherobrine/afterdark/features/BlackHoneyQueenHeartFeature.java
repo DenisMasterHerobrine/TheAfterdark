@@ -1,33 +1,33 @@
 package dev.denismasterherobrine.afterdark.features;
 
 import com.mojang.serialization.Codec;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.random.Random;
-import net.minecraft.world.StructureWorldAccess;
-import net.minecraft.world.gen.feature.DefaultFeatureConfig;
-import net.minecraft.world.gen.feature.Feature;
-import net.minecraft.world.gen.feature.util.FeatureContext;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
+import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 
-public class BlackHoneyQueenHeartFeature extends Feature<DefaultFeatureConfig> {
-    public BlackHoneyQueenHeartFeature(Codec<DefaultFeatureConfig> codec) {
+public class BlackHoneyQueenHeartFeature extends Feature<NoneFeatureConfiguration> {
+    public BlackHoneyQueenHeartFeature(Codec<NoneFeatureConfiguration> codec) {
         super(codec);
     }
 
     @Override
-    public boolean generate(FeatureContext<DefaultFeatureConfig> context) {
-        StructureWorldAccess world = context.getWorld();
-        Random random = context.getRandom();
-        BlockPos ceiling = BlackHoneyFeatureUtil.findCeiling(world, context.getOrigin(), 28);
+    public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> context) {
+        WorldGenLevel world = context.level();
+        RandomSource random = context.random();
+        BlockPos ceiling = BlackHoneyFeatureUtil.findCeiling(world, context.origin(), 28);
         if (ceiling == null) {
             return false;
         }
 
         int height = 7 + random.nextInt(4);
         int radius = 3 + random.nextInt(2);
-        BlockPos anchor = ceiling.down();
+        BlockPos anchor = ceiling.below();
         boolean placed = false;
 
         for (int y = 0; y < height; ++y) {
@@ -38,12 +38,12 @@ public class BlackHoneyQueenHeartFeature extends Feature<DefaultFeatureConfig> {
                     if (!insideHeartSlice(x, z, y, height, sliceRadius, random)) {
                         continue;
                     }
-                    BlockPos pos = anchor.add(x, -y, z);
+                    BlockPos pos = anchor.offset(x, -y, z);
                     if (!BlackHoneyFeatureUtil.canReplace(world, pos)) {
                         continue;
                     }
                     double dist = Math.sqrt(x * x + z * z);
-                    world.setBlockState(pos, heartState(random, dist, sliceRadius), 2);
+                    world.setBlock(pos, heartState(random, dist, sliceRadius), 2);
                     placed = true;
                 }
             }
@@ -51,7 +51,7 @@ public class BlackHoneyQueenHeartFeature extends Feature<DefaultFeatureConfig> {
 
         if (placed) {
             placeVeins(world, random, anchor, radius, height);
-            placeDrip(world, random, anchor.down(height));
+            placeDrip(world, random, anchor.below(height));
         }
         return placed;
     }
@@ -67,7 +67,7 @@ public class BlackHoneyQueenHeartFeature extends Feature<DefaultFeatureConfig> {
         return Math.max(0.8D, radius * (1.0D - t * t));
     }
 
-    private boolean insideHeartSlice(int x, int z, int y, int height, double radius, Random random) {
+    private boolean insideHeartSlice(int x, int z, int y, int height, double radius, RandomSource random) {
         double dist = Math.sqrt(x * x + z * z);
         if (y <= 2) {
             double lobeA = Math.sqrt((x - 1.25D) * (x - 1.25D) + z * z);
@@ -80,59 +80,59 @@ public class BlackHoneyQueenHeartFeature extends Feature<DefaultFeatureConfig> {
         return dist <= radius + random.nextFloat() * 0.2D;
     }
 
-    private BlockState heartState(Random random, double dist, double radius) {
+    private BlockState heartState(RandomSource random, double dist, double radius) {
         if (dist > radius - 0.75D) {
             int pick = random.nextInt(9);
             if (pick <= 4) {
-                return Blocks.HONEYCOMB_BLOCK.getDefaultState();
+                return Blocks.HONEYCOMB_BLOCK.defaultBlockState();
             }
             if (pick <= 6) {
-                return Blocks.BROWN_TERRACOTTA.getDefaultState();
+                return Blocks.BROWN_TERRACOTTA.defaultBlockState();
             }
-            return Blocks.ORANGE_TERRACOTTA.getDefaultState();
+            return Blocks.ORANGE_TERRACOTTA.defaultBlockState();
         }
         int pick = random.nextInt(14);
         if (pick == 0) {
-            return Blocks.OCHRE_FROGLIGHT.getDefaultState();
+            return Blocks.OCHRE_FROGLIGHT.defaultBlockState();
         }
         if (pick <= 6) {
-            return Blocks.HONEY_BLOCK.getDefaultState();
+            return Blocks.HONEY_BLOCK.defaultBlockState();
         }
         if (pick <= 9) {
-            return Blocks.HONEYCOMB_BLOCK.getDefaultState();
+            return Blocks.HONEYCOMB_BLOCK.defaultBlockState();
         }
         if (pick == 10) {
-            return Blocks.YELLOW_TERRACOTTA.getDefaultState();
+            return Blocks.YELLOW_TERRACOTTA.defaultBlockState();
         }
-        return Blocks.ORANGE_TERRACOTTA.getDefaultState();
+        return Blocks.ORANGE_TERRACOTTA.defaultBlockState();
     }
 
-    private void placeVeins(StructureWorldAccess world, Random random, BlockPos anchor, int radius, int height) {
+    private void placeVeins(WorldGenLevel world, RandomSource random, BlockPos anchor, int radius, int height) {
         for (Direction direction : BlackHoneyFeatureUtil.HORIZONTAL) {
             int veinLength = 2 + random.nextInt(4);
-            BlockPos cursor = anchor.offset(direction, radius).down(1 + random.nextInt(Math.max(1, height / 2)));
+            BlockPos cursor = anchor.relative(direction, radius).below(1 + random.nextInt(Math.max(1, height / 2)));
             for (int i = 0; i < veinLength; ++i) {
                 BlackHoneyFeatureUtil.placeIfReplaceable(world, cursor, BlackHoneyFeatureUtil.darkRoot(random));
-                cursor = cursor.offset(direction).up(random.nextInt(2));
+                cursor = cursor.relative(direction).above(random.nextInt(2));
             }
         }
         for (int i = 0; i < 12; ++i) {
-            BlockPos web = anchor.add(BlackHoneyFeatureUtil.signed(random, radius + 1), -random.nextInt(height), BlackHoneyFeatureUtil.signed(random, radius + 1));
+            BlockPos web = anchor.offset(BlackHoneyFeatureUtil.signed(random, radius + 1), -random.nextInt(height), BlackHoneyFeatureUtil.signed(random, radius + 1));
             if (random.nextInt(3) == 0) {
-                BlackHoneyFeatureUtil.placeIfReplaceable(world, web, Blocks.WEEPING_VINES_PLANT.getDefaultState());
+                BlackHoneyFeatureUtil.placeIfReplaceable(world, web, Blocks.WEEPING_VINES_PLANT.defaultBlockState());
             }
         }
     }
 
-    private void placeDrip(StructureWorldAccess world, Random random, BlockPos start) {
+    private void placeDrip(WorldGenLevel world, RandomSource random, BlockPos start) {
         int length = 2 + random.nextInt(5);
         BlockPos cursor = start;
         for (int i = 0; i < length; ++i) {
             if (!BlackHoneyFeatureUtil.canReplace(world, cursor)) {
                 return;
             }
-            world.setBlockState(cursor, i == length - 1 ? Blocks.HONEYCOMB_BLOCK.getDefaultState() : Blocks.HONEY_BLOCK.getDefaultState(), 2);
-            cursor = cursor.down();
+            world.setBlock(cursor, i == length - 1 ? Blocks.HONEYCOMB_BLOCK.defaultBlockState() : Blocks.HONEY_BLOCK.defaultBlockState(), 2);
+            cursor = cursor.below();
         }
     }
 }

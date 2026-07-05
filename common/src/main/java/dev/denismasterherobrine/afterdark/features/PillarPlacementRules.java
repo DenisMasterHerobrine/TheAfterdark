@@ -1,28 +1,28 @@
 package dev.denismasterherobrine.afterdark.features;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.registry.tag.BlockTags;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.random.Random;
-import net.minecraft.world.StructureWorldAccess;
+import net.minecraft.core.BlockPos;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 
 public interface PillarPlacementRules {
-    BlockState pick(StructureWorldAccess world, Random random, BlockPos pos, int columnRadius);
+    BlockState pick(WorldGenLevel world, RandomSource random, BlockPos pos, int columnRadius);
 
     boolean shouldStop(BlockState state, boolean flag);
 
     static PillarPlacementRules simpleStoneOnlyStop(Block block) {
         return new PillarPlacementRules() {
             @Override
-            public BlockState pick(StructureWorldAccess world, Random random, BlockPos pos, int columnRadius) {
-                return block.getDefaultState();
+            public BlockState pick(WorldGenLevel world, RandomSource random, BlockPos pos, int columnRadius) {
+                return block.defaultBlockState();
             }
 
             @Override
             public boolean shouldStop(BlockState state, boolean flag) {
-                return flag && state.isIn(BlockTags.BASE_STONE_OVERWORLD);
+                return flag && state.is(BlockTags.BASE_STONE_OVERWORLD);
             }
         };
     }
@@ -30,15 +30,15 @@ public interface PillarPlacementRules {
     static PillarPlacementRules simpleIceFamilyStop(Block block) {
         return new PillarPlacementRules() {
             @Override
-            public BlockState pick(StructureWorldAccess world, Random random, BlockPos pos, int columnRadius) {
-                return block.getDefaultState();
+            public BlockState pick(WorldGenLevel world, RandomSource random, BlockPos pos, int columnRadius) {
+                return block.defaultBlockState();
             }
 
             @Override
             public boolean shouldStop(BlockState state, boolean flag) {
-                return flag && (state.isIn(BlockTags.BASE_STONE_OVERWORLD)
-                        || state.isOf(Blocks.ICE)
-                        || state.isOf(Blocks.PACKED_ICE));
+                return flag && (state.is(BlockTags.BASE_STONE_OVERWORLD)
+                        || state.is(Blocks.ICE)
+                        || state.is(Blocks.PACKED_ICE));
             }
         };
     }
@@ -46,15 +46,15 @@ public interface PillarPlacementRules {
     static PillarPlacementRules basaltMix() {
         return new PillarPlacementRules() {
             @Override
-            public BlockState pick(StructureWorldAccess world, Random random, BlockPos pos, int columnRadius) {
-                return random.nextInt(6) == 5 ? Blocks.BLACKSTONE.getDefaultState() : Blocks.SMOOTH_BASALT.getDefaultState();
+            public BlockState pick(WorldGenLevel world, RandomSource random, BlockPos pos, int columnRadius) {
+                return random.nextInt(6) == 5 ? Blocks.BLACKSTONE.defaultBlockState() : Blocks.SMOOTH_BASALT.defaultBlockState();
             }
 
             @Override
             public boolean shouldStop(BlockState state, boolean flag) {
-                return flag && (state.isIn(BlockTags.BASE_STONE_OVERWORLD)
-                        || state.isOf(Blocks.ICE)
-                        || state.isOf(Blocks.PACKED_ICE));
+                return flag && (state.is(BlockTags.BASE_STONE_OVERWORLD)
+                        || state.is(Blocks.ICE)
+                        || state.is(Blocks.PACKED_ICE));
             }
         };
     }
@@ -62,7 +62,7 @@ public interface PillarPlacementRules {
     static PillarPlacementRules packedIceMix() {
         return new PillarPlacementRules() {
             @Override
-            public BlockState pick(StructureWorldAccess world, Random random, BlockPos pos, int columnRadius) {
+            public BlockState pick(WorldGenLevel world, RandomSource random, BlockPos pos, int columnRadius) {
                 Block block = Blocks.PACKED_ICE;
                 if (columnRadius <= 3) {
                     block = Blocks.ICE;
@@ -72,14 +72,14 @@ public interface PillarPlacementRules {
                         block = Blocks.BLUE_ICE;
                     }
                 }
-                return block.getDefaultState();
+                return block.defaultBlockState();
             }
 
             @Override
             public boolean shouldStop(BlockState state, boolean flag) {
-                return flag && (state.isIn(BlockTags.BASE_STONE_OVERWORLD)
-                        || state.isOf(Blocks.ICE)
-                        || state.isOf(Blocks.PACKED_ICE));
+                return flag && (state.is(BlockTags.BASE_STONE_OVERWORLD)
+                        || state.is(Blocks.ICE)
+                        || state.is(Blocks.PACKED_ICE));
             }
         };
     }

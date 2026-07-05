@@ -1,33 +1,33 @@
 package dev.denismasterherobrine.afterdark.features;
 
 import com.mojang.serialization.Codec;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.random.Random;
-import net.minecraft.world.StructureWorldAccess;
-import net.minecraft.world.gen.feature.DiskFeatureConfig;
-import net.minecraft.world.gen.feature.Feature;
-import net.minecraft.world.gen.feature.util.FeatureContext;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
+import net.minecraft.world.level.levelgen.feature.configurations.DiskConfiguration;
 
-public class SupportedDiskFeature extends Feature<DiskFeatureConfig> {
-    public SupportedDiskFeature(Codec<DiskFeatureConfig> pContext) {
+public class SupportedDiskFeature extends Feature<DiskConfiguration> {
+    public SupportedDiskFeature(Codec<DiskConfiguration> pContext) {
         super(pContext);
     }
 
-    public boolean generate(FeatureContext<DiskFeatureConfig> pContext) {
-        DiskFeatureConfig diskconfiguration = pContext.getConfig();
-        BlockPos blockpos = pContext.getOrigin();
-        StructureWorldAccess worldGenLevel = pContext.getWorld();
-        Random randomsource = pContext.getRandom();
+    public boolean place(FeaturePlaceContext<DiskConfiguration> pContext) {
+        DiskConfiguration diskconfiguration = pContext.config();
+        BlockPos blockpos = pContext.origin();
+        WorldGenLevel worldGenLevel = pContext.level();
+        RandomSource randomsource = pContext.random();
         boolean flag = false;
         int i = blockpos.getY();
         int j = i + diskconfiguration.halfHeight();
         int k = i - diskconfiguration.halfHeight() - 1;
-        int l = diskconfiguration.radius().get(randomsource);
-        BlockPos.Mutable blockpos$mutableblockpos = new BlockPos.Mutable();
+        int l = diskconfiguration.radius().sample(randomsource);
+        BlockPos.MutableBlockPos blockpos$mutableblockpos = new BlockPos.MutableBlockPos();
 
-        for(BlockPos blockpos1 : BlockPos.iterate(blockpos.add(-l, 0, -l), blockpos.add(l, 0, l))) {
+        for(BlockPos blockpos1 : BlockPos.betweenClosed(blockpos.offset(-l, 0, -l), blockpos.offset(l, 0, l))) {
             int i1 = blockpos1.getX() - blockpos.getX();
             int j1 = blockpos1.getZ() - blockpos.getZ();
             if (i1 * i1 + j1 * j1 <= l * l) {
@@ -38,15 +38,15 @@ public class SupportedDiskFeature extends Feature<DiskFeatureConfig> {
         return flag;
     }
 
-    protected boolean placeColumn(DiskFeatureConfig pContext, StructureWorldAccess worldGenLevel, Random random, int j, int k, BlockPos.Mutable blockPos) {
+    protected boolean placeColumn(DiskConfiguration pContext, WorldGenLevel worldGenLevel, RandomSource random, int j, int k, BlockPos.MutableBlockPos blockPos) {
         boolean flag = false;
 
         for(int i = j; i > k; --i) {
             blockPos.setY(i);
-            if (pContext.target().test(worldGenLevel, blockPos) && (worldGenLevel.getBlockState(blockPos.down()).isSolid() || worldGenLevel.getBlockState(blockPos.down()).isOf(Blocks.WATER) || worldGenLevel.getBlockState(blockPos.down()).isOf(Blocks.LAVA) || worldGenLevel.getBlockState(blockPos.down()).isOf(Blocks.POWDER_SNOW))) {
-                BlockState blockstate = pContext.stateProvider().getBlockState(worldGenLevel, random, blockPos);
-                worldGenLevel.setBlockState(blockPos, blockstate, 2);
-                this.markBlocksAboveForPostProcessing(worldGenLevel, blockPos);
+            if (pContext.target().test(worldGenLevel, blockPos) && (worldGenLevel.getBlockState(blockPos.below()).isSolid() || worldGenLevel.getBlockState(blockPos.below()).is(Blocks.WATER) || worldGenLevel.getBlockState(blockPos.below()).is(Blocks.LAVA) || worldGenLevel.getBlockState(blockPos.below()).is(Blocks.POWDER_SNOW))) {
+                BlockState blockstate = pContext.stateProvider().getState(worldGenLevel, random, blockPos);
+                worldGenLevel.setBlock(blockPos, blockstate, 2);
+                this.markAboveForPostProcessing(worldGenLevel, blockPos);
                 flag = true;
             }
         }

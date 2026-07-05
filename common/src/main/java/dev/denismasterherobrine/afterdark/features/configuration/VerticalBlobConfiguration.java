@@ -2,21 +2,21 @@ package dev.denismasterherobrine.afterdark.features.configuration;
 
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.block.BlockState;
-import net.minecraft.util.math.intprovider.IntProvider;
-import net.minecraft.world.gen.feature.FeatureConfig;
+import net.minecraft.util.valueproviders.IntProvider;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 
-public class VerticalBlobConfiguration implements FeatureConfig {
+public class VerticalBlobConfiguration implements FeatureConfiguration {
     public static final Codec<VerticalBlobConfiguration> CODEC = RecordCodecBuilder.create(
             (fields) -> fields.group(BlockState.CODEC
                     .fieldOf("blockOn")
                     .forGetter((v) -> v.blockOn), BlockState.CODEC.fieldOf("blockOn2")
                     .forGetter((v) -> v.blockOn2), BlockState.CODEC.fieldOf("blobMaterial")
-                    .forGetter((v) -> v.blobMaterial), IntProvider.createValidatingCodec(1, 1024)
+                    .forGetter((v) -> v.blobMaterial), IntProvider.codec(1, 1024)
                     .fieldOf("blobMass")
-                    .forGetter((v) -> v.blobMass), IntProvider.createValidatingCodec(1, 32)
+                    .forGetter((v) -> v.blobMass), IntProvider.codec(1, 32)
                     .fieldOf("blobWidth")
-                    .forGetter((v) -> v.blobWidth), IntProvider.createValidatingCodec(1, 128)
+                    .forGetter((v) -> v.blobWidth), IntProvider.codec(1, 128)
                     .fieldOf("blobHeight")
                     .forGetter((v) -> v.blobHeight))
                     .apply(fields, VerticalBlobConfiguration::new));

@@ -2,29 +2,29 @@ package dev.denismasterherobrine.afterdark.features;
 
 import com.mojang.serialization.Codec;
 import dev.denismasterherobrine.afterdark.features.configuration.AnvilRockConfiguration;
-import net.minecraft.block.BlockState;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.random.Random;
-import net.minecraft.world.StructureWorldAccess;
-import net.minecraft.world.gen.feature.Feature;
-import net.minecraft.world.gen.feature.util.FeatureContext;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 
 public class AnvilRockFeature extends Feature<AnvilRockConfiguration> {
     public AnvilRockFeature(Codec<AnvilRockConfiguration> pContext) {
         super(pContext);
     }
 
-    public boolean generate(FeatureContext<AnvilRockConfiguration> pContext) {
-        StructureWorldAccess worldgenlevel = pContext.getWorld();
-        BlockPos blockpos = new BlockPos((int) pContext.getOrigin().toCenterPos().getX(), pContext.getOrigin().getY(), (int) pContext.getOrigin().toCenterPos().getZ());
-        Random random = pContext.getRandom();
-        AnvilRockConfiguration config = pContext.getConfig();
-        int radius = config.getRadius().get(random);
-        int height = config.getHeight().get(random);
-        int stretch = config.getStretch().get(random);
+    public boolean place(FeaturePlaceContext<AnvilRockConfiguration> pContext) {
+        WorldGenLevel worldgenlevel = pContext.level();
+        BlockPos blockpos = new BlockPos((int) pContext.origin().getCenter().x(), pContext.origin().getY(), (int) pContext.origin().getCenter().z());
+        RandomSource random = pContext.random();
+        AnvilRockConfiguration config = pContext.config();
+        int radius = config.getRadius().sample(random);
+        int height = config.getHeight().sample(random);
+        int stretch = config.getStretch().sample(random);
         int maxHeight = height-1;
 
-        if (worldgenlevel.isAir(blockpos.down())) {
+        if (worldgenlevel.isEmptyBlock(blockpos.below())) {
             return false;
         } else {
             int randomNumber = random.nextInt(4);
@@ -34,13 +34,13 @@ public class AnvilRockFeature extends Feature<AnvilRockConfiguration> {
                     BlockPos pos;
 
                     if (randomNumber == 3) {
-                        pos = blockpos.add(-((h/4)*s), 0, -((h/6)));
+                        pos = blockpos.offset(-((h/4)*s), 0, -((h/6)));
                     } else if (randomNumber == 2) {
-                        pos = blockpos.add(-((h/6)), 0, -((h/4)*s));
+                        pos = blockpos.offset(-((h/6)), 0, -((h/4)*s));
                     } else if (randomNumber == 1) {
-                        pos = blockpos.add(((h/4)*s), 0, ((h/6)));
+                        pos = blockpos.offset(((h/4)*s), 0, ((h/6)));
                     } else {
-                        pos = blockpos.add(((h/6)), 0, ((h/4)*s));
+                        pos = blockpos.offset(((h/6)), 0, ((h/4)*s));
                     }
 
                     boolean obese = maxHeight >= 5 && h == 2 || maxHeight >= 5 && h == height - 2;
@@ -97,242 +97,242 @@ public class AnvilRockFeature extends Feature<AnvilRockConfiguration> {
         }
     }
 
-    private void genAnorexicRadius1(FeatureContext<AnvilRockConfiguration> pContext, StructureWorldAccess worldgenlevel, BlockPos blockpos, int h) {
+    private void genAnorexicRadius1(FeaturePlaceContext<AnvilRockConfiguration> pContext, WorldGenLevel worldgenlevel, BlockPos blockpos, int h) {
         h--;
-        worldgenlevel.setBlockState(blockpos.add(0, h, 0), getState(pContext, blockpos.add(0, h, 0)), 2);
+        worldgenlevel.setBlock(blockpos.offset(0, h, 0), getState(pContext, blockpos.offset(0, h, 0)), 2);
     }
 
-    private void genNarrowRadius1(FeatureContext<AnvilRockConfiguration> pContext, StructureWorldAccess worldgenlevel, BlockPos blockpos, int h) {
+    private void genNarrowRadius1(FeaturePlaceContext<AnvilRockConfiguration> pContext, WorldGenLevel worldgenlevel, BlockPos blockpos, int h) {
         h--;
-        worldgenlevel.setBlockState(blockpos.add(0, h, 0), getState(pContext, blockpos.add(0, h, 0)), 2);
-        worldgenlevel.setBlockState(blockpos.add(1, h, 0), getState(pContext, blockpos.add(0, h, 0)), 2);
-        worldgenlevel.setBlockState(blockpos.add(0, h, 1), getState(pContext, blockpos.add(0, h, 0)), 2);
-        worldgenlevel.setBlockState(blockpos.add(-1, h, 0), getState(pContext, blockpos.add(0, h, 0)), 2);
-        worldgenlevel.setBlockState(blockpos.add(0, h, -1), getState(pContext, blockpos.add(0, h, 0)), 2);
+        worldgenlevel.setBlock(blockpos.offset(0, h, 0), getState(pContext, blockpos.offset(0, h, 0)), 2);
+        worldgenlevel.setBlock(blockpos.offset(1, h, 0), getState(pContext, blockpos.offset(0, h, 0)), 2);
+        worldgenlevel.setBlock(blockpos.offset(0, h, 1), getState(pContext, blockpos.offset(0, h, 0)), 2);
+        worldgenlevel.setBlock(blockpos.offset(-1, h, 0), getState(pContext, blockpos.offset(0, h, 0)), 2);
+        worldgenlevel.setBlock(blockpos.offset(0, h, -1), getState(pContext, blockpos.offset(0, h, 0)), 2);
     }
 
-    private void genRadius1(FeatureContext<AnvilRockConfiguration> pContext, StructureWorldAccess worldgenlevel, BlockPos blockpos, int h) {
+    private void genRadius1(FeaturePlaceContext<AnvilRockConfiguration> pContext, WorldGenLevel worldgenlevel, BlockPos blockpos, int h) {
         h--;
-        worldgenlevel.setBlockState(blockpos.add(0, h, 0), getState(pContext, blockpos.add(0, h, 0)), 2);
-        worldgenlevel.setBlockState(blockpos.add(1, h, 0), getState(pContext, blockpos.add(0, h, 0)), 2);
-        worldgenlevel.setBlockState(blockpos.add(0, h, 1), getState(pContext, blockpos.add(0, h, 0)), 2);
-        worldgenlevel.setBlockState(blockpos.add(-1, h, 0), getState(pContext, blockpos.add(0, h, 0)), 2);
-        worldgenlevel.setBlockState(blockpos.add(0, h, -1), getState(pContext, blockpos.add(0, h, 0)), 2);
-        worldgenlevel.setBlockState(blockpos.add(1, h, 1), getState(pContext, blockpos.add(0, h, 0)), 2);
-        worldgenlevel.setBlockState(blockpos.add(-1, h, -1), getState(pContext, blockpos.add(0, h, 0)), 2);
-        worldgenlevel.setBlockState(blockpos.add(-1, h, 1), getState(pContext, blockpos.add(0, h, 0)), 2);
-        worldgenlevel.setBlockState(blockpos.add(1, h, -1), getState(pContext, blockpos.add(0, h, 0)), 2);
+        worldgenlevel.setBlock(blockpos.offset(0, h, 0), getState(pContext, blockpos.offset(0, h, 0)), 2);
+        worldgenlevel.setBlock(blockpos.offset(1, h, 0), getState(pContext, blockpos.offset(0, h, 0)), 2);
+        worldgenlevel.setBlock(blockpos.offset(0, h, 1), getState(pContext, blockpos.offset(0, h, 0)), 2);
+        worldgenlevel.setBlock(blockpos.offset(-1, h, 0), getState(pContext, blockpos.offset(0, h, 0)), 2);
+        worldgenlevel.setBlock(blockpos.offset(0, h, -1), getState(pContext, blockpos.offset(0, h, 0)), 2);
+        worldgenlevel.setBlock(blockpos.offset(1, h, 1), getState(pContext, blockpos.offset(0, h, 0)), 2);
+        worldgenlevel.setBlock(blockpos.offset(-1, h, -1), getState(pContext, blockpos.offset(0, h, 0)), 2);
+        worldgenlevel.setBlock(blockpos.offset(-1, h, 1), getState(pContext, blockpos.offset(0, h, 0)), 2);
+        worldgenlevel.setBlock(blockpos.offset(1, h, -1), getState(pContext, blockpos.offset(0, h, 0)), 2);
     }
 
-    private void genObeseRadius1(FeatureContext<AnvilRockConfiguration> pContext, StructureWorldAccess worldgenlevel, BlockPos blockpos, int h) {
+    private void genObeseRadius1(FeaturePlaceContext<AnvilRockConfiguration> pContext, WorldGenLevel worldgenlevel, BlockPos blockpos, int h) {
         h--;
-        worldgenlevel.setBlockState(blockpos.add(0, h, 0), getState(pContext, blockpos.add(0, h, 0)), 2);
-        worldgenlevel.setBlockState(blockpos.add(1, h, 0), getState(pContext, blockpos.add(0, h, 0)), 2);
-        worldgenlevel.setBlockState(blockpos.add(0, h, 1), getState(pContext, blockpos.add(0, h, 0)), 2);
-        worldgenlevel.setBlockState(blockpos.add(-1, h, 0), getState(pContext, blockpos.add(0, h, 0)), 2);
-        worldgenlevel.setBlockState(blockpos.add(0, h, -1), getState(pContext, blockpos.add(0, h, 0)), 2);
-        worldgenlevel.setBlockState(blockpos.add(1, h, 1), getState(pContext, blockpos.add(0, h, 0)), 2);
-        worldgenlevel.setBlockState(blockpos.add(-1, h, -1), getState(pContext, blockpos.add(0, h, 0)), 2);
-        worldgenlevel.setBlockState(blockpos.add(-1, h, 1), getState(pContext, blockpos.add(0, h, 0)), 2);
-        worldgenlevel.setBlockState(blockpos.add(1, h, -1), getState(pContext, blockpos.add(0, h, 0)), 2);
+        worldgenlevel.setBlock(blockpos.offset(0, h, 0), getState(pContext, blockpos.offset(0, h, 0)), 2);
+        worldgenlevel.setBlock(blockpos.offset(1, h, 0), getState(pContext, blockpos.offset(0, h, 0)), 2);
+        worldgenlevel.setBlock(blockpos.offset(0, h, 1), getState(pContext, blockpos.offset(0, h, 0)), 2);
+        worldgenlevel.setBlock(blockpos.offset(-1, h, 0), getState(pContext, blockpos.offset(0, h, 0)), 2);
+        worldgenlevel.setBlock(blockpos.offset(0, h, -1), getState(pContext, blockpos.offset(0, h, 0)), 2);
+        worldgenlevel.setBlock(blockpos.offset(1, h, 1), getState(pContext, blockpos.offset(0, h, 0)), 2);
+        worldgenlevel.setBlock(blockpos.offset(-1, h, -1), getState(pContext, blockpos.offset(0, h, 0)), 2);
+        worldgenlevel.setBlock(blockpos.offset(-1, h, 1), getState(pContext, blockpos.offset(0, h, 0)), 2);
+        worldgenlevel.setBlock(blockpos.offset(1, h, -1), getState(pContext, blockpos.offset(0, h, 0)), 2);
 
-        worldgenlevel.setBlockState(blockpos.add(2, h, 0), getState(pContext, blockpos.add(0, h, 0)), 2);
-        worldgenlevel.setBlockState(blockpos.add(0, h, 2), getState(pContext, blockpos.add(0, h, 0)), 2);
-        worldgenlevel.setBlockState(blockpos.add(-2, h, 0), getState(pContext, blockpos.add(0, h, 0)), 2);
-        worldgenlevel.setBlockState(blockpos.add(0, h, -2), getState(pContext, blockpos.add(0, h, 0)), 2);
-        worldgenlevel.setBlockState(blockpos.add(2, h, 1), getState(pContext, blockpos.add(0, h, 0)), 2);
-        worldgenlevel.setBlockState(blockpos.add(1, h, 2), getState(pContext, blockpos.add(0, h, 0)), 2);
-        worldgenlevel.setBlockState(blockpos.add(-2, h, 1), getState(pContext, blockpos.add(0, h, 0)), 2);
-        worldgenlevel.setBlockState(blockpos.add(1, h, -2), getState(pContext, blockpos.add(0, h, 0)), 2);
-        worldgenlevel.setBlockState(blockpos.add(2, h, -1), getState(pContext, blockpos.add(0, h, 0)), 2);
-        worldgenlevel.setBlockState(blockpos.add(-1, h, 2), getState(pContext, blockpos.add(0, h, 0)), 2);
-        worldgenlevel.setBlockState(blockpos.add(-2, h, -1), getState(pContext, blockpos.add(0, h, 0)), 2);
-        worldgenlevel.setBlockState(blockpos.add(-1, h, -2), getState(pContext, blockpos.add(0, h, 0)), 2);
+        worldgenlevel.setBlock(blockpos.offset(2, h, 0), getState(pContext, blockpos.offset(0, h, 0)), 2);
+        worldgenlevel.setBlock(blockpos.offset(0, h, 2), getState(pContext, blockpos.offset(0, h, 0)), 2);
+        worldgenlevel.setBlock(blockpos.offset(-2, h, 0), getState(pContext, blockpos.offset(0, h, 0)), 2);
+        worldgenlevel.setBlock(blockpos.offset(0, h, -2), getState(pContext, blockpos.offset(0, h, 0)), 2);
+        worldgenlevel.setBlock(blockpos.offset(2, h, 1), getState(pContext, blockpos.offset(0, h, 0)), 2);
+        worldgenlevel.setBlock(blockpos.offset(1, h, 2), getState(pContext, blockpos.offset(0, h, 0)), 2);
+        worldgenlevel.setBlock(blockpos.offset(-2, h, 1), getState(pContext, blockpos.offset(0, h, 0)), 2);
+        worldgenlevel.setBlock(blockpos.offset(1, h, -2), getState(pContext, blockpos.offset(0, h, 0)), 2);
+        worldgenlevel.setBlock(blockpos.offset(2, h, -1), getState(pContext, blockpos.offset(0, h, 0)), 2);
+        worldgenlevel.setBlock(blockpos.offset(-1, h, 2), getState(pContext, blockpos.offset(0, h, 0)), 2);
+        worldgenlevel.setBlock(blockpos.offset(-2, h, -1), getState(pContext, blockpos.offset(0, h, 0)), 2);
+        worldgenlevel.setBlock(blockpos.offset(-1, h, -2), getState(pContext, blockpos.offset(0, h, 0)), 2);
     }
 
-    private void genNarrowRadius2(FeatureContext<AnvilRockConfiguration> pContext, StructureWorldAccess worldgenlevel, BlockPos blockpos, int h) {
+    private void genNarrowRadius2(FeaturePlaceContext<AnvilRockConfiguration> pContext, WorldGenLevel worldgenlevel, BlockPos blockpos, int h) {
         h--;
-        worldgenlevel.setBlockState(blockpos.add(0, h, 2), getState(pContext, blockpos.add(1, h, 1)), 2);
-        worldgenlevel.setBlockState(blockpos.add(2, h, 0), getState(pContext, blockpos.add(1, h, 1)), 2);
-        worldgenlevel.setBlockState(blockpos.add(0, h, -2), getState(pContext, blockpos.add(1, h, 1)), 2);
-        worldgenlevel.setBlockState(blockpos.add(-2, h, 0), getState(pContext, blockpos.add(1, h, 1)), 2);
+        worldgenlevel.setBlock(blockpos.offset(0, h, 2), getState(pContext, blockpos.offset(1, h, 1)), 2);
+        worldgenlevel.setBlock(blockpos.offset(2, h, 0), getState(pContext, blockpos.offset(1, h, 1)), 2);
+        worldgenlevel.setBlock(blockpos.offset(0, h, -2), getState(pContext, blockpos.offset(1, h, 1)), 2);
+        worldgenlevel.setBlock(blockpos.offset(-2, h, 0), getState(pContext, blockpos.offset(1, h, 1)), 2);
     }
 
-    private void genRadius2(FeatureContext<AnvilRockConfiguration> pContext, StructureWorldAccess worldgenlevel, BlockPos blockpos, int h) {
+    private void genRadius2(FeaturePlaceContext<AnvilRockConfiguration> pContext, WorldGenLevel worldgenlevel, BlockPos blockpos, int h) {
         h--;
-        worldgenlevel.setBlockState(blockpos.add(0, h, 2), getState(pContext, blockpos.add(1, h, 1)), 2);
-        worldgenlevel.setBlockState(blockpos.add(2, h, 0), getState(pContext, blockpos.add(1, h, 1)), 2);
-        worldgenlevel.setBlockState(blockpos.add(0, h, -2), getState(pContext, blockpos.add(1, h, 1)), 2);
-        worldgenlevel.setBlockState(blockpos.add(-2, h, 0), getState(pContext, blockpos.add(1, h, 1)), 2);
-        worldgenlevel.setBlockState(blockpos.add(1, h, 2), getState(pContext, blockpos.add(1, h, 1)), 2);
-        worldgenlevel.setBlockState(blockpos.add(2, h, 1), getState(pContext, blockpos.add(1, h, 1)), 2);
-        worldgenlevel.setBlockState(blockpos.add(1, h, -2), getState(pContext, blockpos.add(1, h, 1)), 2);
-        worldgenlevel.setBlockState(blockpos.add(-2, h, 1), getState(pContext, blockpos.add(1, h, 1)), 2);
-        worldgenlevel.setBlockState(blockpos.add(-1, h, 2), getState(pContext, blockpos.add(1, h, 1)), 2);
-        worldgenlevel.setBlockState(blockpos.add(2, h, -1), getState(pContext, blockpos.add(1, h, 1)), 2);
-        worldgenlevel.setBlockState(blockpos.add(-1, h, -2), getState(pContext, blockpos.add(1, h, 1)), 2);
-        worldgenlevel.setBlockState(blockpos.add(-2, h, -1), getState(pContext, blockpos.add(1, h, 1)), 2);
+        worldgenlevel.setBlock(blockpos.offset(0, h, 2), getState(pContext, blockpos.offset(1, h, 1)), 2);
+        worldgenlevel.setBlock(blockpos.offset(2, h, 0), getState(pContext, blockpos.offset(1, h, 1)), 2);
+        worldgenlevel.setBlock(blockpos.offset(0, h, -2), getState(pContext, blockpos.offset(1, h, 1)), 2);
+        worldgenlevel.setBlock(blockpos.offset(-2, h, 0), getState(pContext, blockpos.offset(1, h, 1)), 2);
+        worldgenlevel.setBlock(blockpos.offset(1, h, 2), getState(pContext, blockpos.offset(1, h, 1)), 2);
+        worldgenlevel.setBlock(blockpos.offset(2, h, 1), getState(pContext, blockpos.offset(1, h, 1)), 2);
+        worldgenlevel.setBlock(blockpos.offset(1, h, -2), getState(pContext, blockpos.offset(1, h, 1)), 2);
+        worldgenlevel.setBlock(blockpos.offset(-2, h, 1), getState(pContext, blockpos.offset(1, h, 1)), 2);
+        worldgenlevel.setBlock(blockpos.offset(-1, h, 2), getState(pContext, blockpos.offset(1, h, 1)), 2);
+        worldgenlevel.setBlock(blockpos.offset(2, h, -1), getState(pContext, blockpos.offset(1, h, 1)), 2);
+        worldgenlevel.setBlock(blockpos.offset(-1, h, -2), getState(pContext, blockpos.offset(1, h, 1)), 2);
+        worldgenlevel.setBlock(blockpos.offset(-2, h, -1), getState(pContext, blockpos.offset(1, h, 1)), 2);
     }
 
-    private void genObeseRadius2(FeatureContext<AnvilRockConfiguration> pContext, StructureWorldAccess worldgenlevel, BlockPos blockpos, int h) {
+    private void genObeseRadius2(FeaturePlaceContext<AnvilRockConfiguration> pContext, WorldGenLevel worldgenlevel, BlockPos blockpos, int h) {
         h--;
-        worldgenlevel.setBlockState(blockpos.add(0, h, 2), getState(pContext, blockpos.add(1, h, 1)), 2);
-        worldgenlevel.setBlockState(blockpos.add(2, h, 0), getState(pContext, blockpos.add(1, h, 1)), 2);
-        worldgenlevel.setBlockState(blockpos.add(0, h, -2), getState(pContext, blockpos.add(1, h, 1)), 2);
-        worldgenlevel.setBlockState(blockpos.add(-2, h, 0), getState(pContext, blockpos.add(1, h, 1)), 2);
-        worldgenlevel.setBlockState(blockpos.add(1, h, 2), getState(pContext, blockpos.add(1, h, 1)), 2);
-        worldgenlevel.setBlockState(blockpos.add(2, h, 1), getState(pContext, blockpos.add(1, h, 1)), 2);
-        worldgenlevel.setBlockState(blockpos.add(1, h, -2), getState(pContext, blockpos.add(1, h, 1)), 2);
-        worldgenlevel.setBlockState(blockpos.add(-2, h, 1), getState(pContext, blockpos.add(1, h, 1)), 2);
-        worldgenlevel.setBlockState(blockpos.add(-1, h, 2), getState(pContext, blockpos.add(1, h, 1)), 2);
-        worldgenlevel.setBlockState(blockpos.add(2, h, -1), getState(pContext, blockpos.add(1, h, 1)), 2);
-        worldgenlevel.setBlockState(blockpos.add(-1, h, -2), getState(pContext, blockpos.add(1, h, 1)), 2);
-        worldgenlevel.setBlockState(blockpos.add(-2, h, -1), getState(pContext, blockpos.add(1, h, 1)), 2);
+        worldgenlevel.setBlock(blockpos.offset(0, h, 2), getState(pContext, blockpos.offset(1, h, 1)), 2);
+        worldgenlevel.setBlock(blockpos.offset(2, h, 0), getState(pContext, blockpos.offset(1, h, 1)), 2);
+        worldgenlevel.setBlock(blockpos.offset(0, h, -2), getState(pContext, blockpos.offset(1, h, 1)), 2);
+        worldgenlevel.setBlock(blockpos.offset(-2, h, 0), getState(pContext, blockpos.offset(1, h, 1)), 2);
+        worldgenlevel.setBlock(blockpos.offset(1, h, 2), getState(pContext, blockpos.offset(1, h, 1)), 2);
+        worldgenlevel.setBlock(blockpos.offset(2, h, 1), getState(pContext, blockpos.offset(1, h, 1)), 2);
+        worldgenlevel.setBlock(blockpos.offset(1, h, -2), getState(pContext, blockpos.offset(1, h, 1)), 2);
+        worldgenlevel.setBlock(blockpos.offset(-2, h, 1), getState(pContext, blockpos.offset(1, h, 1)), 2);
+        worldgenlevel.setBlock(blockpos.offset(-1, h, 2), getState(pContext, blockpos.offset(1, h, 1)), 2);
+        worldgenlevel.setBlock(blockpos.offset(2, h, -1), getState(pContext, blockpos.offset(1, h, 1)), 2);
+        worldgenlevel.setBlock(blockpos.offset(-1, h, -2), getState(pContext, blockpos.offset(1, h, 1)), 2);
+        worldgenlevel.setBlock(blockpos.offset(-2, h, -1), getState(pContext, blockpos.offset(1, h, 1)), 2);
 
-        worldgenlevel.setBlockState(blockpos.add(0, h, 3), getState(pContext, blockpos.add(1, h, 1)), 2);
-        worldgenlevel.setBlockState(blockpos.add(3, h, 0), getState(pContext, blockpos.add(1, h, 1)), 2);
-        worldgenlevel.setBlockState(blockpos.add(0, h, -3), getState(pContext, blockpos.add(1, h, 1)), 2);
-        worldgenlevel.setBlockState(blockpos.add(-3, h, 0), getState(pContext, blockpos.add(1, h, 1)), 2);
-        worldgenlevel.setBlockState(blockpos.add(1, h, 3), getState(pContext, blockpos.add(1, h, 1)), 2);
-        worldgenlevel.setBlockState(blockpos.add(3, h, 1), getState(pContext, blockpos.add(1, h, 1)), 2);
-        worldgenlevel.setBlockState(blockpos.add(1, h, -3), getState(pContext, blockpos.add(1, h, 1)), 2);
-        worldgenlevel.setBlockState(blockpos.add(-3, h, 1), getState(pContext, blockpos.add(1, h, 1)), 2);
-        worldgenlevel.setBlockState(blockpos.add(-1, h, 3), getState(pContext, blockpos.add(1, h, 1)), 2);
-        worldgenlevel.setBlockState(blockpos.add(3, h, -1), getState(pContext, blockpos.add(1, h, 1)), 2);
-        worldgenlevel.setBlockState(blockpos.add(-1, h, -3), getState(pContext, blockpos.add(1, h, 1)), 2);
-        worldgenlevel.setBlockState(blockpos.add(-3, h, -1), getState(pContext, blockpos.add(1, h, 1)), 2);
+        worldgenlevel.setBlock(blockpos.offset(0, h, 3), getState(pContext, blockpos.offset(1, h, 1)), 2);
+        worldgenlevel.setBlock(blockpos.offset(3, h, 0), getState(pContext, blockpos.offset(1, h, 1)), 2);
+        worldgenlevel.setBlock(blockpos.offset(0, h, -3), getState(pContext, blockpos.offset(1, h, 1)), 2);
+        worldgenlevel.setBlock(blockpos.offset(-3, h, 0), getState(pContext, blockpos.offset(1, h, 1)), 2);
+        worldgenlevel.setBlock(blockpos.offset(1, h, 3), getState(pContext, blockpos.offset(1, h, 1)), 2);
+        worldgenlevel.setBlock(blockpos.offset(3, h, 1), getState(pContext, blockpos.offset(1, h, 1)), 2);
+        worldgenlevel.setBlock(blockpos.offset(1, h, -3), getState(pContext, blockpos.offset(1, h, 1)), 2);
+        worldgenlevel.setBlock(blockpos.offset(-3, h, 1), getState(pContext, blockpos.offset(1, h, 1)), 2);
+        worldgenlevel.setBlock(blockpos.offset(-1, h, 3), getState(pContext, blockpos.offset(1, h, 1)), 2);
+        worldgenlevel.setBlock(blockpos.offset(3, h, -1), getState(pContext, blockpos.offset(1, h, 1)), 2);
+        worldgenlevel.setBlock(blockpos.offset(-1, h, -3), getState(pContext, blockpos.offset(1, h, 1)), 2);
+        worldgenlevel.setBlock(blockpos.offset(-3, h, -1), getState(pContext, blockpos.offset(1, h, 1)), 2);
     }
 
-    private void genRadius3(FeatureContext<AnvilRockConfiguration> pContext, StructureWorldAccess worldgenlevel, BlockPos blockpos, int h) {
+    private void genRadius3(FeaturePlaceContext<AnvilRockConfiguration> pContext, WorldGenLevel worldgenlevel, BlockPos blockpos, int h) {
         h--;
-        worldgenlevel.setBlockState(blockpos.add(2, h, 2), getState(pContext, blockpos.add(2, h, 2)), 2);
-        worldgenlevel.setBlockState(blockpos.add(2, h, -2), getState(pContext, blockpos.add(2, h, 2)), 2);
-        worldgenlevel.setBlockState(blockpos.add(-2, h, 2), getState(pContext, blockpos.add(2, h, 2)), 2);
-        worldgenlevel.setBlockState(blockpos.add(-2, h, -2), getState(pContext, blockpos.add(2, h, 2)), 2);
+        worldgenlevel.setBlock(blockpos.offset(2, h, 2), getState(pContext, blockpos.offset(2, h, 2)), 2);
+        worldgenlevel.setBlock(blockpos.offset(2, h, -2), getState(pContext, blockpos.offset(2, h, 2)), 2);
+        worldgenlevel.setBlock(blockpos.offset(-2, h, 2), getState(pContext, blockpos.offset(2, h, 2)), 2);
+        worldgenlevel.setBlock(blockpos.offset(-2, h, -2), getState(pContext, blockpos.offset(2, h, 2)), 2);
 
-        worldgenlevel.setBlockState(blockpos.add(0, h, 3), getState(pContext, blockpos.add(2, h, 2)), 2);
-        worldgenlevel.setBlockState(blockpos.add(3, h, 0), getState(pContext, blockpos.add(2, h, 2)), 2);
-        worldgenlevel.setBlockState(blockpos.add(0, h, -3), getState(pContext, blockpos.add(2, h, 2)), 2);
-        worldgenlevel.setBlockState(blockpos.add(-3, h, 0), getState(pContext, blockpos.add(2, h, 2)), 2);
-        worldgenlevel.setBlockState(blockpos.add(1, h, 3), getState(pContext, blockpos.add(2, h, 2)), 2);
-        worldgenlevel.setBlockState(blockpos.add(3, h, 1), getState(pContext, blockpos.add(2, h, 2)), 2);
-        worldgenlevel.setBlockState(blockpos.add(1, h, -3), getState(pContext, blockpos.add(2, h, 2)), 2);
-        worldgenlevel.setBlockState(blockpos.add(-3, h, 1), getState(pContext, blockpos.add(2, h, 2)), 2);
-        worldgenlevel.setBlockState(blockpos.add(-1, h, 3), getState(pContext, blockpos.add(2, h, 2)), 2);
-        worldgenlevel.setBlockState(blockpos.add(3, h, -1), getState(pContext, blockpos.add(2, h, 2)), 2);
-        worldgenlevel.setBlockState(blockpos.add(-1, h, -3), getState(pContext, blockpos.add(2, h, 2)), 2);
-        worldgenlevel.setBlockState(blockpos.add(-3, h, -1), getState(pContext, blockpos.add(2, h, 2)), 2);
-        worldgenlevel.setBlockState(blockpos.add(2, h, 3), getState(pContext, blockpos.add(2, h, 2)), 2);
-        worldgenlevel.setBlockState(blockpos.add(3, h, 2), getState(pContext, blockpos.add(2, h, 2)), 2);
-        worldgenlevel.setBlockState(blockpos.add(2, h, -3), getState(pContext, blockpos.add(2, h, 2)), 2);
-        worldgenlevel.setBlockState(blockpos.add(-3, h, 2), getState(pContext, blockpos.add(2, h, 2)), 2);
-        worldgenlevel.setBlockState(blockpos.add(-2, h, 3), getState(pContext, blockpos.add(2, h, 2)), 2);
-        worldgenlevel.setBlockState(blockpos.add(3, h, -2), getState(pContext, blockpos.add(2, h, 2)), 2);
-        worldgenlevel.setBlockState(blockpos.add(-2, h, -3), getState(pContext, blockpos.add(2, h, 2)), 2);
-        worldgenlevel.setBlockState(blockpos.add(-3, h, -2), getState(pContext, blockpos.add(2, h, 2)), 2);
+        worldgenlevel.setBlock(blockpos.offset(0, h, 3), getState(pContext, blockpos.offset(2, h, 2)), 2);
+        worldgenlevel.setBlock(blockpos.offset(3, h, 0), getState(pContext, blockpos.offset(2, h, 2)), 2);
+        worldgenlevel.setBlock(blockpos.offset(0, h, -3), getState(pContext, blockpos.offset(2, h, 2)), 2);
+        worldgenlevel.setBlock(blockpos.offset(-3, h, 0), getState(pContext, blockpos.offset(2, h, 2)), 2);
+        worldgenlevel.setBlock(blockpos.offset(1, h, 3), getState(pContext, blockpos.offset(2, h, 2)), 2);
+        worldgenlevel.setBlock(blockpos.offset(3, h, 1), getState(pContext, blockpos.offset(2, h, 2)), 2);
+        worldgenlevel.setBlock(blockpos.offset(1, h, -3), getState(pContext, blockpos.offset(2, h, 2)), 2);
+        worldgenlevel.setBlock(blockpos.offset(-3, h, 1), getState(pContext, blockpos.offset(2, h, 2)), 2);
+        worldgenlevel.setBlock(blockpos.offset(-1, h, 3), getState(pContext, blockpos.offset(2, h, 2)), 2);
+        worldgenlevel.setBlock(blockpos.offset(3, h, -1), getState(pContext, blockpos.offset(2, h, 2)), 2);
+        worldgenlevel.setBlock(blockpos.offset(-1, h, -3), getState(pContext, blockpos.offset(2, h, 2)), 2);
+        worldgenlevel.setBlock(blockpos.offset(-3, h, -1), getState(pContext, blockpos.offset(2, h, 2)), 2);
+        worldgenlevel.setBlock(blockpos.offset(2, h, 3), getState(pContext, blockpos.offset(2, h, 2)), 2);
+        worldgenlevel.setBlock(blockpos.offset(3, h, 2), getState(pContext, blockpos.offset(2, h, 2)), 2);
+        worldgenlevel.setBlock(blockpos.offset(2, h, -3), getState(pContext, blockpos.offset(2, h, 2)), 2);
+        worldgenlevel.setBlock(blockpos.offset(-3, h, 2), getState(pContext, blockpos.offset(2, h, 2)), 2);
+        worldgenlevel.setBlock(blockpos.offset(-2, h, 3), getState(pContext, blockpos.offset(2, h, 2)), 2);
+        worldgenlevel.setBlock(blockpos.offset(3, h, -2), getState(pContext, blockpos.offset(2, h, 2)), 2);
+        worldgenlevel.setBlock(blockpos.offset(-2, h, -3), getState(pContext, blockpos.offset(2, h, 2)), 2);
+        worldgenlevel.setBlock(blockpos.offset(-3, h, -2), getState(pContext, blockpos.offset(2, h, 2)), 2);
     }
 
-    private void genObeseRadius3(FeatureContext<AnvilRockConfiguration> pContext, StructureWorldAccess worldgenlevel, BlockPos blockpos, int h) {
+    private void genObeseRadius3(FeaturePlaceContext<AnvilRockConfiguration> pContext, WorldGenLevel worldgenlevel, BlockPos blockpos, int h) {
         h--;
-        worldgenlevel.setBlockState(blockpos.add(2, h, 2), getState(pContext, blockpos.add(2, h, 2)), 2);
-        worldgenlevel.setBlockState(blockpos.add(2, h, -2), getState(pContext, blockpos.add(2, h, 2)), 2);
-        worldgenlevel.setBlockState(blockpos.add(-2, h, 2), getState(pContext, blockpos.add(2, h, 2)), 2);
-        worldgenlevel.setBlockState(blockpos.add(-2, h, -2), getState(pContext, blockpos.add(2, h, 2)), 2);
+        worldgenlevel.setBlock(blockpos.offset(2, h, 2), getState(pContext, blockpos.offset(2, h, 2)), 2);
+        worldgenlevel.setBlock(blockpos.offset(2, h, -2), getState(pContext, blockpos.offset(2, h, 2)), 2);
+        worldgenlevel.setBlock(blockpos.offset(-2, h, 2), getState(pContext, blockpos.offset(2, h, 2)), 2);
+        worldgenlevel.setBlock(blockpos.offset(-2, h, -2), getState(pContext, blockpos.offset(2, h, 2)), 2);
 
-        worldgenlevel.setBlockState(blockpos.add(0, h, 3), getState(pContext, blockpos.add(2, h, 2)), 2);
-        worldgenlevel.setBlockState(blockpos.add(3, h, 0), getState(pContext, blockpos.add(2, h, 2)), 2);
-        worldgenlevel.setBlockState(blockpos.add(0, h, -3), getState(pContext, blockpos.add(2, h, 2)), 2);
-        worldgenlevel.setBlockState(blockpos.add(-3, h, 0), getState(pContext, blockpos.add(2, h, 2)), 2);
-        worldgenlevel.setBlockState(blockpos.add(1, h, 3), getState(pContext, blockpos.add(2, h, 2)), 2);
-        worldgenlevel.setBlockState(blockpos.add(3, h, 1), getState(pContext, blockpos.add(2, h, 2)), 2);
-        worldgenlevel.setBlockState(blockpos.add(1, h, -3), getState(pContext, blockpos.add(2, h, 2)), 2);
-        worldgenlevel.setBlockState(blockpos.add(-3, h, 1), getState(pContext, blockpos.add(2, h, 2)), 2);
-        worldgenlevel.setBlockState(blockpos.add(-1, h, 3), getState(pContext, blockpos.add(2, h, 2)), 2);
-        worldgenlevel.setBlockState(blockpos.add(3, h, -1), getState(pContext, blockpos.add(2, h, 2)), 2);
-        worldgenlevel.setBlockState(blockpos.add(-1, h, -3), getState(pContext, blockpos.add(2, h, 2)), 2);
-        worldgenlevel.setBlockState(blockpos.add(-3, h, -1), getState(pContext, blockpos.add(2, h, 2)), 2);
-        worldgenlevel.setBlockState(blockpos.add(2, h, 3), getState(pContext, blockpos.add(2, h, 2)), 2);
-        worldgenlevel.setBlockState(blockpos.add(3, h, 2), getState(pContext, blockpos.add(2, h, 2)), 2);
-        worldgenlevel.setBlockState(blockpos.add(2, h, -3), getState(pContext, blockpos.add(2, h, 2)), 2);
-        worldgenlevel.setBlockState(blockpos.add(-3, h, 2), getState(pContext, blockpos.add(2, h, 2)), 2);
-        worldgenlevel.setBlockState(blockpos.add(-2, h, 3), getState(pContext, blockpos.add(2, h, 2)), 2);
-        worldgenlevel.setBlockState(blockpos.add(3, h, -2), getState(pContext, blockpos.add(2, h, 2)), 2);
-        worldgenlevel.setBlockState(blockpos.add(-2, h, -3), getState(pContext, blockpos.add(2, h, 2)), 2);
-        worldgenlevel.setBlockState(blockpos.add(-3, h, -2), getState(pContext, blockpos.add(2, h, 2)), 2);
+        worldgenlevel.setBlock(blockpos.offset(0, h, 3), getState(pContext, blockpos.offset(2, h, 2)), 2);
+        worldgenlevel.setBlock(blockpos.offset(3, h, 0), getState(pContext, blockpos.offset(2, h, 2)), 2);
+        worldgenlevel.setBlock(blockpos.offset(0, h, -3), getState(pContext, blockpos.offset(2, h, 2)), 2);
+        worldgenlevel.setBlock(blockpos.offset(-3, h, 0), getState(pContext, blockpos.offset(2, h, 2)), 2);
+        worldgenlevel.setBlock(blockpos.offset(1, h, 3), getState(pContext, blockpos.offset(2, h, 2)), 2);
+        worldgenlevel.setBlock(blockpos.offset(3, h, 1), getState(pContext, blockpos.offset(2, h, 2)), 2);
+        worldgenlevel.setBlock(blockpos.offset(1, h, -3), getState(pContext, blockpos.offset(2, h, 2)), 2);
+        worldgenlevel.setBlock(blockpos.offset(-3, h, 1), getState(pContext, blockpos.offset(2, h, 2)), 2);
+        worldgenlevel.setBlock(blockpos.offset(-1, h, 3), getState(pContext, blockpos.offset(2, h, 2)), 2);
+        worldgenlevel.setBlock(blockpos.offset(3, h, -1), getState(pContext, blockpos.offset(2, h, 2)), 2);
+        worldgenlevel.setBlock(blockpos.offset(-1, h, -3), getState(pContext, blockpos.offset(2, h, 2)), 2);
+        worldgenlevel.setBlock(blockpos.offset(-3, h, -1), getState(pContext, blockpos.offset(2, h, 2)), 2);
+        worldgenlevel.setBlock(blockpos.offset(2, h, 3), getState(pContext, blockpos.offset(2, h, 2)), 2);
+        worldgenlevel.setBlock(blockpos.offset(3, h, 2), getState(pContext, blockpos.offset(2, h, 2)), 2);
+        worldgenlevel.setBlock(blockpos.offset(2, h, -3), getState(pContext, blockpos.offset(2, h, 2)), 2);
+        worldgenlevel.setBlock(blockpos.offset(-3, h, 2), getState(pContext, blockpos.offset(2, h, 2)), 2);
+        worldgenlevel.setBlock(blockpos.offset(-2, h, 3), getState(pContext, blockpos.offset(2, h, 2)), 2);
+        worldgenlevel.setBlock(blockpos.offset(3, h, -2), getState(pContext, blockpos.offset(2, h, 2)), 2);
+        worldgenlevel.setBlock(blockpos.offset(-2, h, -3), getState(pContext, blockpos.offset(2, h, 2)), 2);
+        worldgenlevel.setBlock(blockpos.offset(-3, h, -2), getState(pContext, blockpos.offset(2, h, 2)), 2);
 
-        worldgenlevel.setBlockState(blockpos.add(3, h+1, 3), getState(pContext, blockpos.add(2, h, 2)), 2);
-        worldgenlevel.setBlockState(blockpos.add(3, h+1, -3), getState(pContext, blockpos.add(2, h, 2)), 2);
-        worldgenlevel.setBlockState(blockpos.add(-3, h+1, 3), getState(pContext, blockpos.add(2, h, 2)), 2);
-        worldgenlevel.setBlockState(blockpos.add(-3, h+1, -3), getState(pContext, blockpos.add(2, h, 2)), 2);
-        worldgenlevel.setBlockState(blockpos.add(3, h-1, 3), getState(pContext, blockpos.add(2, h, 2)), 2);
-        worldgenlevel.setBlockState(blockpos.add(3, h-1, -3), getState(pContext, blockpos.add(2, h, 2)), 2);
-        worldgenlevel.setBlockState(blockpos.add(-3, h-1, 3), getState(pContext, blockpos.add(2, h, 2)), 2);
-        worldgenlevel.setBlockState(blockpos.add(-3, h-1, -3), getState(pContext, blockpos.add(2, h, 2)), 2);
-        worldgenlevel.setBlockState(blockpos.add(3, h, 3), getState(pContext, blockpos.add(2, h, 2)), 2);
-        worldgenlevel.setBlockState(blockpos.add(3, h, -3), getState(pContext, blockpos.add(2, h, 2)), 2);
-        worldgenlevel.setBlockState(blockpos.add(-3, h, 3), getState(pContext, blockpos.add(2, h, 2)), 2);
-        worldgenlevel.setBlockState(blockpos.add(-3, h, -3), getState(pContext, blockpos.add(2, h, 2)), 2);
-        worldgenlevel.setBlockState(blockpos.add(0, h, 4), getState(pContext, blockpos.add(2, h, 2)), 2);
-        worldgenlevel.setBlockState(blockpos.add(4, h, 0), getState(pContext, blockpos.add(2, h, 2)), 2);
-        worldgenlevel.setBlockState(blockpos.add(0, h, -4), getState(pContext, blockpos.add(2, h, 2)), 2);
-        worldgenlevel.setBlockState(blockpos.add(-4, h, 0), getState(pContext, blockpos.add(2, h, 2)), 2);
+        worldgenlevel.setBlock(blockpos.offset(3, h+1, 3), getState(pContext, blockpos.offset(2, h, 2)), 2);
+        worldgenlevel.setBlock(blockpos.offset(3, h+1, -3), getState(pContext, blockpos.offset(2, h, 2)), 2);
+        worldgenlevel.setBlock(blockpos.offset(-3, h+1, 3), getState(pContext, blockpos.offset(2, h, 2)), 2);
+        worldgenlevel.setBlock(blockpos.offset(-3, h+1, -3), getState(pContext, blockpos.offset(2, h, 2)), 2);
+        worldgenlevel.setBlock(blockpos.offset(3, h-1, 3), getState(pContext, blockpos.offset(2, h, 2)), 2);
+        worldgenlevel.setBlock(blockpos.offset(3, h-1, -3), getState(pContext, blockpos.offset(2, h, 2)), 2);
+        worldgenlevel.setBlock(blockpos.offset(-3, h-1, 3), getState(pContext, blockpos.offset(2, h, 2)), 2);
+        worldgenlevel.setBlock(blockpos.offset(-3, h-1, -3), getState(pContext, blockpos.offset(2, h, 2)), 2);
+        worldgenlevel.setBlock(blockpos.offset(3, h, 3), getState(pContext, blockpos.offset(2, h, 2)), 2);
+        worldgenlevel.setBlock(blockpos.offset(3, h, -3), getState(pContext, blockpos.offset(2, h, 2)), 2);
+        worldgenlevel.setBlock(blockpos.offset(-3, h, 3), getState(pContext, blockpos.offset(2, h, 2)), 2);
+        worldgenlevel.setBlock(blockpos.offset(-3, h, -3), getState(pContext, blockpos.offset(2, h, 2)), 2);
+        worldgenlevel.setBlock(blockpos.offset(0, h, 4), getState(pContext, blockpos.offset(2, h, 2)), 2);
+        worldgenlevel.setBlock(blockpos.offset(4, h, 0), getState(pContext, blockpos.offset(2, h, 2)), 2);
+        worldgenlevel.setBlock(blockpos.offset(0, h, -4), getState(pContext, blockpos.offset(2, h, 2)), 2);
+        worldgenlevel.setBlock(blockpos.offset(-4, h, 0), getState(pContext, blockpos.offset(2, h, 2)), 2);
 
-        worldgenlevel.setBlockState(blockpos.add(1, h, 4), getState(pContext, blockpos.add(2, h, 2)), 2);
-        worldgenlevel.setBlockState(blockpos.add(4, h, 1), getState(pContext, blockpos.add(2, h, 2)), 2);
-        worldgenlevel.setBlockState(blockpos.add(1, h, -4), getState(pContext, blockpos.add(2, h, 2)), 2);
-        worldgenlevel.setBlockState(blockpos.add(-4, h, 1), getState(pContext, blockpos.add(2, h, 2)), 2);
-        worldgenlevel.setBlockState(blockpos.add(-1, h, 4), getState(pContext, blockpos.add(2, h, 2)), 2);
-        worldgenlevel.setBlockState(blockpos.add(4, h, -1), getState(pContext, blockpos.add(2, h, 2)), 2);
-        worldgenlevel.setBlockState(blockpos.add(-1, h, -4), getState(pContext, blockpos.add(2, h, 2)), 2);
-        worldgenlevel.setBlockState(blockpos.add(-4, h, -1), getState(pContext, blockpos.add(2, h, 2)), 2);
-        worldgenlevel.setBlockState(blockpos.add(2, h, 4), getState(pContext, blockpos.add(2, h, 2)), 2);
-        worldgenlevel.setBlockState(blockpos.add(4, h, 2), getState(pContext, blockpos.add(2, h, 2)), 2);
-        worldgenlevel.setBlockState(blockpos.add(2, h, -4), getState(pContext, blockpos.add(2, h, 2)), 2);
-        worldgenlevel.setBlockState(blockpos.add(-4, h, 2), getState(pContext, blockpos.add(2, h, 2)), 2);
-        worldgenlevel.setBlockState(blockpos.add(-2, h, 4), getState(pContext, blockpos.add(2, h, 2)), 2);
-        worldgenlevel.setBlockState(blockpos.add(4, h, -2), getState(pContext, blockpos.add(2, h, 2)), 2);
-        worldgenlevel.setBlockState(blockpos.add(-2, h, -4), getState(pContext, blockpos.add(2, h, 2)), 2);
-        worldgenlevel.setBlockState(blockpos.add(-4, h, -2), getState(pContext, blockpos.add(2, h, 2)), 2);
+        worldgenlevel.setBlock(blockpos.offset(1, h, 4), getState(pContext, blockpos.offset(2, h, 2)), 2);
+        worldgenlevel.setBlock(blockpos.offset(4, h, 1), getState(pContext, blockpos.offset(2, h, 2)), 2);
+        worldgenlevel.setBlock(blockpos.offset(1, h, -4), getState(pContext, blockpos.offset(2, h, 2)), 2);
+        worldgenlevel.setBlock(blockpos.offset(-4, h, 1), getState(pContext, blockpos.offset(2, h, 2)), 2);
+        worldgenlevel.setBlock(blockpos.offset(-1, h, 4), getState(pContext, blockpos.offset(2, h, 2)), 2);
+        worldgenlevel.setBlock(blockpos.offset(4, h, -1), getState(pContext, blockpos.offset(2, h, 2)), 2);
+        worldgenlevel.setBlock(blockpos.offset(-1, h, -4), getState(pContext, blockpos.offset(2, h, 2)), 2);
+        worldgenlevel.setBlock(blockpos.offset(-4, h, -1), getState(pContext, blockpos.offset(2, h, 2)), 2);
+        worldgenlevel.setBlock(blockpos.offset(2, h, 4), getState(pContext, blockpos.offset(2, h, 2)), 2);
+        worldgenlevel.setBlock(blockpos.offset(4, h, 2), getState(pContext, blockpos.offset(2, h, 2)), 2);
+        worldgenlevel.setBlock(blockpos.offset(2, h, -4), getState(pContext, blockpos.offset(2, h, 2)), 2);
+        worldgenlevel.setBlock(blockpos.offset(-4, h, 2), getState(pContext, blockpos.offset(2, h, 2)), 2);
+        worldgenlevel.setBlock(blockpos.offset(-2, h, 4), getState(pContext, blockpos.offset(2, h, 2)), 2);
+        worldgenlevel.setBlock(blockpos.offset(4, h, -2), getState(pContext, blockpos.offset(2, h, 2)), 2);
+        worldgenlevel.setBlock(blockpos.offset(-2, h, -4), getState(pContext, blockpos.offset(2, h, 2)), 2);
+        worldgenlevel.setBlock(blockpos.offset(-4, h, -2), getState(pContext, blockpos.offset(2, h, 2)), 2);
     }
 
-    private void genRadius4(FeatureContext<AnvilRockConfiguration> pContext, StructureWorldAccess worldgenlevel, BlockPos blockpos, int h) {
+    private void genRadius4(FeaturePlaceContext<AnvilRockConfiguration> pContext, WorldGenLevel worldgenlevel, BlockPos blockpos, int h) {
         h--;
-        worldgenlevel.setBlockState(blockpos.add(3, h, 3), getState(pContext, blockpos.add(3, h, 3)), 2);
-        worldgenlevel.setBlockState(blockpos.add(3, h, -3), getState(pContext, blockpos.add(3, h, 3)), 2);
-        worldgenlevel.setBlockState(blockpos.add(-3, h, 3), getState(pContext, blockpos.add(3, h, 3)), 2);
-        worldgenlevel.setBlockState(blockpos.add(-3, h, -3), getState(pContext, blockpos.add(3, h, 3)), 2);
+        worldgenlevel.setBlock(blockpos.offset(3, h, 3), getState(pContext, blockpos.offset(3, h, 3)), 2);
+        worldgenlevel.setBlock(blockpos.offset(3, h, -3), getState(pContext, blockpos.offset(3, h, 3)), 2);
+        worldgenlevel.setBlock(blockpos.offset(-3, h, 3), getState(pContext, blockpos.offset(3, h, 3)), 2);
+        worldgenlevel.setBlock(blockpos.offset(-3, h, -3), getState(pContext, blockpos.offset(3, h, 3)), 2);
 
-        worldgenlevel.setBlockState(blockpos.add(0, h, 4), getState(pContext, blockpos.add(3, h, 3)), 2);
-        worldgenlevel.setBlockState(blockpos.add(4, h, 0), getState(pContext, blockpos.add(3, h, 3)), 2);
-        worldgenlevel.setBlockState(blockpos.add(0, h, -4), getState(pContext, blockpos.add(3, h, 3)), 2);
-        worldgenlevel.setBlockState(blockpos.add(-4, h, 0), getState(pContext, blockpos.add(3, h, 3)), 2);
-        worldgenlevel.setBlockState(blockpos.add(1, h, 4), getState(pContext, blockpos.add(3, h, 3)), 2);
-        worldgenlevel.setBlockState(blockpos.add(4, h, 1), getState(pContext, blockpos.add(3, h, 3)), 2);
-        worldgenlevel.setBlockState(blockpos.add(1, h, -4), getState(pContext, blockpos.add(3, h, 3)), 2);
-        worldgenlevel.setBlockState(blockpos.add(-4, h, 1), getState(pContext, blockpos.add(3, h, 3)), 2);
-        worldgenlevel.setBlockState(blockpos.add(-1, h, 4), getState(pContext, blockpos.add(3, h, 3)), 2);
-        worldgenlevel.setBlockState(blockpos.add(4, h, -1), getState(pContext, blockpos.add(3, h, 3)), 2);
-        worldgenlevel.setBlockState(blockpos.add(-1, h, -4), getState(pContext, blockpos.add(3, h, 3)), 2);
-        worldgenlevel.setBlockState(blockpos.add(-4, h, -1), getState(pContext, blockpos.add(3, h, 3)), 2);
-        worldgenlevel.setBlockState(blockpos.add(2, h, 4), getState(pContext, blockpos.add(3, h, 3)), 2);
-        worldgenlevel.setBlockState(blockpos.add(4, h, 2), getState(pContext, blockpos.add(3, h, 3)), 2);
-        worldgenlevel.setBlockState(blockpos.add(2, h, -4), getState(pContext, blockpos.add(3, h, 3)), 2);
-        worldgenlevel.setBlockState(blockpos.add(-4, h, 2), getState(pContext, blockpos.add(3, h, 3)), 2);
-        worldgenlevel.setBlockState(blockpos.add(-2, h, 4), getState(pContext, blockpos.add(3, h, 3)), 2);
-        worldgenlevel.setBlockState(blockpos.add(4, h, -2), getState(pContext, blockpos.add(3, h, 3)), 2);
-        worldgenlevel.setBlockState(blockpos.add(-2, h, -4), getState(pContext, blockpos.add(3, h, 3)), 2);
-        worldgenlevel.setBlockState(blockpos.add(-4, h, -2), getState(pContext, blockpos.add(3, h, 3)), 2);
-        worldgenlevel.setBlockState(blockpos.add(3, h, 4), getState(pContext, blockpos.add(3, h, 3)), 2);
-        worldgenlevel.setBlockState(blockpos.add(4, h, 3), getState(pContext, blockpos.add(3, h, 3)), 2);
-        worldgenlevel.setBlockState(blockpos.add(3, h, -4), getState(pContext, blockpos.add(3, h, 3)), 2);
-        worldgenlevel.setBlockState(blockpos.add(-4, h, 3), getState(pContext, blockpos.add(3, h, 3)), 2);
-        worldgenlevel.setBlockState(blockpos.add(-3, h, 4), getState(pContext, blockpos.add(3, h, 3)), 2);
-        worldgenlevel.setBlockState(blockpos.add(4, h, -3), getState(pContext, blockpos.add(3, h, 3)), 2);
-        worldgenlevel.setBlockState(blockpos.add(-3, h, -4), getState(pContext, blockpos.add(3, h, 3)), 2);
-        worldgenlevel.setBlockState(blockpos.add(-4, h, -3), getState(pContext, blockpos.add(3, h, 3)), 2);
+        worldgenlevel.setBlock(blockpos.offset(0, h, 4), getState(pContext, blockpos.offset(3, h, 3)), 2);
+        worldgenlevel.setBlock(blockpos.offset(4, h, 0), getState(pContext, blockpos.offset(3, h, 3)), 2);
+        worldgenlevel.setBlock(blockpos.offset(0, h, -4), getState(pContext, blockpos.offset(3, h, 3)), 2);
+        worldgenlevel.setBlock(blockpos.offset(-4, h, 0), getState(pContext, blockpos.offset(3, h, 3)), 2);
+        worldgenlevel.setBlock(blockpos.offset(1, h, 4), getState(pContext, blockpos.offset(3, h, 3)), 2);
+        worldgenlevel.setBlock(blockpos.offset(4, h, 1), getState(pContext, blockpos.offset(3, h, 3)), 2);
+        worldgenlevel.setBlock(blockpos.offset(1, h, -4), getState(pContext, blockpos.offset(3, h, 3)), 2);
+        worldgenlevel.setBlock(blockpos.offset(-4, h, 1), getState(pContext, blockpos.offset(3, h, 3)), 2);
+        worldgenlevel.setBlock(blockpos.offset(-1, h, 4), getState(pContext, blockpos.offset(3, h, 3)), 2);
+        worldgenlevel.setBlock(blockpos.offset(4, h, -1), getState(pContext, blockpos.offset(3, h, 3)), 2);
+        worldgenlevel.setBlock(blockpos.offset(-1, h, -4), getState(pContext, blockpos.offset(3, h, 3)), 2);
+        worldgenlevel.setBlock(blockpos.offset(-4, h, -1), getState(pContext, blockpos.offset(3, h, 3)), 2);
+        worldgenlevel.setBlock(blockpos.offset(2, h, 4), getState(pContext, blockpos.offset(3, h, 3)), 2);
+        worldgenlevel.setBlock(blockpos.offset(4, h, 2), getState(pContext, blockpos.offset(3, h, 3)), 2);
+        worldgenlevel.setBlock(blockpos.offset(2, h, -4), getState(pContext, blockpos.offset(3, h, 3)), 2);
+        worldgenlevel.setBlock(blockpos.offset(-4, h, 2), getState(pContext, blockpos.offset(3, h, 3)), 2);
+        worldgenlevel.setBlock(blockpos.offset(-2, h, 4), getState(pContext, blockpos.offset(3, h, 3)), 2);
+        worldgenlevel.setBlock(blockpos.offset(4, h, -2), getState(pContext, blockpos.offset(3, h, 3)), 2);
+        worldgenlevel.setBlock(blockpos.offset(-2, h, -4), getState(pContext, blockpos.offset(3, h, 3)), 2);
+        worldgenlevel.setBlock(blockpos.offset(-4, h, -2), getState(pContext, blockpos.offset(3, h, 3)), 2);
+        worldgenlevel.setBlock(blockpos.offset(3, h, 4), getState(pContext, blockpos.offset(3, h, 3)), 2);
+        worldgenlevel.setBlock(blockpos.offset(4, h, 3), getState(pContext, blockpos.offset(3, h, 3)), 2);
+        worldgenlevel.setBlock(blockpos.offset(3, h, -4), getState(pContext, blockpos.offset(3, h, 3)), 2);
+        worldgenlevel.setBlock(blockpos.offset(-4, h, 3), getState(pContext, blockpos.offset(3, h, 3)), 2);
+        worldgenlevel.setBlock(blockpos.offset(-3, h, 4), getState(pContext, blockpos.offset(3, h, 3)), 2);
+        worldgenlevel.setBlock(blockpos.offset(4, h, -3), getState(pContext, blockpos.offset(3, h, 3)), 2);
+        worldgenlevel.setBlock(blockpos.offset(-3, h, -4), getState(pContext, blockpos.offset(3, h, 3)), 2);
+        worldgenlevel.setBlock(blockpos.offset(-4, h, -3), getState(pContext, blockpos.offset(3, h, 3)), 2);
     }
 
-    private BlockState getState(FeatureContext<AnvilRockConfiguration> pContext, BlockPos pos) {
-        return pContext.getConfig().material.getBlockState(pContext.getWorld(), pContext.getRandom(), pos);
+    private BlockState getState(FeaturePlaceContext<AnvilRockConfiguration> pContext, BlockPos pos) {
+        return pContext.config().material.getState(pContext.level(), pContext.random(), pos);
     }
 }

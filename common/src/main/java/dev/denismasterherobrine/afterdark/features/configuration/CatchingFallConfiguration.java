@@ -5,12 +5,12 @@ import com.google.common.collect.ImmutableSet;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import java.util.Set;
-import net.minecraft.block.Block;
-import net.minecraft.fluid.FluidState;
-import net.minecraft.registry.Registries;
-import net.minecraft.world.gen.feature.FeatureConfig;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
+import net.minecraft.world.level.material.FluidState;
 
-public class CatchingFallConfiguration implements FeatureConfig {
+public class CatchingFallConfiguration implements FeatureConfiguration {
     public static final Codec<CatchingFallConfiguration> CODEC = RecordCodecBuilder.create(
             (fields) -> fields.group(FluidState.CODEC.fieldOf("state").
                     forGetter((v) -> v.state), Codec.BOOL
@@ -21,12 +21,12 @@ public class CatchingFallConfiguration implements FeatureConfig {
                     .orElse(4)
                     .forGetter((v) -> v.rockCount), Codec.INT
                     .fieldOf("hole_count").orElse(1)
-                    .forGetter((v) -> v.holeCount), Registries.BLOCK.getCodec().listOf()
+                    .forGetter((v) -> v.holeCount), BuiltInRegistries.BLOCK.byNameCodec().listOf()
                     .fieldOf("validBlocks").xmap(ImmutableSet::copyOf, ImmutableList::copyOf)
-                    .forGetter((v) -> (ImmutableSet<Block>)v.validBlocks), Registries.BLOCK.getCodec().listOf()
+                    .forGetter((v) -> (ImmutableSet<Block>)v.validBlocks), BuiltInRegistries.BLOCK.byNameCodec().listOf()
                     .fieldOf("invalidBlocks").xmap(ImmutableSet::copyOf, ImmutableList::copyOf)
-                    .forGetter((v) -> (ImmutableSet<Block>) v.validBlocks), Registries.BLOCK.getCodec()
-                    .fieldOf("basinMaterial").forGetter((v) -> v.basinMaterial), Registries.BLOCK.getCodec()
+                    .forGetter((v) -> (ImmutableSet<Block>) v.validBlocks), BuiltInRegistries.BLOCK.byNameCodec()
+                    .fieldOf("basinMaterial").forGetter((v) -> v.basinMaterial), BuiltInRegistries.BLOCK.byNameCodec()
                     .fieldOf("basinMaterial2").forGetter((v) -> v.basinMaterial2))
                     .apply(fields, CatchingFallConfiguration::new));
 

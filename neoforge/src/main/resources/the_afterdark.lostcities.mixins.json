@@ -1,0 +1,16 @@
+﻿{
+  "required": false,
+  "package": "dev.denismasterherobrine.afterdark.neoforge.mixin.compat.lostcities",
+  "compatibilityLevel": "JAVA_17",
+  "minVersion": "0.8",
+  "plugin": "dev.denismasterherobrine.afterdark.neoforge.mixin.compat.lostcities.LostCitiesCompatMixinPlugin",
+  "mixins": [
+    "LostCityFeatureCompatMixin",
+    "LostCitiesSectionCacheBoundsMixin",
+    "PlacedFeatureInsideLostSphereMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
+

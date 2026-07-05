@@ -3,7 +3,7 @@
   "id": "${mod_id}",
   "version": "${version}",
   "name": "${mod_name}",
-  "description": "${mod_description}",
+  "description": "${description}",
   "authors": [
     "DenisMasterHerobrine",
     "VeiTr"
@@ -12,7 +12,7 @@
     "sources": "${mod_sources}",
     "issues": "${mod_issue_tracker}"
   },
-  "license": "${mod_license}",
+  "license": "${license}",
   "icon": "assets/the_afterdark/icon.png",
   "environment": "*",
   "entrypoints": {
@@ -31,8 +31,8 @@
   ],
   "depends": {
     "fabricloader": ">=${fabric_loader_version}",
-    "minecraft": ">=${minecraft_version}",
-    "java": ">=17",
+    "minecraft": "${minecraft_version}",
+    "java": ">=${java_version}",
     "fabric-api": "*"
   }
 }

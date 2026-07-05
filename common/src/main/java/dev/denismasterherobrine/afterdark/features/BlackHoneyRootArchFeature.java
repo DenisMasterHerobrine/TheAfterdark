@@ -1,32 +1,32 @@
 package dev.denismasterherobrine.afterdark.features;
 
 import com.mojang.serialization.Codec;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.random.Random;
-import net.minecraft.world.StructureWorldAccess;
-import net.minecraft.world.gen.feature.DefaultFeatureConfig;
-import net.minecraft.world.gen.feature.Feature;
-import net.minecraft.world.gen.feature.util.FeatureContext;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
+import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 
-public class BlackHoneyRootArchFeature extends Feature<DefaultFeatureConfig> {
-    public BlackHoneyRootArchFeature(Codec<DefaultFeatureConfig> codec) {
+public class BlackHoneyRootArchFeature extends Feature<NoneFeatureConfiguration> {
+    public BlackHoneyRootArchFeature(Codec<NoneFeatureConfiguration> codec) {
         super(codec);
     }
 
     @Override
-    public boolean generate(FeatureContext<DefaultFeatureConfig> context) {
-        StructureWorldAccess world = context.getWorld();
-        Random random = context.getRandom();
-        BlockPos start = BlackHoneyFeatureUtil.findFloor(world, context.getOrigin(), 5, 14);
+    public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> context) {
+        WorldGenLevel world = context.level();
+        RandomSource random = context.random();
+        BlockPos start = BlackHoneyFeatureUtil.findFloor(world, context.origin(), 5, 14);
         if (start == null) {
             return false;
         }
 
         Direction direction = BlackHoneyFeatureUtil.randomHorizontal(random);
-        Direction side = direction.rotateYClockwise();
+        Direction side = direction.getClockWise();
         int span = 6 + random.nextInt(7);
         int height = 4 + random.nextInt(6);
         boolean placed = false;
@@ -35,7 +35,7 @@ public class BlackHoneyRootArchFeature extends Feature<DefaultFeatureConfig> {
         for (int step = 0; step <= span; ++step) {
             double curve = Math.sin((Math.PI * step) / (double) span);
             int y = (int) Math.round(curve * height);
-            BlockPos spine = start.offset(direction, step).up(y);
+            BlockPos spine = start.relative(direction, step).above(y);
             if (previousSpine != null) {
                 placed |= placeRootSegment(world, random, previousSpine, spine, side, y > 2);
             }
@@ -43,17 +43,17 @@ public class BlackHoneyRootArchFeature extends Feature<DefaultFeatureConfig> {
             previousSpine = spine;
 
             if (y > 2 && random.nextInt(3) == 0) {
-                BlockPos hanging = spine.down();
+                BlockPos hanging = spine.below();
                 BlackHoneyFeatureUtil.placeIfReplaceable(world, hanging, random.nextBoolean()
-                        ? Blocks.WEEPING_VINES_PLANT.getDefaultState()
-                        : Blocks.HONEY_BLOCK.getDefaultState());
+                        ? Blocks.WEEPING_VINES_PLANT.defaultBlockState()
+                        : Blocks.HONEY_BLOCK.defaultBlockState());
             }
         }
 
         return placed;
     }
 
-    private boolean placeRootSegment(StructureWorldAccess world, Random random, BlockPos from, BlockPos to, Direction side, boolean thick) {
+    private boolean placeRootSegment(WorldGenLevel world, RandomSource random, BlockPos from, BlockPos to, Direction side, boolean thick) {
         boolean placed = false;
         BlockPos cursor = from;
         int stepX = BlackHoneyFeatureUtil.stepToward(from.getX(), to.getX());
@@ -72,40 +72,40 @@ public class BlackHoneyRootArchFeature extends Feature<DefaultFeatureConfig> {
         return placed;
     }
 
-    private boolean placeRootBand(StructureWorldAccess world, Random random, BlockPos pos, Direction side, boolean thick) {
+    private boolean placeRootBand(WorldGenLevel world, RandomSource random, BlockPos pos, Direction side, boolean thick) {
         boolean placed = placeRoot(world, random, pos);
         if (thick || random.nextInt(3) == 0) {
-            placed |= placeRoot(world, random, pos.offset(side));
+            placed |= placeRoot(world, random, pos.relative(side));
         }
         if (thick && random.nextInt(3) != 0) {
-            placed |= placeRoot(world, random, pos.down());
+            placed |= placeRoot(world, random, pos.below());
         }
         return placed;
     }
 
-    private boolean placeRootKnot(StructureWorldAccess world, Random random, BlockPos pos, Direction side, boolean thick) {
+    private boolean placeRootKnot(WorldGenLevel world, RandomSource random, BlockPos pos, Direction side, boolean thick) {
         boolean placed = placeRoot(world, random, pos);
         if (thick || random.nextBoolean()) {
-            placed |= placeRoot(world, random, pos.offset(side));
+            placed |= placeRoot(world, random, pos.relative(side));
         }
         if (thick && random.nextInt(3) != 0) {
-            placed |= placeRoot(world, random, pos.offset(side.getOpposite()));
+            placed |= placeRoot(world, random, pos.relative(side.getOpposite()));
         }
         if (thick && random.nextBoolean()) {
-            placed |= placeRoot(world, random, pos.down());
+            placed |= placeRoot(world, random, pos.below());
         }
         if (random.nextInt(5) == 0) {
-            BlackHoneyFeatureUtil.placeIfReplaceable(world, pos.down(), Blocks.HONEYCOMB_BLOCK.getDefaultState());
+            BlackHoneyFeatureUtil.placeIfReplaceable(world, pos.below(), Blocks.HONEYCOMB_BLOCK.defaultBlockState());
         }
         return placed;
     }
 
-    private boolean placeRoot(StructureWorldAccess world, Random random, BlockPos pos) {
+    private boolean placeRoot(WorldGenLevel world, RandomSource random, BlockPos pos) {
         if (!BlackHoneyFeatureUtil.canReplace(world, pos)) {
             return false;
         }
         BlockState state = BlackHoneyFeatureUtil.darkRoot(random);
-        world.setBlockState(pos, state, 2);
+        world.setBlock(pos, state, 2);
         return true;
     }
 }

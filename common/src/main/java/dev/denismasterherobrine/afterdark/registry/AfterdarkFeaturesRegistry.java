@@ -2,11 +2,11 @@ package dev.denismasterherobrine.afterdark.registry;
 
 import dev.denismasterherobrine.afterdark.features.*;
 import dev.denismasterherobrine.afterdark.features.configuration.*;
-import net.minecraft.block.Blocks;
-import net.minecraft.world.gen.ProbabilityConfig;
-import net.minecraft.world.gen.feature.DefaultFeatureConfig;
-import net.minecraft.world.gen.feature.DiskFeatureConfig;
-import net.minecraft.world.gen.feature.Feature;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.configurations.DiskConfiguration;
+import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
+import net.minecraft.world.level.levelgen.feature.configurations.ProbabilityFeatureConfiguration;
 
 public class AfterdarkFeaturesRegistry {
     public static final Feature<PillarFeatureConfiguration> LARGE_BASALT_PILLAR =
@@ -28,14 +28,14 @@ public class AfterdarkFeaturesRegistry {
             new ConfigurableDripstoneStylePillarFeature(PillarFeatureConfiguration.CODEC, PillarPlacementRules.simpleIceFamilyStop(Blocks.SLIME_BLOCK));
     public static final Feature<WaterloggableRandomPatchConfiguration> WATERLOGGABLE_RANDOM_PATCH_FEATURE =
             new WaterloggableRandomPatchFeature(WaterloggableRandomPatchConfiguration.CODEC);
-    public static final Feature<DefaultFeatureConfig> CAVE_KELP_FEATURE = new CaveKelpFeature(DefaultFeatureConfig.CODEC);
-    public static final Feature<DefaultFeatureConfig> CAVE_PICKLE_FEATURE = new CavePickleFeature(DefaultFeatureConfig.CODEC);
+    public static final Feature<NoneFeatureConfiguration> CAVE_KELP_FEATURE = new CaveKelpFeature(NoneFeatureConfiguration.CODEC);
+    public static final Feature<NoneFeatureConfiguration> CAVE_PICKLE_FEATURE = new CavePickleFeature(NoneFeatureConfiguration.CODEC);
     public static final Feature<PillarFeatureConfiguration> LARGE_DEEPSLATE_PILLAR =
             new ConfigurableDripstoneStylePillarFeature(PillarFeatureConfiguration.CODEC, PillarPlacementRules.simpleIceFamilyStop(Blocks.DEEPSLATE));
-    public static final Feature<ProbabilityConfig> CAVE_SEAGRASS_FEATURE = new CaveSeagrassFeature(ProbabilityConfig.CODEC);
+    public static final Feature<ProbabilityFeatureConfiguration> CAVE_SEAGRASS_FEATURE = new CaveSeagrassFeature(ProbabilityFeatureConfiguration.CODEC);
     public static final Feature<PillarFeatureConfiguration> LARGE_OBSIDIAN_PILLAR =
             new ConfigurableDripstoneStylePillarFeature(PillarFeatureConfiguration.CODEC, PillarPlacementRules.simpleIceFamilyStop(Blocks.OBSIDIAN));
-    public static final Feature<DiskFeatureConfig> SUPPORTED_DISK_FEATURE = new SupportedDiskFeature(DiskFeatureConfig.CODEC);
+    public static final Feature<DiskConfiguration> SUPPORTED_DISK_FEATURE = new SupportedDiskFeature(DiskConfiguration.CODEC);
     public static final Feature<PillarFeatureConfiguration> LARGE_PACKED_ICE_PILLAR =
             new ConfigurableDripstoneStylePillarFeature(PillarFeatureConfiguration.CODEC, PillarPlacementRules.packedIceMix());
     public static final Feature<PillarFeatureConfiguration> LARGE_ICE_PILLAR =
@@ -61,32 +61,32 @@ public class AfterdarkFeaturesRegistry {
     public static final Feature<PillarFeatureConfiguration> LARGE_COAL_ORE_PILLAR =
             new ConfigurableDripstoneStylePillarFeature(PillarFeatureConfiguration.CODEC, PillarPlacementRules.simpleStoneOnlyStop(Blocks.COAL_ORE));
 
-    public static final Feature<DefaultFeatureConfig> BLACK_HONEY_POOL =
-            new BlackHoneyPoolFeature(DefaultFeatureConfig.CODEC);
-    public static final Feature<DefaultFeatureConfig> BLACK_HONEY_SURFACE_PATCH =
-            new BlackHoneySurfacePatchFeature(DefaultFeatureConfig.CODEC);
-    public static final Feature<DefaultFeatureConfig> BLACK_HONEY_RESIN_FALL =
-            new BlackHoneyResinFallFeature(DefaultFeatureConfig.CODEC);
-    public static final Feature<DefaultFeatureConfig> BLACK_HONEY_COCOON_CLUSTER =
-            new BlackHoneyCocoonClusterFeature(DefaultFeatureConfig.CODEC);
-    public static final Feature<DefaultFeatureConfig> BLACK_HONEY_HIVE_CYST =
-            new BlackHoneyHiveCystFeature(DefaultFeatureConfig.CODEC);
-    public static final Feature<DefaultFeatureConfig> BLACK_HONEY_ROOT_ARCH =
-            new BlackHoneyRootArchFeature(DefaultFeatureConfig.CODEC);
-    public static final Feature<DefaultFeatureConfig> BLACK_HONEY_MOURNING_FLOWER =
-            new BlackHoneyMourningFlowerFeature(DefaultFeatureConfig.CODEC);
-    public static final Feature<DefaultFeatureConfig> BLACK_HONEY_QUEEN_HEART =
-            new BlackHoneyQueenHeartFeature(DefaultFeatureConfig.CODEC);
+    public static final Feature<NoneFeatureConfiguration> BLACK_HONEY_POOL =
+            new BlackHoneyPoolFeature(NoneFeatureConfiguration.CODEC);
+    public static final Feature<NoneFeatureConfiguration> BLACK_HONEY_SURFACE_PATCH =
+            new BlackHoneySurfacePatchFeature(NoneFeatureConfiguration.CODEC);
+    public static final Feature<NoneFeatureConfiguration> BLACK_HONEY_RESIN_FALL =
+            new BlackHoneyResinFallFeature(NoneFeatureConfiguration.CODEC);
+    public static final Feature<NoneFeatureConfiguration> BLACK_HONEY_COCOON_CLUSTER =
+            new BlackHoneyCocoonClusterFeature(NoneFeatureConfiguration.CODEC);
+    public static final Feature<NoneFeatureConfiguration> BLACK_HONEY_HIVE_CYST =
+            new BlackHoneyHiveCystFeature(NoneFeatureConfiguration.CODEC);
+    public static final Feature<NoneFeatureConfiguration> BLACK_HONEY_ROOT_ARCH =
+            new BlackHoneyRootArchFeature(NoneFeatureConfiguration.CODEC);
+    public static final Feature<NoneFeatureConfiguration> BLACK_HONEY_MOURNING_FLOWER =
+            new BlackHoneyMourningFlowerFeature(NoneFeatureConfiguration.CODEC);
+    public static final Feature<NoneFeatureConfiguration> BLACK_HONEY_QUEEN_HEART =
+            new BlackHoneyQueenHeartFeature(NoneFeatureConfiguration.CODEC);
     public static final Feature<StoneRibConfiguration> STONE_RIB =
             new StoneRibFeature(StoneRibConfiguration.CODEC);
     public static final Feature<LightVeinConfiguration> LIGHT_VEIN =
             new LightVeinFeature(LightVeinConfiguration.CODEC);
     public static final Feature<DarkTarConfiguration> DARK_TAR =
             new DarkTarFeature(DarkTarConfiguration.CODEC);
-    public static final Feature<DefaultFeatureConfig> GOTHIC_COPPER_RUIN =
-            new GothicCopperRuinFeature(DefaultFeatureConfig.CODEC);
-    public static final Feature<DefaultFeatureConfig> DEEP_AFTERDARK_STRUCTURE =
-            new DeepAfterdarkStructureFeature(DefaultFeatureConfig.CODEC);
-    public static final Feature<DefaultFeatureConfig> AFTERDARK_MICRODECOR =
-            new AfterdarkMicrodecorFeature(DefaultFeatureConfig.CODEC);
+    public static final Feature<NoneFeatureConfiguration> GOTHIC_COPPER_RUIN =
+            new GothicCopperRuinFeature(NoneFeatureConfiguration.CODEC);
+    public static final Feature<NoneFeatureConfiguration> DEEP_AFTERDARK_STRUCTURE =
+            new DeepAfterdarkStructureFeature(NoneFeatureConfiguration.CODEC);
+    public static final Feature<NoneFeatureConfiguration> AFTERDARK_MICRODECOR =
+            new AfterdarkMicrodecorFeature(NoneFeatureConfiguration.CODEC);
 }

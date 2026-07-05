@@ -1,52 +1,8 @@
 package dev.denismasterherobrine.afterdark.hardermobs;
 
 import dev.denismasterherobrine.afterdark.Config;
+import dev.denismasterherobrine.afterdark.TheAfterdark;
 import dev.denismasterherobrine.afterdark.registry.AfterdarkRegistry;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.enchantment.Enchantments;
-import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityData;
-import net.minecraft.entity.SpawnGroup;
-import net.minecraft.entity.SpawnReason;
-import net.minecraft.entity.attribute.EntityAttribute;
-import net.minecraft.entity.attribute.EntityAttributeInstance;
-import net.minecraft.entity.attribute.EntityAttributeModifier;
-import net.minecraft.entity.attribute.EntityAttributes;
-import net.minecraft.entity.effect.StatusEffect;
-import net.minecraft.entity.effect.StatusEffectInstance;
-import net.minecraft.entity.effect.StatusEffects;
-import net.minecraft.entity.mob.MobEntity;
-import net.minecraft.item.ArmorItem;
-import net.minecraft.item.ArmorMaterials;
-import net.minecraft.item.DyeableItem;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.particle.DefaultParticleType;
-import net.minecraft.particle.ParticleTypes;
-import net.minecraft.registry.DynamicRegistryManager;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.registry.entry.RegistryEntry;
-import net.minecraft.registry.tag.TagKey;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.random.Random;
-import net.minecraft.world.LocalDifficulty;
-import net.minecraft.world.ServerWorldAccess;
-import net.minecraft.item.trim.ArmorTrim;
-import net.minecraft.item.trim.ArmorTrimMaterial;
-import net.minecraft.item.trim.ArmorTrimMaterials;
-import net.minecraft.item.trim.ArmorTrimPattern;
-import net.minecraft.item.trim.ArmorTrimPatterns;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -54,6 +10,51 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
+import net.minecraft.core.Registry;
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.tags.TagKey;
+import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.SpawnGroupData;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.item.ArmorMaterial;
+import net.minecraft.world.item.ArmorMaterials;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.world.item.component.DyedItemColor;
+import net.minecraft.world.item.armortrim.ArmorTrim;
+import net.minecraft.world.item.armortrim.TrimMaterial;
+import net.minecraft.world.item.armortrim.TrimMaterials;
+import net.minecraft.world.item.armortrim.TrimPattern;
+import net.minecraft.world.item.armortrim.TrimPatterns;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.Enchantments;
+import net.minecraft.world.level.ServerLevelAccessor;
 
 public final class HarderMobsManager {
     private static final UUID HEALTH_MODIFIER_ID = UUID.fromString("e57b38bb-664f-4d2a-9ca7-3da0cad9d8e0");
@@ -83,22 +84,22 @@ public final class HarderMobsManager {
     private HarderMobsManager() {
     }
 
-    public static EntityData applyAfterInitialize(MobEntity mob, ServerWorldAccess worldAccess, LocalDifficulty difficulty, SpawnReason spawnReason, EntityData entityData) {
+    public static SpawnGroupData applyAfterInitialize(Mob mob, ServerLevelAccessor worldAccess, DifficultyInstance difficulty, MobSpawnType spawnReason, SpawnGroupData entityData) {
         Config.HarderMobsConfig config = Config.INSTANCE.harderMobs;
         if (config == null || !config.enabled || mob == null || worldAccess == null) {
             return entityData;
         }
 
-        ServerWorld world = worldAccess.toServerWorld();
-        if (!world.getRegistryKey().equals(AfterdarkRegistry.AFTERDARK_LEVEL)) {
+        ServerLevel world = worldAccess.getLevel();
+        if (!world.dimension().equals(AfterdarkRegistry.AFTERDARK_LEVEL)) {
             return entityData;
         }
 
-        if (mob.getType().getSpawnGroup() != SpawnGroup.MONSTER || isProcessed(mob)) {
+        if (mob.getType().getCategory() != MobCategory.MONSTER || isProcessed(mob)) {
             return entityData;
         }
 
-        Random random = mob.getRandom();
+        RandomSource random = mob.getRandom();
         int budget = calculateBudget(config, mob, world, difficulty, spawnReason);
         Tier tier = pickTier(config, random, budget);
         if (tier == Tier.COMMON && random.nextFloat() > 0.55F) {
@@ -124,27 +125,27 @@ public final class HarderMobsManager {
         return entityData;
     }
 
-    public static void tick(MobEntity mob) {
+    public static void tick(Mob mob) {
         if (!(mob instanceof HarderMobEntityAccess access) || !access.the_afterdark$isHarderMob()) {
             return;
         }
-        if (mob.getWorld().isClient() || !mob.getWorld().getRegistryKey().equals(AfterdarkRegistry.AFTERDARK_LEVEL)) {
+        if (mob.level().isClientSide() || !mob.level().dimension().equals(AfterdarkRegistry.AFTERDARK_LEVEL)) {
             return;
         }
 
         String role = access.the_afterdark$getHarderMobRole();
         if (Role.BERSERKER.name().equals(role)) {
             tickBerserker(mob);
-        } else if (Role.COMMANDER.name().equals(role) && mob.getWorld().getTime() % 60L == 0L) {
+        } else if (Role.COMMANDER.name().equals(role) && mob.level().getGameTime() % 60L == 0L) {
             tickCommander(mob);
         }
     }
 
-    private static boolean isProcessed(MobEntity mob) {
+    private static boolean isProcessed(Mob mob) {
         return mob instanceof HarderMobEntityAccess access && access.the_afterdark$isHarderMob();
     }
 
-    private static void markProcessed(MobEntity mob, Tier tier, Role role) {
+    private static void markProcessed(Mob mob, Tier tier, Role role) {
         if (mob instanceof HarderMobEntityAccess access) {
             access.the_afterdark$setHarderMob(true);
             access.the_afterdark$setHarderMobTier(tier.name());
@@ -152,42 +153,42 @@ public final class HarderMobsManager {
         }
     }
 
-    private static void tickBerserker(MobEntity mob) {
-        if (mob.getHealth() <= mob.getMaxHealth() * 0.35F && !mob.hasStatusEffect(StatusEffects.STRENGTH)) {
-            mob.addStatusEffect(new StatusEffectInstance(StatusEffects.STRENGTH, 20 * 12, 1, true, true));
-            mob.addStatusEffect(new StatusEffectInstance(StatusEffects.SPEED, 20 * 8, 0, true, true));
+    private static void tickBerserker(Mob mob) {
+        if (mob.getHealth() <= mob.getMaxHealth() * 0.35F && !mob.hasEffect(MobEffects.DAMAGE_BOOST)) {
+            mob.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, 20 * 12, 1, true, true));
+            mob.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 20 * 8, 0, true, true));
         }
     }
 
-    private static void tickCommander(MobEntity mob) {
-        List<Entity> nearby = mob.getWorld().getOtherEntities(mob, mob.getBoundingBox().expand(8.0D), entity -> entity instanceof MobEntity other
+    private static void tickCommander(Mob mob) {
+        List<Entity> nearby = mob.level().getEntities(mob, mob.getBoundingBox().inflate(8.0D), entity -> entity instanceof Mob other
                 && other.isAlive()
-                && other.getType().getSpawnGroup() == SpawnGroup.MONSTER
+                && other.getType().getCategory() == MobCategory.MONSTER
                 && other instanceof HarderMobEntityAccess access
                 && access.the_afterdark$isHarderMob());
 
         for (Entity entity : nearby) {
-            if (entity instanceof MobEntity ally && !ally.hasStatusEffect(StatusEffects.RESISTANCE)) {
-                ally.addStatusEffect(new StatusEffectInstance(StatusEffects.RESISTANCE, 20 * 5, 0, true, true), mob);
+            if (entity instanceof Mob ally && !ally.hasEffect(MobEffects.DAMAGE_RESISTANCE)) {
+                ally.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 20 * 5, 0, true, true), mob);
             }
         }
     }
 
-    private static int calculateBudget(Config.HarderMobsConfig config, MobEntity mob, ServerWorld world, LocalDifficulty difficulty, SpawnReason spawnReason) {
+    private static int calculateBudget(Config.HarderMobsConfig config, Mob mob, ServerLevel world, DifficultyInstance difficulty, MobSpawnType spawnReason) {
         Config.PowerBudgetConfig budgetConfig = config.powerBudget;
-        BlockPos pos = mob.getBlockPos();
-        double distance = Math.sqrt(pos.getSquaredDistance(world.getSpawnPos()));
-        float distanceBoost = config.exploration.scaleWithDistanceFromSpawn ? MathHelper.clamp((float) (distance / 5000.0D), 0.0F, 1.0F) * budgetConfig.distanceFromSpawnWeight : 0.0F;
-        float difficultyBoost = difficulty.getClampedLocalDifficulty() * budgetConfig.localDifficultyWeight;
-        float spawnBoost = spawnReason == SpawnReason.STRUCTURE || spawnReason == SpawnReason.SPAWNER ? budgetConfig.structureGuardianBonus : 0.0F;
+        BlockPos pos = mob.blockPosition();
+        double distance = Math.sqrt(pos.distSqr(world.getSharedSpawnPos()));
+        float distanceBoost = config.exploration.scaleWithDistanceFromSpawn ? Mth.clamp((float) (distance / 5000.0D), 0.0F, 1.0F) * budgetConfig.distanceFromSpawnWeight : 0.0F;
+        float difficultyBoost = difficulty.getSpecialMultiplier() * budgetConfig.localDifficultyWeight;
+        float spawnBoost = spawnReason == MobSpawnType.STRUCTURE || spawnReason == MobSpawnType.SPAWNER ? budgetConfig.structureGuardianBonus : 0.0F;
         float moddedScale = config.equipment.allowModdedArmor || config.equipment.allowModdedWeapons ? budgetConfig.moddedPackScale : budgetConfig.vanillaPlusScale;
         int budget = Math.round((budgetConfig.minBudget + 12.0F) * moddedScale * (1.0F + difficultyBoost + distanceBoost + spawnBoost));
-        return MathHelper.clamp(budget, budgetConfig.minBudget, budgetConfig.maxBudget);
+        return Mth.clamp(budget, budgetConfig.minBudget, budgetConfig.maxBudget);
     }
 
-    private static Tier pickTier(Config.HarderMobsConfig config, Random random, int budget) {
+    private static Tier pickTier(Config.HarderMobsConfig config, RandomSource random, int budget) {
         Config.VariantRarityConfig rarity = config.variantRarity;
-        float budgetBoost = MathHelper.clamp((budget - config.powerBudget.minBudget) / (float) Math.max(1, config.powerBudget.maxBudget - config.powerBudget.minBudget), 0.0F, 1.0F);
+        float budgetBoost = Mth.clamp((budget - config.powerBudget.minBudget) / (float) Math.max(1, config.powerBudget.maxBudget - config.powerBudget.minBudget), 0.0F, 1.0F);
         float roll = random.nextFloat();
         if (roll < rarity.nemesisChance * (1.0F + budgetBoost)) return Tier.NEMESIS;
         if (roll < rarity.eliteChance * (1.0F + budgetBoost)) return Tier.ELITE;
@@ -196,28 +197,28 @@ public final class HarderMobsManager {
         return Tier.COMMON;
     }
 
-    private static void equipMob(MobEntity mob, ServerWorld world, Config.HarderMobsConfig config, Random random, int budget, Tier tier, Role role) {
+    private static void equipMob(Mob mob, ServerLevel world, Config.HarderMobsConfig config, RandomSource random, int budget, Tier tier, Role role) {
         int armorBudget = Math.min(config.equipment.maxArmorScore, budget / 2 + tier.ordinal() * 5);
         ArmorTheme theme = ArmorTheme.pick(role, random);
         ItemStack[] armor = pickArmorPieces(config, random, armorBudget, tier, role, theme);
         for (ItemStack stack : armor) {
             if (!stack.isEmpty() && stack.getItem() instanceof ArmorItem armorItem) {
                 ItemStack prepared = prepareArmorPiece(world, stack, config, random, tier, theme);
-                mob.equipStack(armorItem.getSlotType(), prepared);
-                mob.setEquipmentDropChance(armorItem.getSlotType(), tier.dropChance);
+                mob.setItemSlot(armorItem.getEquipmentSlot(), prepared);
+                mob.setDropChance(armorItem.getEquipmentSlot(), tier.dropChance);
             }
         }
 
         if (role != Role.HEXER || random.nextBoolean()) {
             ItemStack weapon = pickWeapon(config, random, Math.min(config.equipment.maxWeaponScore, budget / 3 + tier.ordinal() * 4));
             if (!weapon.isEmpty()) {
-                mob.equipStack(EquipmentSlot.MAINHAND, prepareEquipment(weapon, config, random, tier, false));
-                mob.setEquipmentDropChance(EquipmentSlot.MAINHAND, tier.dropChance);
+                mob.setItemSlot(EquipmentSlot.MAINHAND, prepareEquipment(world, weapon, config, random, tier, false));
+                mob.setDropChance(EquipmentSlot.MAINHAND, tier.dropChance);
             }
         }
     }
 
-    private static ItemStack[] pickArmorPieces(Config.HarderMobsConfig config, Random random, int maxScore, Tier tier, Role role, ArmorTheme theme) {
+    private static ItemStack[] pickArmorPieces(Config.HarderMobsConfig config, RandomSource random, int maxScore, Tier tier, Role role, ArmorTheme theme) {
         if (!config.equipment.mixArmorPieces) {
             return pickSingleMaterialArmorSet(config, random, maxScore, role);
         }
@@ -244,11 +245,11 @@ public final class HarderMobsManager {
         return result;
     }
 
-    private static ItemStack pickArmorPieceForSlot(Config.HarderMobsConfig config, Random random, List<Item> pool, EquipmentSlot slot, int remainingScore, Tier tier, Role role, ArmorTheme theme, int netheritePieces) {
+    private static ItemStack pickArmorPieceForSlot(Config.HarderMobsConfig config, RandomSource random, List<Item> pool, EquipmentSlot slot, int remainingScore, Tier tier, Role role, ArmorTheme theme, int netheritePieces) {
         List<Item> candidates = new ArrayList<>();
         int slotBudget = Math.max(3, remainingScore / Math.max(1, 4 - indexForSlot(slot))) + tier.ordinal();
         for (Item item : pool) {
-            if (!(item instanceof ArmorItem armorItem) || armorItem.getSlotType() != slot) {
+            if (!(item instanceof ArmorItem armorItem) || armorItem.getEquipmentSlot() != slot) {
                 continue;
             }
             ItemStack probe = new ItemStack(item);
@@ -273,7 +274,7 @@ public final class HarderMobsManager {
         return new ItemStack(candidates.get(random.nextInt(candidates.size())));
     }
 
-    private static ItemStack[] pickSingleMaterialArmorSet(Config.HarderMobsConfig config, Random random, int maxScore, Role role) {
+    private static ItemStack[] pickSingleMaterialArmorSet(Config.HarderMobsConfig config, RandomSource random, int maxScore, Role role) {
         ItemStack[] result = new ItemStack[0];
         int bestScore = -1;
         List<Item> pool = armorPool(config.equipment);
@@ -302,7 +303,7 @@ public final class HarderMobsManager {
                 if (isBlacklistedArmor(config.equipment, stack)) {
                     continue;
                 }
-                switch (armorItem.getSlotType()) {
+                switch (armorItem.getEquipmentSlot()) {
                     case HEAD -> result[0] = stack;
                     case CHEST -> result[1] = stack;
                     case LEGS -> result[2] = stack;
@@ -326,40 +327,44 @@ public final class HarderMobsManager {
     }
 
     private static boolean isBlacklistedArmor(Config.EquipmentConfig equipment, ItemStack stack) {
-        Identifier id = Registries.ITEM.getId(stack.getItem());
-        String[] tags = stack.streamTags().map(TagKey::id).map(Identifier::toString).toArray(String[]::new);
+        ResourceLocation id = BuiltInRegistries.ITEM.getKey(stack.getItem());
+        String[] tags = stack.getTags().map(TagKey::location).map(ResourceLocation::toString).toArray(String[]::new);
         return equipment.isArmorBlacklisted(id.toString(), tags);
     }
 
-    private static ItemStack prepareArmorPiece(ServerWorld world, ItemStack stack, Config.HarderMobsConfig config, Random random, Tier tier, ArmorTheme theme) {
-        if (config.equipment.dyeLeatherArmor && stack.getItem() instanceof DyeableItem dyeableItem && random.nextFloat() < config.equipment.leatherDyeChance) {
-            dyeableItem.setColor(stack, theme.leatherColors[random.nextInt(theme.leatherColors.length)]);
+    private static ItemStack prepareArmorPiece(ServerLevel world, ItemStack stack, Config.HarderMobsConfig config, RandomSource random, Tier tier, ArmorTheme theme) {
+        if (config.equipment.dyeLeatherArmor && isLeatherArmor(stack) && random.nextFloat() < config.equipment.leatherDyeChance) {
+            stack.set(net.minecraft.core.component.DataComponents.DYED_COLOR, new DyedItemColor(theme.leatherColors[random.nextInt(theme.leatherColors.length)], true));
         }
         if (config.equipment.useArmorTrims && tier.ordinal() >= Tier.UNCOMMON.ordinal() && random.nextFloat() < config.equipment.armorTrimChance) {
-            applyTrim(world.getRegistryManager(), stack, theme, random);
+            applyTrim(world.registryAccess(), stack, theme, random);
         }
-        return prepareEquipment(stack, config, random, tier, true);
+        return prepareEquipment(world, stack, config, random, tier, true);
     }
 
-    private static void applyTrim(DynamicRegistryManager registryManager, ItemStack stack, ArmorTheme theme, Random random) {
-        if (!(stack.getItem() instanceof ArmorItem) || stack.getItem() instanceof DyeableItem) {
+    private static void applyTrim(RegistryAccess registryManager, ItemStack stack, ArmorTheme theme, RandomSource random) {
+        if (!(stack.getItem() instanceof ArmorItem) || isLeatherArmor(stack)) {
             return;
         }
-        Registry<ArmorTrimMaterial> materialRegistry = registryManager.get(RegistryKeys.TRIM_MATERIAL);
-        Registry<ArmorTrimPattern> patternRegistry = registryManager.get(RegistryKeys.TRIM_PATTERN);
-        Optional<RegistryEntry.Reference<ArmorTrimMaterial>> material = materialRegistry.getEntry(theme.trimMaterials[random.nextInt(theme.trimMaterials.length)]);
-        Optional<RegistryEntry.Reference<ArmorTrimPattern>> pattern = patternRegistry.getEntry(theme.trimPatterns[random.nextInt(theme.trimPatterns.length)]);
+        Registry<TrimMaterial> materialRegistry = registryManager.registryOrThrow(Registries.TRIM_MATERIAL);
+        Registry<TrimPattern> patternRegistry = registryManager.registryOrThrow(Registries.TRIM_PATTERN);
+        Optional<Holder.Reference<TrimMaterial>> material = materialRegistry.getHolder(theme.trimMaterials[random.nextInt(theme.trimMaterials.length)]);
+        Optional<Holder.Reference<TrimPattern>> pattern = patternRegistry.getHolder(theme.trimPatterns[random.nextInt(theme.trimPatterns.length)]);
         if (material.isPresent() && pattern.isPresent()) {
-            ArmorTrim.apply(registryManager, stack, new ArmorTrim(material.get(), pattern.get()));
+            stack.set(DataComponents.TRIM, new ArmorTrim(material.get(), pattern.get()));
         }
     }
 
     private static int armorScore(ArmorItem armorItem) {
-        return armorItem.getProtection() + Math.round(armorItem.getToughness() * 2.0F);
+        return armorItem.getDefense() + Math.round(armorItem.getToughness() * 2.0F);
     }
 
     private static boolean isNetheriteArmor(ArmorItem armorItem) {
         return armorItem.getMaterial() == ArmorMaterials.NETHERITE;
+    }
+
+    private static boolean isLeatherArmor(ItemStack stack) {
+        return stack.getItem() instanceof ArmorItem armorItem && armorItem.getMaterial() == ArmorMaterials.LEATHER;
     }
 
     private static int maxNetheritePieces(Config.HarderMobsConfig config, Tier tier) {
@@ -400,7 +405,7 @@ public final class HarderMobsManager {
         } else if (role == Role.SKIRMISHER || role == Role.HEXER) {
             baseChance -= 0.14F;
         }
-        return MathHelper.clamp(baseChance + tier.ordinal() * 0.04F, 0.15F, 1.0F);
+        return Mth.clamp(baseChance + tier.ordinal() * 0.04F, 0.15F, 1.0F);
     }
 
     private static int indexForSlot(EquipmentSlot slot) {
@@ -413,12 +418,12 @@ public final class HarderMobsManager {
         };
     }
 
-    private static ItemStack pickWeapon(Config.HarderMobsConfig config, Random random, int maxScore) {
+    private static ItemStack pickWeapon(Config.HarderMobsConfig config, RandomSource random, int maxScore) {
         List<Item> pool = weaponPool(config.equipment);
         ItemStack result = ItemStack.EMPTY;
         int bestScore = -1;
         for (Item item : pool) {
-            Identifier id = Registries.ITEM.getId(item);
+            ResourceLocation id = BuiltInRegistries.ITEM.getKey(item);
             String path = id.getPath();
             if (!path.endsWith("_sword") && !path.endsWith("_axe") && item != Items.BOW && item != Items.CROSSBOW && item != Items.TRIDENT) {
                 continue;
@@ -444,35 +449,35 @@ public final class HarderMobsManager {
         return 8;
     }
 
-    private static ItemStack prepareEquipment(ItemStack stack, Config.HarderMobsConfig config, Random random, Tier tier, boolean armor) {
+    private static ItemStack prepareEquipment(ServerLevel world, ItemStack stack, Config.HarderMobsConfig config, RandomSource random, Tier tier, boolean armor) {
         if (!config.enchantments.enabled || tier == Tier.COMMON || random.nextFloat() > tier.enchantChance) {
             return stack;
         }
-        Map<Enchantment, Integer> enchantments = new HashMap<>(EnchantmentHelper.get(stack));
         int maxCount = Math.max(0, config.enchantments.maxEnchantmentsPerItem);
         int count = Math.min(maxCount, 1 + tier.ordinal() / 2);
-        List<Enchantment> candidates = new ArrayList<>(armor ? armorEnchantments(random) : weaponEnchantments(stack, random));
+        List<ResourceKey<Enchantment>> candidates = new ArrayList<>(armor ? armorEnchantments(random) : weaponEnchantments(stack, random));
         Collections.shuffle(candidates, new java.util.Random(random.nextLong()));
-        for (Enchantment enchantment : candidates) {
+        Registry<Enchantment> enchantmentRegistry = world.registryAccess().registryOrThrow(Registries.ENCHANTMENT);
+        for (ResourceKey<Enchantment> enchantmentKey : candidates) {
             if (count <= 0) break;
-            Identifier id = Registries.ENCHANTMENT.getId(enchantment);
-            if (!enchantment.isAcceptableItem(stack) || id != null && config.enchantments.enchantmentBlacklist.contains(id.toString())) {
+            ResourceLocation id = enchantmentKey.location();
+            Optional<Holder.Reference<Enchantment>> enchantment = enchantmentRegistry.getHolder(enchantmentKey);
+            if (enchantment.isEmpty() || config.enchantments.enchantmentBlacklist.contains(id.toString()) || !enchantment.get().value().canEnchant(stack)) {
                 continue;
             }
-            enchantments.put(enchantment, Math.min(enchantment.getMaxLevel(), 1 + random.nextInt(Math.max(1, tier.maxEnchantLevel))));
+            stack.enchant(enchantment.get(), Math.min(enchantment.get().value().getMaxLevel(), 1 + random.nextInt(Math.max(1, tier.maxEnchantLevel))));
             count--;
         }
-        EnchantmentHelper.set(enchantments, stack);
         return stack;
     }
 
-    private static List<Enchantment> armorEnchantments(Random random) {
+    private static List<ResourceKey<Enchantment>> armorEnchantments(RandomSource random) {
         return random.nextBoolean()
                 ? List.of(Enchantments.PROTECTION, Enchantments.UNBREAKING, Enchantments.THORNS)
                 : List.of(Enchantments.PROJECTILE_PROTECTION, Enchantments.FEATHER_FALLING, Enchantments.UNBREAKING);
     }
 
-    private static List<Enchantment> weaponEnchantments(ItemStack stack, Random random) {
+    private static List<ResourceKey<Enchantment>> weaponEnchantments(ItemStack stack, RandomSource random) {
         Item item = stack.getItem();
         if (item == Items.BOW) {
             return List.of(Enchantments.POWER, Enchantments.PUNCH, Enchantments.UNBREAKING);
@@ -491,7 +496,7 @@ public final class HarderMobsManager {
             return VANILLA_ARMOR;
         }
         if (cachedModdedArmor == null) {
-            cachedModdedArmor = Registries.ITEM.stream()
+            cachedModdedArmor = BuiltInRegistries.ITEM.stream()
                     .filter(item -> item instanceof ArmorItem)
                     .toList();
         }
@@ -503,7 +508,7 @@ public final class HarderMobsManager {
             return VANILLA_WEAPONS;
         }
         if (cachedModdedWeapons == null) {
-            cachedModdedWeapons = Registries.ITEM.stream()
+            cachedModdedWeapons = BuiltInRegistries.ITEM.stream()
                     .filter(HarderMobsManager::isWeaponCandidate)
                     .toList();
         }
@@ -511,78 +516,84 @@ public final class HarderMobsManager {
     }
 
     private static boolean isWeaponCandidate(Item item) {
-        Identifier id = Registries.ITEM.getId(item);
+        ResourceLocation id = BuiltInRegistries.ITEM.getKey(item);
         String path = id.getPath();
         return path.endsWith("_sword") || path.endsWith("_axe") || item == Items.BOW || item == Items.CROSSBOW || item == Items.TRIDENT;
     }
 
-    private static void applyAttributes(MobEntity mob, Config.HarderMobsConfig config, Tier tier, Role role) {
+    private static void applyAttributes(Mob mob, Config.HarderMobsConfig config, Tier tier, Role role) {
         float tierScale = tier.attributeScale;
         switch (role) {
             case BRUISER -> {
-                addMultiplier(mob, EntityAttributes.GENERIC_MAX_HEALTH, HEALTH_MODIFIER_ID, "Harder Mobs health", Math.min(config.attributes.maxHealthMultiplier - 1.0F, 0.35F + tierScale));
-                addMultiplier(mob, EntityAttributes.GENERIC_MOVEMENT_SPEED, SPEED_MODIFIER_ID, "Harder Mobs speed tradeoff", -0.10F);
-                addValue(mob, EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, KNOCKBACK_MODIFIER_ID, "Harder Mobs knockback", Math.min(config.attributes.maxKnockbackResistance, 0.15F + tierScale * 0.25F));
+                addMultiplier(mob, Attributes.MAX_HEALTH, HEALTH_MODIFIER_ID, "Harder Mobs health", Math.min(config.attributes.maxHealthMultiplier - 1.0F, 0.35F + tierScale));
+                addMultiplier(mob, Attributes.MOVEMENT_SPEED, SPEED_MODIFIER_ID, "Harder Mobs speed tradeoff", -0.10F);
+                addValue(mob, Attributes.KNOCKBACK_RESISTANCE, KNOCKBACK_MODIFIER_ID, "Harder Mobs knockback", Math.min(config.attributes.maxKnockbackResistance, 0.15F + tierScale * 0.25F));
             }
             case SKIRMISHER -> {
-                addMultiplier(mob, EntityAttributes.GENERIC_MOVEMENT_SPEED, SPEED_MODIFIER_ID, "Harder Mobs speed", Math.min(config.attributes.maxSpeedMultiplier - 1.0F, 0.08F + tierScale * 0.20F));
-                addMultiplier(mob, EntityAttributes.GENERIC_MAX_HEALTH, HEALTH_MODIFIER_ID, "Harder Mobs light frame", -0.10F);
+                addMultiplier(mob, Attributes.MOVEMENT_SPEED, SPEED_MODIFIER_ID, "Harder Mobs speed", Math.min(config.attributes.maxSpeedMultiplier - 1.0F, 0.08F + tierScale * 0.20F));
+                addMultiplier(mob, Attributes.MAX_HEALTH, HEALTH_MODIFIER_ID, "Harder Mobs light frame", -0.10F);
             }
-            case HEXER -> addMultiplier(mob, EntityAttributes.GENERIC_FOLLOW_RANGE, KNOCKBACK_MODIFIER_ID, "Harder Mobs focus", 0.20F + tierScale * 0.25F);
-            case BERSERKER -> addMultiplier(mob, EntityAttributes.GENERIC_ATTACK_DAMAGE, DAMAGE_MODIFIER_ID, "Harder Mobs damage", Math.min(config.attributes.maxDamageMultiplier - 1.0F, 0.15F + tierScale * 0.25F));
+            case HEXER -> addMultiplier(mob, Attributes.FOLLOW_RANGE, KNOCKBACK_MODIFIER_ID, "Harder Mobs focus", 0.20F + tierScale * 0.25F);
+            case BERSERKER -> addMultiplier(mob, Attributes.ATTACK_DAMAGE, DAMAGE_MODIFIER_ID, "Harder Mobs damage", Math.min(config.attributes.maxDamageMultiplier - 1.0F, 0.15F + tierScale * 0.25F));
             case GUARDIAN -> {
-                addValue(mob, EntityAttributes.GENERIC_ARMOR, ARMOR_MODIFIER_ID, "Harder Mobs armor", 2.0D + tier.ordinal() * 1.5D);
-                addValue(mob, EntityAttributes.GENERIC_ARMOR_TOUGHNESS, TOUGHNESS_MODIFIER_ID, "Harder Mobs toughness", tier.ordinal());
+                addValue(mob, Attributes.ARMOR, ARMOR_MODIFIER_ID, "Harder Mobs armor", 2.0D + tier.ordinal() * 1.5D);
+                addValue(mob, Attributes.ARMOR_TOUGHNESS, TOUGHNESS_MODIFIER_ID, "Harder Mobs toughness", tier.ordinal());
             }
-            case COMMANDER -> addMultiplier(mob, EntityAttributes.GENERIC_MAX_HEALTH, HEALTH_MODIFIER_ID, "Harder Mobs commander", Math.min(config.attributes.maxHealthMultiplier - 1.0F, 0.20F + tierScale * 0.35F));
+            case COMMANDER -> addMultiplier(mob, Attributes.MAX_HEALTH, HEALTH_MODIFIER_ID, "Harder Mobs commander", Math.min(config.attributes.maxHealthMultiplier - 1.0F, 0.20F + tierScale * 0.35F));
         }
         mob.setHealth(mob.getMaxHealth());
     }
 
-    private static void addMultiplier(MobEntity mob, EntityAttribute attribute, UUID id, String name, double value) {
-        EntityAttributeInstance instance = mob.getAttributeInstance(attribute);
+    private static void addMultiplier(Mob mob, Holder<Attribute> attribute, UUID id, String name, double value) {
+        AttributeInstance instance = mob.getAttribute(attribute);
         if (instance != null && value != 0.0D) {
-            instance.removeModifier(id);
-            instance.addPersistentModifier(new EntityAttributeModifier(id, name, value, EntityAttributeModifier.Operation.MULTIPLY_TOTAL));
+            ResourceLocation modifierId = modifierId(id);
+            instance.removeModifier(modifierId);
+            instance.addPermanentModifier(new AttributeModifier(modifierId, value, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
         }
     }
 
-    private static void addValue(MobEntity mob, EntityAttribute attribute, UUID id, String name, double value) {
-        EntityAttributeInstance instance = mob.getAttributeInstance(attribute);
+    private static void addValue(Mob mob, Holder<Attribute> attribute, UUID id, String name, double value) {
+        AttributeInstance instance = mob.getAttribute(attribute);
         if (instance != null && value != 0.0D) {
-            instance.removeModifier(id);
-            instance.addPersistentModifier(new EntityAttributeModifier(id, name, value, EntityAttributeModifier.Operation.ADDITION));
+            ResourceLocation modifierId = modifierId(id);
+            instance.removeModifier(modifierId);
+            instance.addPermanentModifier(new AttributeModifier(modifierId, value, AttributeModifier.Operation.ADD_VALUE));
         }
     }
 
-    private static void applyEffects(MobEntity mob, Config.HarderMobsConfig config, Tier tier, Role role) {
+    private static ResourceLocation modifierId(UUID id) {
+        return ResourceLocation.fromNamespaceAndPath(TheAfterdark.MOD_ID, id.toString());
+    }
+
+    private static void applyEffects(Mob mob, Config.HarderMobsConfig config, Tier tier, Role role) {
         int duration = tier == Tier.NEMESIS ? -1 : 20 * 60 * 8;
-        StatusEffect effect = switch (role) {
-            case HARDENED -> StatusEffects.GLOWING;
-            case BRUISER, GUARDIAN -> StatusEffects.RESISTANCE;
-            case SKIRMISHER -> StatusEffects.SPEED;
-            case HEXER -> StatusEffects.INVISIBILITY;
-            case BERSERKER -> StatusEffects.STRENGTH;
-            case COMMANDER -> StatusEffects.GLOWING;
+        Holder<MobEffect> effect = switch (role) {
+            case HARDENED -> MobEffects.GLOWING;
+            case BRUISER, GUARDIAN -> MobEffects.DAMAGE_RESISTANCE;
+            case SKIRMISHER -> MobEffects.MOVEMENT_SPEED;
+            case HEXER -> MobEffects.INVISIBILITY;
+            case BERSERKER -> MobEffects.DAMAGE_BOOST;
+            case COMMANDER -> MobEffects.GLOWING;
         };
-        Identifier id = Registries.STATUS_EFFECT.getId(effect);
+        ResourceLocation id = effect.unwrapKey().map(ResourceKey::location).orElse(null);
         if (id == null || config.effects.effectBlacklist.contains(id.toString())) {
             return;
         }
         int amplifier = tier == Tier.NEMESIS ? 1 : 0;
-        mob.addStatusEffect(new StatusEffectInstance(effect, duration, amplifier, true, config.visuals.useParticles));
+        mob.addEffect(new MobEffectInstance(effect, duration, amplifier, true, config.visuals.useParticles));
     }
 
-    private static void applyVisuals(MobEntity mob, ServerWorld world, Config.HarderMobsConfig config, Tier tier, Role role) {
+    private static void applyVisuals(Mob mob, ServerLevel world, Config.HarderMobsConfig config, Tier tier, Role role) {
         if (config.visuals.showEliteNames && tier.ordinal() >= Tier.RARE.ordinal()) {
-            mob.setCustomName(Text.literal(tier.displayName + " " + role.displayName));
+            mob.setCustomName(Component.literal(tier.displayName + " " + role.displayName));
             mob.setCustomNameVisible(tier.ordinal() >= Tier.ELITE.ordinal());
         }
         if (config.visuals.useGlowingForNemesis && tier == Tier.NEMESIS) {
-            mob.setGlowing(true);
+            mob.setGlowingTag(true);
         }
         if (config.visuals.useParticles) {
-            DefaultParticleType particle = switch (role) {
+            SimpleParticleType particle = switch (role) {
                 case HARDENED -> ParticleTypes.SOUL;
                 case BRUISER, GUARDIAN -> ParticleTypes.SOUL;
                 case SKIRMISHER -> ParticleTypes.CRIT;
@@ -590,7 +601,7 @@ public final class HarderMobsManager {
                 case BERSERKER -> ParticleTypes.SMOKE;
                 case COMMANDER -> ParticleTypes.GLOW;
             };
-            world.spawnParticles(particle, mob.getX(), mob.getY() + mob.getHeight() * 0.7D, mob.getZ(), 12 + tier.ordinal() * 6, 0.35D, 0.45D, 0.35D, 0.02D);
+            world.sendParticles(particle, mob.getX(), mob.getY() + mob.getBbHeight() * 0.7D, mob.getZ(), 12 + tier.ordinal() * 6, 0.35D, 0.45D, 0.35D, 0.02D);
         }
     }
 
@@ -631,7 +642,7 @@ public final class HarderMobsManager {
             this.displayName = displayName;
         }
 
-        private static Role pick(Random random) {
+        private static Role pick(RandomSource random) {
             Role[] values = {BRUISER, SKIRMISHER, HEXER, BERSERKER, GUARDIAN, COMMANDER};
             return values[random.nextInt(values.length)];
         }
@@ -639,42 +650,42 @@ public final class HarderMobsManager {
 
     private enum ArmorTheme {
         ROOTED(
-                new ArmorMaterials[]{ArmorMaterials.LEATHER, ArmorMaterials.CHAIN, ArmorMaterials.IRON},
+                new Holder[]{ArmorMaterials.LEATHER, ArmorMaterials.CHAIN, ArmorMaterials.IRON},
                 new int[]{0x2D2418, 0x3A4A2A, 0x5A3B24},
-                new RegistryKey[]{ArmorTrimMaterials.COPPER, ArmorTrimMaterials.EMERALD, ArmorTrimMaterials.QUARTZ},
-                new RegistryKey[]{ArmorTrimPatterns.WILD, ArmorTrimPatterns.WARD, ArmorTrimPatterns.HOST}
+                new ResourceKey[]{TrimMaterials.COPPER, TrimMaterials.EMERALD, TrimMaterials.QUARTZ},
+                new ResourceKey[]{TrimPatterns.WILD, TrimPatterns.WARD, TrimPatterns.HOST}
         ),
         FROSTED(
-                new ArmorMaterials[]{ArmorMaterials.LEATHER, ArmorMaterials.CHAIN, ArmorMaterials.IRON, ArmorMaterials.DIAMOND},
+                new Holder[]{ArmorMaterials.LEATHER, ArmorMaterials.CHAIN, ArmorMaterials.IRON, ArmorMaterials.DIAMOND},
                 new int[]{0xD4E5F2, 0x8AAEC8, 0x5C6F86},
-                new RegistryKey[]{ArmorTrimMaterials.IRON, ArmorTrimMaterials.DIAMOND, ArmorTrimMaterials.LAPIS},
-                new RegistryKey[]{ArmorTrimPatterns.TIDE, ArmorTrimPatterns.SPIRE, ArmorTrimPatterns.WAYFINDER}
+                new ResourceKey[]{TrimMaterials.IRON, TrimMaterials.DIAMOND, TrimMaterials.LAPIS},
+                new ResourceKey[]{TrimPatterns.TIDE, TrimPatterns.SPIRE, TrimPatterns.WAYFINDER}
         ),
         CURSED(
-                new ArmorMaterials[]{ArmorMaterials.CHAIN, ArmorMaterials.GOLD, ArmorMaterials.IRON},
+                new Holder[]{ArmorMaterials.CHAIN, ArmorMaterials.GOLD, ArmorMaterials.IRON},
                 new int[]{0x1B1024, 0x34204A, 0x123629},
-                new RegistryKey[]{ArmorTrimMaterials.AMETHYST, ArmorTrimMaterials.LAPIS, ArmorTrimMaterials.REDSTONE},
-                new RegistryKey[]{ArmorTrimPatterns.EYE, ArmorTrimPatterns.SILENCE, ArmorTrimPatterns.VEX}
+                new ResourceKey[]{TrimMaterials.AMETHYST, TrimMaterials.LAPIS, TrimMaterials.REDSTONE},
+                new ResourceKey[]{TrimPatterns.EYE, TrimPatterns.SILENCE, TrimPatterns.VEX}
         ),
         EMBER(
-                new ArmorMaterials[]{ArmorMaterials.LEATHER, ArmorMaterials.GOLD, ArmorMaterials.IRON},
+                new Holder[]{ArmorMaterials.LEATHER, ArmorMaterials.GOLD, ArmorMaterials.IRON},
                 new int[]{0x3A1A0D, 0x713018, 0xA54A1F},
-                new RegistryKey[]{ArmorTrimMaterials.REDSTONE, ArmorTrimMaterials.COPPER, ArmorTrimMaterials.GOLD},
-                new RegistryKey[]{ArmorTrimPatterns.RIB, ArmorTrimPatterns.SNOUT, ArmorTrimPatterns.DUNE}
+                new ResourceKey[]{TrimMaterials.REDSTONE, TrimMaterials.COPPER, TrimMaterials.GOLD},
+                new ResourceKey[]{TrimPatterns.RIB, TrimPatterns.SNOUT, TrimPatterns.DUNE}
         ),
         DEEP(
-                new ArmorMaterials[]{ArmorMaterials.CHAIN, ArmorMaterials.IRON, ArmorMaterials.DIAMOND},
+                new Holder[]{ArmorMaterials.CHAIN, ArmorMaterials.IRON, ArmorMaterials.DIAMOND},
                 new int[]{0x15171F, 0x202C3A, 0x30404F},
-                new RegistryKey[]{ArmorTrimMaterials.LAPIS, ArmorTrimMaterials.AMETHYST, ArmorTrimMaterials.NETHERITE},
-                new RegistryKey[]{ArmorTrimPatterns.WARD, ArmorTrimPatterns.SILENCE, ArmorTrimPatterns.RIB}
+                new ResourceKey[]{TrimMaterials.LAPIS, TrimMaterials.AMETHYST, TrimMaterials.NETHERITE},
+                new ResourceKey[]{TrimPatterns.WARD, TrimPatterns.SILENCE, TrimPatterns.RIB}
         );
 
-        private final ArmorMaterials[] preferredMaterials;
+        private final Holder<ArmorMaterial>[] preferredMaterials;
         private final int[] leatherColors;
-        private final RegistryKey<ArmorTrimMaterial>[] trimMaterials;
-        private final RegistryKey<ArmorTrimPattern>[] trimPatterns;
+        private final ResourceKey<TrimMaterial>[] trimMaterials;
+        private final ResourceKey<TrimPattern>[] trimPatterns;
 
-        ArmorTheme(ArmorMaterials[] preferredMaterials, int[] leatherColors, RegistryKey<ArmorTrimMaterial>[] trimMaterials, RegistryKey<ArmorTrimPattern>[] trimPatterns) {
+        ArmorTheme(Holder<ArmorMaterial>[] preferredMaterials, int[] leatherColors, ResourceKey<TrimMaterial>[] trimMaterials, ResourceKey<TrimPattern>[] trimPatterns) {
             this.preferredMaterials = preferredMaterials;
             this.leatherColors = leatherColors;
             this.trimMaterials = trimMaterials;
@@ -682,18 +693,16 @@ public final class HarderMobsManager {
         }
 
         private boolean prefers(ArmorItem armorItem) {
-            if (!(armorItem.getMaterial() instanceof ArmorMaterials material)) {
-                return false;
-            }
-            for (ArmorMaterials preferredMaterial : preferredMaterials) {
-                if (material == preferredMaterial) {
+            Holder<ArmorMaterial> material = armorItem.getMaterial();
+            for (Holder<ArmorMaterial> preferredMaterial : preferredMaterials) {
+                if (material == preferredMaterial || material.equals(preferredMaterial)) {
                     return true;
                 }
             }
             return false;
         }
 
-        private static ArmorTheme pick(Role role, Random random) {
+        private static ArmorTheme pick(Role role, RandomSource random) {
             return switch (role) {
                 case SKIRMISHER -> random.nextBoolean() ? FROSTED : ROOTED;
                 case HEXER -> CURSED;

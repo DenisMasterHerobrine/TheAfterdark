@@ -4,22 +4,22 @@ import com.mojang.serialization.Codec;
 import dev.denismasterherobrine.afterdark.features.configuration.PillarFeatureConfiguration;
 import dev.denismasterherobrine.afterdark.mixin.DripstoneHelperMixin;
 import java.util.Optional;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.math.floatprovider.FloatProvider;
-import net.minecraft.util.math.random.Random;
-import net.minecraft.world.Heightmap;
-import net.minecraft.world.StructureWorldAccess;
-import net.minecraft.world.gen.feature.Feature;
-import net.minecraft.world.gen.feature.LargeDripstoneFeatureConfig;
-import net.minecraft.world.gen.feature.util.CaveSurface;
-import net.minecraft.world.gen.feature.util.DripstoneHelper;
-import net.minecraft.world.gen.feature.util.FeatureContext;
-import net.minecraft.world.gen.stateprovider.BlockStateProvider;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
+import net.minecraft.util.valueproviders.FloatProvider;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.Column;
+import net.minecraft.world.level.levelgen.Heightmap;
+import net.minecraft.world.level.levelgen.feature.DripstoneUtils;
+import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
+import net.minecraft.world.level.levelgen.feature.configurations.LargeDripstoneConfiguration;
+import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
+import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 public class ConfigurableDripstoneStylePillarFeature extends Feature<PillarFeatureConfiguration> {
@@ -31,35 +31,35 @@ public class ConfigurableDripstoneStylePillarFeature extends Feature<PillarFeatu
     }
 
     @Override
-    public boolean generate(FeatureContext<PillarFeatureConfiguration> pContext) {
-        StructureWorldAccess worldgenlevel = pContext.getWorld();
+    public boolean place(FeaturePlaceContext<PillarFeatureConfiguration> pContext) {
+        WorldGenLevel worldgenlevel = pContext.level();
         BlockPos blockpos = new BlockPos(
-                (int) pContext.getOrigin().toCenterPos().getX(),
-                pContext.getOrigin().getY(),
-                (int) pContext.getOrigin().toCenterPos().getZ());
-        Random random = pContext.getRandom();
-        PillarFeatureConfiguration fullConfig = pContext.getConfig();
-        LargeDripstoneFeatureConfig config = fullConfig.base();
+                (int) pContext.origin().getCenter().x(),
+                pContext.origin().getY(),
+                (int) pContext.origin().getCenter().z());
+        RandomSource random = pContext.random();
+        PillarFeatureConfiguration fullConfig = pContext.config();
+        LargeDripstoneConfiguration config = fullConfig.base();
         Optional<BlockStateProvider> pillarOverride = fullConfig.pillarProvider();
 
         if (!DripstoneHelperMixin.invokeCanGenerateOrLava(worldgenlevel, blockpos)) {
             return false;
         }
-        Optional<CaveSurface> optional = CaveSurface.create(
-                worldgenlevel, blockpos, config.floorToCeilingSearchRange, DripstoneHelper::canGenerate, DripstoneHelper::canReplaceOrLava);
+        Optional<Column> optional = Column.scan(
+                worldgenlevel, blockpos, config.floorToCeilingSearchRange, DripstoneUtils::isEmptyOrWater, DripstoneUtils::isDripstoneBaseOrLava);
 
-        if (optional.isEmpty() || !(optional.get() instanceof CaveSurface.Bounded)) {
+        if (optional.isEmpty() || !(optional.get() instanceof Column.Range)) {
             return false;
         }
-        CaveSurface.Bounded column$range = (CaveSurface.Bounded) optional.get();
-        if (column$range.getHeight() < 4) {
+        Column.Range column$range = (Column.Range) optional.get();
+        if (column$range.height() < 4) {
             return false;
         }
-        int i = (int) ((float) column$range.getHeight() * config.maxColumnRadiusToCaveHeightRatio);
-        int j = MathHelper.clamp(i, config.columnRadius.getMin(), config.columnRadius.getMax());
-        int k = MathHelper.nextBetween(random, config.columnRadius.getMin(), j);
+        int i = (int) ((float) column$range.height() * config.maxColumnRadiusToCaveHeightRatio);
+        int j = Mth.clamp(i, config.columnRadius.getMinValue(), config.columnRadius.getMaxValue());
+        int k = Mth.randomBetweenInclusive(random, config.columnRadius.getMinValue(), j);
         LargePillar upper = LargePillar.create(
-                blockpos.withY(column$range.getCeiling() - 1),
+                blockpos.atY(column$range.ceiling() - 1),
                 false,
                 random,
                 k,
@@ -68,7 +68,7 @@ public class ConfigurableDripstoneStylePillarFeature extends Feature<PillarFeatu
                 defaultRules,
                 pillarOverride);
         LargePillar lower = LargePillar.create(
-                blockpos.withY(column$range.getFloor() + 1),
+                blockpos.atY(column$range.floor() + 1),
                 true,
                 random,
                 k,
@@ -106,7 +106,7 @@ public class ConfigurableDripstoneStylePillarFeature extends Feature<PillarFeatu
         static LargePillar create(
                 BlockPos pRoot,
                 boolean pPointingUp,
-                Random pRandom,
+                RandomSource pRandom,
                 int pRadius,
                 FloatProvider pBluntnessBase,
                 FloatProvider pScaleBase,
@@ -116,8 +116,8 @@ public class ConfigurableDripstoneStylePillarFeature extends Feature<PillarFeatu
                     pRoot,
                     pPointingUp,
                     pRadius,
-                    (double) pBluntnessBase.get(pRandom),
-                    (double) pScaleBase.get(pRandom),
+                    (double) pBluntnessBase.sample(pRandom),
+                    (double) pScaleBase.sample(pRandom),
                     rules,
                     pillarOverride);
         }
@@ -143,13 +143,13 @@ public class ConfigurableDripstoneStylePillarFeature extends Feature<PillarFeatu
             return this.getHeightAtRadius(0.0F);
         }
 
-        boolean moveBackUntilBaseIsInsideStoneAndShrinkRadiusIfNecessary(StructureWorldAccess pLevel, WindOffsetter pWindOffsetter) {
+        boolean moveBackUntilBaseIsInsideStoneAndShrinkRadiusIfNecessary(WorldGenLevel pLevel, WindOffsetter pWindOffsetter) {
             while (this.radius > 1) {
-                BlockPos.Mutable blockpos$mutableblockpos = this.root.mutableCopy();
+                BlockPos.MutableBlockPos blockpos$mutableblockpos = this.root.mutable();
                 int i = Math.min(10, this.getHeight());
 
                 for (int j = 0; j < i; ++j) {
-                    if (pLevel.getBlockState(blockpos$mutableblockpos).isOf(Blocks.LAVA)) {
+                    if (pLevel.getBlockState(blockpos$mutableblockpos).is(Blocks.LAVA)) {
                         return false;
                     }
 
@@ -172,21 +172,21 @@ public class ConfigurableDripstoneStylePillarFeature extends Feature<PillarFeatu
                     (double) pRadius, (double) this.radius, this.scale, this.bluntness);
         }
 
-        void placeBlocks(StructureWorldAccess pLevel, Random pRandom, WindOffsetter pWindOffsetter, int columnRadiusParam) {
+        void placeBlocks(WorldGenLevel pLevel, RandomSource pRandom, WindOffsetter pWindOffsetter, int columnRadiusParam) {
             for (int i = -this.radius; i <= this.radius; ++i) {
                 for (int j = -this.radius; j <= this.radius; ++j) {
-                    float f = MathHelper.sqrt((float) (i * i + j * j));
+                    float f = Mth.sqrt((float) (i * i + j * j));
                     if (!(f > (float) this.radius)) {
                         int k = this.getHeightAtRadius(f);
                         if (k > 0) {
                             if ((double) pRandom.nextFloat() < 0.2D) {
-                                k = (int) ((float) k * MathHelper.nextBetween(pRandom, 0.8F, 1.0F));
+                                k = (int) ((float) k * Mth.randomBetween(pRandom, 0.8F, 1.0F));
                             }
 
-                            BlockPos.Mutable blockpos$mutableblockpos = this.root.add(i, 0, j).mutableCopy();
+                            BlockPos.MutableBlockPos blockpos$mutableblockpos = this.root.offset(i, 0, j).mutable();
                             boolean flag = false;
                             int l = this.pointingUp
-                                    ? pLevel.getTopY(Heightmap.Type.WORLD_SURFACE_WG, blockpos$mutableblockpos.getX(), blockpos$mutableblockpos.getZ())
+                                    ? pLevel.getHeight(Heightmap.Types.WORLD_SURFACE_WG, blockpos$mutableblockpos.getX(), blockpos$mutableblockpos.getZ())
                                     : Integer.MAX_VALUE;
 
                             for (int i1 = 0; i1 < k && blockpos$mutableblockpos.getY() < l; ++i1) {
@@ -194,9 +194,9 @@ public class ConfigurableDripstoneStylePillarFeature extends Feature<PillarFeatu
                                 if (DripstoneHelperMixin.invokeCanGenerateOrLava(pLevel, blockpos)) {
                                     flag = true;
                                     BlockState state = pillarOverride
-                                            .map(provider -> provider.get(pRandom, blockpos))
+                                            .map(provider -> provider.getState(pRandom, blockpos))
                                             .orElseGet(() -> rules.pick(pLevel, pRandom, blockpos, columnRadiusParam));
-                                    pLevel.setBlockState(blockpos, state, 2);
+                                    pLevel.setBlock(blockpos, state, 2);
                                 } else if (rules.shouldStop(pLevel.getBlockState(blockpos), flag)) {
                                     break;
                                 }
@@ -209,7 +209,7 @@ public class ConfigurableDripstoneStylePillarFeature extends Feature<PillarFeatu
             }
         }
 
-        boolean isSuitableForWind(LargeDripstoneFeatureConfig pConfig) {
+        boolean isSuitableForWind(LargeDripstoneConfiguration pConfig) {
             return this.radius >= pConfig.minRadiusForWind && this.bluntness >= (double) pConfig.minBluntnessForWind;
         }
     }
@@ -217,13 +217,13 @@ public class ConfigurableDripstoneStylePillarFeature extends Feature<PillarFeatu
     static final class WindOffsetter {
         private final int originY;
         @Nullable
-        private final Vec3d windSpeed;
+        private final Vec3 windSpeed;
 
-        WindOffsetter(int pOriginY, Random pRandom, FloatProvider pMagnitude) {
+        WindOffsetter(int pOriginY, RandomSource pRandom, FloatProvider pMagnitude) {
             this.originY = pOriginY;
-            float f = pMagnitude.get(pRandom);
-            float f1 = MathHelper.nextBetween(pRandom, 0.0F, (float) Math.PI);
-            this.windSpeed = new Vec3d(MathHelper.cos(f1) * f, 0.0D, MathHelper.sin(f1) * f);
+            float f = pMagnitude.sample(pRandom);
+            float f1 = Mth.randomBetween(pRandom, 0.0F, (float) Math.PI);
+            this.windSpeed = new Vec3(Mth.cos(f1) * f, 0.0D, Mth.sin(f1) * f);
         }
 
         private WindOffsetter() {
@@ -240,8 +240,8 @@ public class ConfigurableDripstoneStylePillarFeature extends Feature<PillarFeatu
                 return pPos;
             }
             int i = this.originY - pPos.getY();
-            Vec3d vec3 = this.windSpeed.multiply(i);
-            return pPos.add((int) vec3.x, 0, (int) vec3.z);
+            Vec3 vec3 = this.windSpeed.scale(i);
+            return pPos.offset((int) vec3.x, 0, (int) vec3.z);
         }
     }
 }

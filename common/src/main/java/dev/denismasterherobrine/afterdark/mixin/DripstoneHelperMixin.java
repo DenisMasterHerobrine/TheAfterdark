@@ -1,25 +1,25 @@
 package dev.denismasterherobrine.afterdark.mixin;
 
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.StructureWorldAccess;
-import net.minecraft.world.WorldAccess;
-import net.minecraft.world.gen.feature.util.DripstoneHelper;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.levelgen.feature.DripstoneUtils;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Invoker;
 
-@Mixin(DripstoneHelper.class)
+@Mixin(DripstoneUtils.class)
 public interface DripstoneHelperMixin {
-    @Invoker("canGenerateOrLava")
-    static boolean invokeCanGenerateOrLava(WorldAccess world, BlockPos pos) {
+    @Invoker("isEmptyOrWaterOrLava")
+    static boolean invokeCanGenerateOrLava(LevelAccessor world, BlockPos pos) {
         throw new AssertionError();
     }
 
-    @Invoker("canGenerateBase")
-    static boolean invokeCanGenerateBase(StructureWorldAccess world, BlockPos pos, int radius) {
+    @Invoker("isCircleMostlyEmbeddedInStone")
+    static boolean invokeCanGenerateBase(WorldGenLevel world, BlockPos pos, int radius) {
         throw new AssertionError();
     }
 
-    @Invoker("scaleHeightFromRadius")
+    @Invoker("getDripstoneHeight")
     static double invokeScaleHeightFromRadius(double pRadius, double pBaseRadius, double pScale, double pBluntness) {
         throw new AssertionError();
     }

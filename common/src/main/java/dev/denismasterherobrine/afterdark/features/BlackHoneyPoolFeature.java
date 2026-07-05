@@ -1,25 +1,25 @@
 package dev.denismasterherobrine.afterdark.features;
 
 import com.mojang.serialization.Codec;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.random.Random;
-import net.minecraft.world.StructureWorldAccess;
-import net.minecraft.world.gen.feature.DefaultFeatureConfig;
-import net.minecraft.world.gen.feature.Feature;
-import net.minecraft.world.gen.feature.util.FeatureContext;
+import net.minecraft.core.BlockPos;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
+import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 
-public class BlackHoneyPoolFeature extends Feature<DefaultFeatureConfig> {
-    public BlackHoneyPoolFeature(Codec<DefaultFeatureConfig> codec) {
+public class BlackHoneyPoolFeature extends Feature<NoneFeatureConfiguration> {
+    public BlackHoneyPoolFeature(Codec<NoneFeatureConfiguration> codec) {
         super(codec);
     }
 
     @Override
-    public boolean generate(FeatureContext<DefaultFeatureConfig> context) {
-        StructureWorldAccess world = context.getWorld();
-        Random random = context.getRandom();
-        BlockPos center = BlackHoneyFeatureUtil.findFloor(world, context.getOrigin(), 4, 12);
+    public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> context) {
+        WorldGenLevel world = context.level();
+        RandomSource random = context.random();
+        BlockPos center = BlackHoneyFeatureUtil.findFloor(world, context.origin(), 4, 12);
         if (center == null) {
             return false;
         }
@@ -37,16 +37,16 @@ public class BlackHoneyPoolFeature extends Feature<DefaultFeatureConfig> {
                     continue;
                 }
 
-                BlockPos air = center.add(x, 0, z);
-                if (!BlackHoneyFeatureUtil.canReplace(world, air) || !BlackHoneyFeatureUtil.isSolid(world, air.down())) {
+                BlockPos air = center.offset(x, 0, z);
+                if (!BlackHoneyFeatureUtil.canReplace(world, air) || !BlackHoneyFeatureUtil.isSolid(world, air.below())) {
                     continue;
                 }
 
-                world.setBlockState(air.down(), floorState(air, distance), 2);
+                world.setBlock(air.below(), floorState(air, distance), 2);
                 placed = true;
 
                 if (distance < 0.22D && random.nextInt(7) == 0) {
-                    world.setBlockState(air, Blocks.HONEY_BLOCK.getDefaultState(), 2);
+                    world.setBlock(air, Blocks.HONEY_BLOCK.defaultBlockState(), 2);
                 }
             }
         }
@@ -57,20 +57,20 @@ public class BlackHoneyPoolFeature extends Feature<DefaultFeatureConfig> {
     private BlockState floorState(BlockPos pos, double distance) {
         int dither = Math.floorMod(pos.getX() * 341873128 + pos.getZ() * 132897987, 100);
         if (distance < 0.28D) {
-            return dither < 72 ? Blocks.HONEY_BLOCK.getDefaultState() : Blocks.HONEYCOMB_BLOCK.getDefaultState();
+            return dither < 72 ? Blocks.HONEY_BLOCK.defaultBlockState() : Blocks.HONEYCOMB_BLOCK.defaultBlockState();
         }
         if (distance < 0.52D) {
-            return dither < 62 ? Blocks.HONEYCOMB_BLOCK.getDefaultState() : Blocks.YELLOW_TERRACOTTA.getDefaultState();
+            return dither < 62 ? Blocks.HONEYCOMB_BLOCK.defaultBlockState() : Blocks.YELLOW_TERRACOTTA.defaultBlockState();
         }
         if (distance < 0.78D) {
-            return dither < 55 ? Blocks.ORANGE_TERRACOTTA.getDefaultState() : Blocks.TERRACOTTA.getDefaultState();
+            return dither < 55 ? Blocks.ORANGE_TERRACOTTA.defaultBlockState() : Blocks.TERRACOTTA.defaultBlockState();
         }
         if (dither < 45) {
-            return Blocks.BROWN_TERRACOTTA.getDefaultState();
+            return Blocks.BROWN_TERRACOTTA.defaultBlockState();
         }
         if (dither < 72) {
-            return Blocks.PACKED_MUD.getDefaultState();
+            return Blocks.PACKED_MUD.defaultBlockState();
         }
-        return Blocks.COARSE_DIRT.getDefaultState();
+        return Blocks.COARSE_DIRT.defaultBlockState();
     }
 }

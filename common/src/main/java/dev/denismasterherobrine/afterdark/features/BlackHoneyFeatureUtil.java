@@ -1,13 +1,13 @@
 package dev.denismasterherobrine.afterdark.features;
 
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.registry.tag.BlockTags;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkSectionPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.random.Random;
-import net.minecraft.world.StructureWorldAccess;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.SectionPos;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
 
 final class BlackHoneyFeatureUtil {
     static final Direction[] HORIZONTAL = new Direction[] {
@@ -19,24 +19,24 @@ final class BlackHoneyFeatureUtil {
 
     private BlackHoneyFeatureUtil() {}
 
-    static boolean inWorld(StructureWorldAccess world, BlockPos pos) {
-        return pos.getY() >= world.getBottomY() && pos.getY() < world.getTopY();
+    static boolean inWorld(WorldGenLevel world, BlockPos pos) {
+        return pos.getY() >= world.getMinBuildHeight() && pos.getY() < world.getMaxBuildHeight();
     }
 
     static boolean inOriginChunk(BlockPos origin, BlockPos pos) {
-        return ChunkSectionPos.getSectionCoord(pos.getX()) == ChunkSectionPos.getSectionCoord(origin.getX())
-                && ChunkSectionPos.getSectionCoord(pos.getZ()) == ChunkSectionPos.getSectionCoord(origin.getZ());
+        return SectionPos.blockToSectionCoord(pos.getX()) == SectionPos.blockToSectionCoord(origin.getX())
+                && SectionPos.blockToSectionCoord(pos.getZ()) == SectionPos.blockToSectionCoord(origin.getZ());
     }
 
-    static boolean canReplace(StructureWorldAccess world, BlockPos pos) {
+    static boolean canReplace(WorldGenLevel world, BlockPos pos) {
         if (!inWorld(world, pos)) {
             return false;
         }
         BlockState state = world.getBlockState(pos);
-        return state.isAir() || state.isReplaceable() || state.isIn(BlockTags.LEAVES);
+        return state.isAir() || state.canBeReplaced() || state.is(BlockTags.LEAVES);
     }
 
-    static boolean isSolid(StructureWorldAccess world, BlockPos pos) {
+    static boolean isSolid(WorldGenLevel world, BlockPos pos) {
         if (!inWorld(world, pos)) {
             return false;
         }
@@ -44,91 +44,91 @@ final class BlackHoneyFeatureUtil {
         return state.isSolid() && state.getFluidState().isEmpty();
     }
 
-    static BlockPos findFloor(StructureWorldAccess world, BlockPos origin, int upSteps, int downSteps) {
+    static BlockPos findFloor(WorldGenLevel world, BlockPos origin, int upSteps, int downSteps) {
         for (int y = upSteps; y >= -downSteps; --y) {
-            BlockPos air = origin.up(y);
-            if (canReplace(world, air) && isSolid(world, air.down())) {
+            BlockPos air = origin.above(y);
+            if (canReplace(world, air) && isSolid(world, air.below())) {
                 return air;
             }
         }
         return null;
     }
 
-    static BlockPos findCeiling(StructureWorldAccess world, BlockPos origin, int maxSteps) {
+    static BlockPos findCeiling(WorldGenLevel world, BlockPos origin, int maxSteps) {
         for (int y = 0; y <= maxSteps; ++y) {
-            BlockPos air = origin.up(y);
-            if (canReplace(world, air) && isSolid(world, air.up())) {
-                return air.up();
+            BlockPos air = origin.above(y);
+            if (canReplace(world, air) && isSolid(world, air.above())) {
+                return air.above();
             }
         }
         return null;
     }
 
-    static void placeIfReplaceable(StructureWorldAccess world, BlockPos pos, BlockState state) {
+    static void placeIfReplaceable(WorldGenLevel world, BlockPos pos, BlockState state) {
         if (canReplace(world, pos)) {
-            world.setBlockState(pos, state, 2);
+            world.setBlock(pos, state, 2);
         }
     }
 
-    static boolean placeIfReplaceableInOriginChunk(StructureWorldAccess world, BlockPos origin, BlockPos pos, BlockState state) {
+    static boolean placeIfReplaceableInOriginChunk(WorldGenLevel world, BlockPos origin, BlockPos pos, BlockState state) {
         if (!inOriginChunk(origin, pos) || !canReplace(world, pos)) {
             return false;
         }
-        world.setBlockState(pos, state, 2);
+        world.setBlock(pos, state, 2);
         return true;
     }
 
-    static boolean placeSurfaceBlockInOriginChunk(StructureWorldAccess world, BlockPos origin, BlockPos airPos, BlockState state) {
-        BlockPos surface = airPos.down();
+    static boolean placeSurfaceBlockInOriginChunk(WorldGenLevel world, BlockPos origin, BlockPos airPos, BlockState state) {
+        BlockPos surface = airPos.below();
         if (!inOriginChunk(origin, surface) || !inWorld(world, surface) || !isSolid(world, surface)) {
             return false;
         }
-        world.setBlockState(surface, state, 2);
+        world.setBlock(surface, state, 2);
         return true;
     }
 
-    static void placeSurfaceBlock(StructureWorldAccess world, BlockPos airPos, BlockState state) {
-        if (inWorld(world, airPos.down()) && isSolid(world, airPos.down())) {
-            world.setBlockState(airPos.down(), state, 2);
+    static void placeSurfaceBlock(WorldGenLevel world, BlockPos airPos, BlockState state) {
+        if (inWorld(world, airPos.below()) && isSolid(world, airPos.below())) {
+            world.setBlock(airPos.below(), state, 2);
         }
     }
 
-    static Direction randomHorizontal(Random random) {
+    static Direction randomHorizontal(RandomSource random) {
         return HORIZONTAL[random.nextInt(HORIZONTAL.length)];
     }
 
-    static BlockState honeyGrowth(Random random) {
+    static BlockState honeyGrowth(RandomSource random) {
         int pick = random.nextInt(12);
         if (pick == 0) {
-            return Blocks.OCHRE_FROGLIGHT.getDefaultState();
+            return Blocks.OCHRE_FROGLIGHT.defaultBlockState();
         }
         if (pick <= 4) {
-            return Blocks.HONEY_BLOCK.getDefaultState();
+            return Blocks.HONEY_BLOCK.defaultBlockState();
         }
         if (pick <= 8) {
-            return Blocks.HONEYCOMB_BLOCK.getDefaultState();
+            return Blocks.HONEYCOMB_BLOCK.defaultBlockState();
         }
         if (pick == 9) {
-            return Blocks.BROWN_MUSHROOM_BLOCK.getDefaultState();
+            return Blocks.BROWN_MUSHROOM_BLOCK.defaultBlockState();
         }
-        return Blocks.MANGROVE_ROOTS.getDefaultState();
+        return Blocks.MANGROVE_ROOTS.defaultBlockState();
     }
 
-    static BlockState darkRoot(Random random) {
+    static BlockState darkRoot(RandomSource random) {
         int pick = random.nextInt(9);
         if (pick <= 2) {
-            return Blocks.MANGROVE_ROOTS.getDefaultState();
+            return Blocks.MANGROVE_ROOTS.defaultBlockState();
         }
         if (pick <= 4) {
-            return Blocks.MUDDY_MANGROVE_ROOTS.getDefaultState();
+            return Blocks.MUDDY_MANGROVE_ROOTS.defaultBlockState();
         }
         if (pick <= 6) {
-            return Blocks.DARK_OAK_WOOD.getDefaultState();
+            return Blocks.DARK_OAK_WOOD.defaultBlockState();
         }
-        return Blocks.ROOTED_DIRT.getDefaultState();
+        return Blocks.ROOTED_DIRT.defaultBlockState();
     }
 
-    static int signed(Random random, int boundInclusive) {
+    static int signed(RandomSource random, int boundInclusive) {
         return random.nextInt(boundInclusive * 2 + 1) - boundInclusive;
     }
 

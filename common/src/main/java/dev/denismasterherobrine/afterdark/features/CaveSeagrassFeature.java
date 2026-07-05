@@ -1,45 +1,45 @@
 package dev.denismasterherobrine.afterdark.features;
 
 import com.mojang.serialization.Codec;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.TallSeagrassBlock;
-import net.minecraft.block.enums.DoubleBlockHalf;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.StructureWorldAccess;
-import net.minecraft.world.gen.ProbabilityConfig;
-import net.minecraft.world.gen.feature.Feature;
-import net.minecraft.world.gen.feature.util.FeatureContext;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.TallSeagrassBlock;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
+import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
+import net.minecraft.world.level.levelgen.feature.configurations.ProbabilityFeatureConfiguration;
 
-public class CaveSeagrassFeature extends Feature<ProbabilityConfig> {
-    public CaveSeagrassFeature(Codec<ProbabilityConfig> pContext) {
+public class CaveSeagrassFeature extends Feature<ProbabilityFeatureConfiguration> {
+    public CaveSeagrassFeature(Codec<ProbabilityFeatureConfiguration> pContext) {
         super(pContext);
     }
 
-    public boolean generate(FeatureContext<ProbabilityConfig> pContext) {
+    public boolean place(FeaturePlaceContext<ProbabilityFeatureConfiguration> pContext) {
         boolean flag = false;
 
-        net.minecraft.util.math.random.Random random = pContext.getRandom();
-        StructureWorldAccess worldgenlevel = pContext.getWorld();
-        BlockPos blockpos = pContext.getOrigin();
-        ProbabilityConfig probabilityfeatureconfiguration = pContext.getConfig();
-        BlockPos blockpos1 = new BlockPos(blockpos.getX(), blockpos.up().getY(), blockpos.getZ());
+        net.minecraft.util.RandomSource random = pContext.random();
+        WorldGenLevel worldgenlevel = pContext.level();
+        BlockPos blockpos = pContext.origin();
+        ProbabilityFeatureConfiguration probabilityfeatureconfiguration = pContext.config();
+        BlockPos blockpos1 = new BlockPos(blockpos.getX(), blockpos.above().getY(), blockpos.getZ());
 
-        if (worldgenlevel.getBlockState(blockpos1).isOf(Blocks.WATER)) {
+        if (worldgenlevel.getBlockState(blockpos1).is(Blocks.WATER)) {
             boolean flag1 = random.nextDouble() < (double)probabilityfeatureconfiguration.probability;
-            BlockState blockstate = flag1 ? Blocks.TALL_SEAGRASS.getDefaultState() : Blocks.SEAGRASS.getDefaultState();
+            BlockState blockstate = flag1 ? Blocks.TALL_SEAGRASS.defaultBlockState() : Blocks.SEAGRASS.defaultBlockState();
 
-            if (blockstate.canPlaceAt(worldgenlevel, blockpos1)) {
+            if (blockstate.canSurvive(worldgenlevel, blockpos1)) {
                 if (flag1) {
-                    BlockState blockstate1 = blockstate.with(TallSeagrassBlock.HALF, DoubleBlockHalf.UPPER);
-                    BlockPos blockpos2 = blockpos1.up();
+                    BlockState blockstate1 = blockstate.setValue(TallSeagrassBlock.HALF, DoubleBlockHalf.UPPER);
+                    BlockPos blockpos2 = blockpos1.above();
 
-                    if (worldgenlevel.getBlockState(blockpos2).isOf(Blocks.WATER)) {
-                        worldgenlevel.setBlockState(blockpos1, blockstate, 2);
-                        worldgenlevel.setBlockState(blockpos2, blockstate1, 2);
+                    if (worldgenlevel.getBlockState(blockpos2).is(Blocks.WATER)) {
+                        worldgenlevel.setBlock(blockpos1, blockstate, 2);
+                        worldgenlevel.setBlock(blockpos2, blockstate1, 2);
                     }
                 } else {
-                    worldgenlevel.setBlockState(blockpos1, blockstate, 2);
+                    worldgenlevel.setBlock(blockpos1, blockstate, 2);
                 }
 
                 flag = true;

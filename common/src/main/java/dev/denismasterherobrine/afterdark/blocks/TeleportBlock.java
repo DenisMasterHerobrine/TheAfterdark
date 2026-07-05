@@ -1,77 +1,97 @@
 package dev.denismasterherobrine.afterdark.blocks;
 
+import com.mojang.serialization.MapCodec;
 import dev.denismasterherobrine.afterdark.Config;
 import dev.denismasterherobrine.afterdark.blocks.entity.TeleportBlockEntity;
 import dev.denismasterherobrine.afterdark.registry.AfterdarkRegistry;
 import dev.denismasterherobrine.afterdark.util.PlayerEntityAccess;
-import net.minecraft.block.*;
-import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.network.packet.s2c.play.PositionFlag;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.text.Text;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.function.BooleanBiFunction;
-import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.shape.VoxelShape;
-import net.minecraft.util.shape.VoxelShapes;
-import net.minecraft.world.BlockView;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.entity.RelativeMovement;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.BaseEntityBlock;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.EntityBlock;
+import net.minecraft.world.level.block.RenderShape;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.BooleanOp;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.Nullable;
 
-public class TeleportBlock extends BlockWithEntity implements BlockEntityProvider {
+public class TeleportBlock extends BaseEntityBlock implements EntityBlock {
+    public static final MapCodec<TeleportBlock> CODEC = simpleCodec(TeleportBlock::new);
+
     public TeleportBlock() {
-        super(Block.Settings.copy(Blocks.DEEPSLATE));
+        this(BlockBehaviour.Properties.ofFullCopy(Blocks.DEEPSLATE));
+    }
+
+    public TeleportBlock(BlockBehaviour.Properties properties) {
+        super(properties);
     }
 
     @Override
-    public BlockRenderType getRenderType(BlockState state) {
-        return BlockRenderType.MODEL;
+    protected MapCodec<? extends BaseEntityBlock> codec() {
+        return CODEC;
+    }
+
+    @Override
+    public RenderShape getRenderShape(BlockState state) {
+        return RenderShape.MODEL;
     }
 
     public VoxelShape makeShape() {
-        VoxelShape shape = VoxelShapes.empty();
-        shape = VoxelShapes.combine(shape, VoxelShapes.cuboid(0, 0, 0, 1, 0.25, 1), BooleanBiFunction.OR);
-        shape = VoxelShapes.combine(shape, VoxelShapes.cuboid(0.25, 0.25, 0.25, 0.375, 0.375, 0.375), BooleanBiFunction.OR);
-        shape = VoxelShapes.combine(shape, VoxelShapes.cuboid(0.25, 0.25, 0.625, 0.375, 0.375, 0.75), BooleanBiFunction.OR);
-        shape = VoxelShapes.combine(shape, VoxelShapes.cuboid(0.625, 0.25, 0.625, 0.75, 0.375, 0.75), BooleanBiFunction.OR);
-        shape = VoxelShapes.combine(shape, VoxelShapes.cuboid(0.625, 0.25, 0.25, 0.75, 0.375, 0.375), BooleanBiFunction.OR);
-        shape = VoxelShapes.combine(shape, VoxelShapes.cuboid(0.625, 0.625, 0.25, 0.75, 0.75, 0.375), BooleanBiFunction.OR);
-        shape = VoxelShapes.combine(shape, VoxelShapes.cuboid(0, 0.75, 0, 1, 1, 1), BooleanBiFunction.OR);
-        shape = VoxelShapes.combine(shape, VoxelShapes.cuboid(0.25, 0.625, 0.25, 0.375, 0.75, 0.375), BooleanBiFunction.OR);
-        shape = VoxelShapes.combine(shape, VoxelShapes.cuboid(0.25, 0.625, 0.625, 0.375, 0.75, 0.75), BooleanBiFunction.OR);
-        shape = VoxelShapes.combine(shape, VoxelShapes.cuboid(0.625, 0.625, 0.625, 0.75, 0.75, 0.75), BooleanBiFunction.OR);
+        VoxelShape shape = Shapes.empty();
+        shape = Shapes.joinUnoptimized(shape, Shapes.box(0, 0, 0, 1, 0.25, 1), BooleanOp.OR);
+        shape = Shapes.joinUnoptimized(shape, Shapes.box(0.25, 0.25, 0.25, 0.375, 0.375, 0.375), BooleanOp.OR);
+        shape = Shapes.joinUnoptimized(shape, Shapes.box(0.25, 0.25, 0.625, 0.375, 0.375, 0.75), BooleanOp.OR);
+        shape = Shapes.joinUnoptimized(shape, Shapes.box(0.625, 0.25, 0.625, 0.75, 0.375, 0.75), BooleanOp.OR);
+        shape = Shapes.joinUnoptimized(shape, Shapes.box(0.625, 0.25, 0.25, 0.75, 0.375, 0.375), BooleanOp.OR);
+        shape = Shapes.joinUnoptimized(shape, Shapes.box(0.625, 0.625, 0.25, 0.75, 0.75, 0.375), BooleanOp.OR);
+        shape = Shapes.joinUnoptimized(shape, Shapes.box(0, 0.75, 0, 1, 1, 1), BooleanOp.OR);
+        shape = Shapes.joinUnoptimized(shape, Shapes.box(0.25, 0.625, 0.25, 0.375, 0.75, 0.375), BooleanOp.OR);
+        shape = Shapes.joinUnoptimized(shape, Shapes.box(0.25, 0.625, 0.625, 0.375, 0.75, 0.75), BooleanOp.OR);
+        shape = Shapes.joinUnoptimized(shape, Shapes.box(0.625, 0.625, 0.625, 0.75, 0.75, 0.75), BooleanOp.OR);
 
         return shape;
     }
 
     @Override
-    public VoxelShape getOutlineShape(BlockState state, BlockView view, BlockPos pos, ShapeContext context) {
+    public VoxelShape getShape(BlockState state, BlockGetter view, BlockPos pos, CollisionContext context) {
         return makeShape();
     }
 
     @Nullable
     @Override
-    public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return new TeleportBlockEntity(pos, state);
     }
 
     @SuppressWarnings("deprecation")
     @Override
-    public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-        if (!world.isClient && world.getServer() != null) {
-            if (player.getWorld() == world.getServer().getWorld(AfterdarkRegistry.AFTERDARK_LEVEL) && Config.INSTANCE.canReturnWithoutCatalyst) {
+    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+        if (!world.isClientSide && world.getServer() != null) {
+            if (player.level() == world.getServer().getLevel(AfterdarkRegistry.AFTERDARK_LEVEL) && Config.INSTANCE.canReturnWithoutCatalyst) {
                 teleportFromDimension(player);
             } else {
                 BlockEntity blockEntity = world.getBlockEntity(pos);
                 if (blockEntity instanceof TeleportBlockEntity teleportBlockEntity) {
                     if (teleportBlockEntity.getRemainingTeleports() > 0 || Config.INSTANCE.TeleportCatalystUses < 1) {
                         PlayerEntityAccess playerAccess = (PlayerEntityAccess) player;
-                        if (player.getWorld() == world.getServer().getWorld(AfterdarkRegistry.AFTERDARK_LEVEL)) {
+                        if (player.level() == world.getServer().getLevel(AfterdarkRegistry.AFTERDARK_LEVEL)) {
                             if (teleportBlockEntity.getRemainingTeleports() > 0) {
                                 teleportBlockEntity.setRemainingTeleports(teleportBlockEntity.getRemainingTeleports() - 1);
                             }
@@ -81,56 +101,56 @@ public class TeleportBlock extends BlockWithEntity implements BlockEntityProvide
                             if (teleportBlockEntity.getRemainingTeleports() > 0) {
                                 teleportBlockEntity.setRemainingTeleports(teleportBlockEntity.getRemainingTeleports() - 1);
                             }
-                            playerAccess.the_afterdark$setLastWorld(player.getWorld().getRegistryKey().getValue().toString());
+                            playerAccess.the_afterdark$setLastWorld(player.level().dimension().location().toString());
                             teleportToDimension(player);
                         }
-                    } else if (player.getStackInHand(hand).getItem() == AfterdarkRegistry.TELEPORT_CATALYST_ITEM && player.getStackInHand(hand).getCount() > 0) {
-                        player.getStackInHand(hand).decrement(1);
+                    } else if (stack.getItem() == AfterdarkRegistry.TELEPORT_CATALYST_ITEM && stack.getCount() > 0) {
+                        stack.shrink(1);
                         teleportBlockEntity.renewTeleports();
                     } else {
-                        player.sendMessage(Text.translatable("chat.the_afterdark.teleport_missing_catalyst"), false);
+                        player.displayClientMessage(Component.translatable("chat.the_afterdark.teleport_missing_catalyst"), false);
                     }
                 }
             }
 
-            return ActionResult.SUCCESS;
+            return ItemInteractionResult.SUCCESS;
         }
-        return ActionResult.PASS;
+        return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }
 
-    public void teleportToDimension(PlayerEntity player) {
+    public void teleportToDimension(Player player) {
         if (player.getServer() != null) {
-            BlockPos safePos = getSafeTeleportPos(player.getServer().getWorld(AfterdarkRegistry.AFTERDARK_LEVEL), player.getBlockPos(), player);
-            player.teleport(player.getServer().getWorld(AfterdarkRegistry.AFTERDARK_LEVEL), safePos.toCenterPos().getX(), safePos.getY(), safePos.toCenterPos().getZ(), PositionFlag.getFlags(0), player.getYaw(), player.getPitch());
+            BlockPos safePos = getSafeTeleportPos(player.getServer().getLevel(AfterdarkRegistry.AFTERDARK_LEVEL), player.blockPosition(), player);
+            player.teleportTo(player.getServer().getLevel(AfterdarkRegistry.AFTERDARK_LEVEL), safePos.getCenter().x(), safePos.getY(), safePos.getCenter().z(), RelativeMovement.unpack(0), player.getYRot(), player.getXRot());
         }
     }
 
-    public void teleportFromDimension(PlayerEntity player) {
+    public void teleportFromDimension(Player player) {
         if (player.getServer() != null) {
-            RegistryKey<World> playerLastWorld;
+            ResourceKey<Level> playerLastWorld;
 
             if (!Config.INSTANCE.shouldTeleportReturnToSetWorld) {
                 String lastWorld = ((PlayerEntityAccess) player).the_afterdark$getLastWorld();
                 if (lastWorld == null) {
-                    playerLastWorld = RegistryKey.of(RegistryKeys.WORLD, Identifier.tryParse(Config.INSTANCE.returnSetWorld));
+                    playerLastWorld = ResourceKey.create(Registries.DIMENSION, ResourceLocation.tryParse(Config.INSTANCE.returnSetWorld));
                 } else {
-                    playerLastWorld = RegistryKey.of(RegistryKeys.WORLD, Identifier.tryParse(lastWorld));
+                    playerLastWorld = ResourceKey.create(Registries.DIMENSION, ResourceLocation.tryParse(lastWorld));
                     if (playerLastWorld == null) {
-                        playerLastWorld = World.OVERWORLD;
+                        playerLastWorld = Level.OVERWORLD;
                     }
                 }
             } else {
-                playerLastWorld = RegistryKey.of(RegistryKeys.WORLD, Identifier.tryParse(Config.INSTANCE.returnSetWorld));
+                playerLastWorld = ResourceKey.create(Registries.DIMENSION, ResourceLocation.tryParse(Config.INSTANCE.returnSetWorld));
             }
-            BlockPos safePos = getSafeTeleportPos(player.getServer().getWorld(playerLastWorld), player.getBlockPos(), player);
-            player.teleport(player.getServer().getWorld(playerLastWorld), safePos.toCenterPos().getX(), safePos.getY(), safePos.toCenterPos().getZ(), PositionFlag.getFlags(0), player.getYaw(), player.getPitch());
+            BlockPos safePos = getSafeTeleportPos(player.getServer().getLevel(playerLastWorld), player.blockPosition(), player);
+            player.teleportTo(player.getServer().getLevel(playerLastWorld), safePos.getCenter().x(), safePos.getY(), safePos.getCenter().z(), RelativeMovement.unpack(0), player.getYRot(), player.getXRot());
         }
     }
 
-    public boolean isTeleportSafe(World world, BlockPos pos, PlayerEntity player) {
-        if (world.getBlockState(pos.down()).isSolidBlock(world, pos.down())) {
-            for (int i = 0; i < player.getHeight(); i++) {
-                if (!world.getBlockState(pos.up(i)).isAir()) {
+    public boolean isTeleportSafe(Level world, BlockPos pos, Player player) {
+        if (world.getBlockState(pos.below()).isRedstoneConductor(world, pos.below())) {
+            for (int i = 0; i < player.getBbHeight(); i++) {
+                if (!world.getBlockState(pos.above(i)).isAir()) {
                     return false;
                 }
             }
@@ -140,7 +160,7 @@ public class TeleportBlock extends BlockWithEntity implements BlockEntityProvide
         }
     }
 
-    public BlockPos getSafeTeleportPos(World world, BlockPos pos, PlayerEntity player) {
+    public BlockPos getSafeTeleportPos(Level world, BlockPos pos, Player player) {
         int radius = Config.INSTANCE.SafeTeleportCheckRadius;
 
         if (isTeleportSafe(world, pos, player)) {
@@ -150,7 +170,7 @@ public class TeleportBlock extends BlockWithEntity implements BlockEntityProvide
                 for (int x = -r; x <= r; x++) {
                     for (int y = -r; y <= r; y++) {
                         for (int z = -r; z <= r; z++) {
-                            BlockPos checkPos = pos.add(x, y, z);
+                            BlockPos checkPos = pos.offset(x, y, z);
                             if (isTeleportSafe(world, checkPos, player)) {
                                 return checkPos;
                             }
@@ -158,13 +178,13 @@ public class TeleportBlock extends BlockWithEntity implements BlockEntityProvide
                     }
                 }
             }
-            for (int y = world.getBottomY(); y <= world.getHeight(); y++) {
-                BlockPos checkPos = pos.withY(y);
+            for (int y = world.getMinBuildHeight(); y <= world.getHeight(); y++) {
+                BlockPos checkPos = pos.atY(y);
                 if (isTeleportSafe(world, checkPos, player)) {
                     return checkPos;
                 }
             }
-            for (int i = 0; i < world.getHeight() + Math.abs(world.getBottomY()); i++) {
+            for (int i = 0; i < world.getHeight() + Math.abs(world.getMinBuildHeight()); i++) {
                 int y = pos.getY() + i;
                 if (y <= world.getHeight()) {
                     for (int x = -1; x <= 1; x++) {
@@ -181,7 +201,7 @@ public class TeleportBlock extends BlockWithEntity implements BlockEntityProvide
                     }
                 }
                 y = pos.getY() - i;
-                if (pos.getY() - i >= world.getBottomY()) {
+                if (pos.getY() - i >= world.getMinBuildHeight()) {
                     for (int x = -1; x <= 1; x++) {
                         for (int z = -1; z <= 1; z++) {
                             if (x == 0 && z == 0) {
