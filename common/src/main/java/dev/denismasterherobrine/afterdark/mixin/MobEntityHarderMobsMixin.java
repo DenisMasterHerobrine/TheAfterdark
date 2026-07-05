@@ -21,7 +21,7 @@ public abstract class MobEntityHarderMobsMixin implements HarderMobEntityAccess 
     private String the_afterdark$harderMobRole = "";
 
     @Inject(method = "finalizeSpawn", at = @At("RETURN"), cancellable = true)
-    private void the_afterdark$applyHarderMobs(ServerLevelAccessor world, DifficultyInstance difficulty, MobSpawnType spawnReason, SpawnGroupData entityData, CompoundTag entityNbt, CallbackInfoReturnable<SpawnGroupData> cir) {
+    private void the_afterdark$applyHarderMobs(ServerLevelAccessor world, DifficultyInstance difficulty, MobSpawnType spawnReason, SpawnGroupData entityData, CallbackInfoReturnable<SpawnGroupData> cir) {
         cir.setReturnValue(HarderMobsManager.applyAfterInitialize((Mob) (Object) this, world, difficulty, spawnReason, cir.getReturnValue()));
     }
 
